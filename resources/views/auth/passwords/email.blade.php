@@ -2,44 +2,56 @@
 
 <!-- Main Content -->
 @section('content')
-<div class="container">
-    <div class="row">
-
-        <h1 class="text-center">Зміна паролю</h1>
-        <div class="margin-top-20"> </div>
-        <div class="col-md-8 col-md-offset-2">
+    <div class="recover-password">
+        <div class="auth-block-container container container-center">
+            <div class="row">
+                <div class="col-lg-3 col-md-2 col-sm-1"></div>
+                <div class="col-lg-6 col-md-8 col-sm-10">
                     @if (session('status'))
                         <div class="alert alert-success">
                             {{ session('status') }}
                         </div>
                     @endif
+                    <a href="{{url('/')}}" class="close fa fa-close" title="Вернуться на главную страницу"></a>
+                    <h2>Восстановление пароля</h2>
+                    <div>
+                        <form class="form-horizontal  space" role="form" method="POST"
+                              action="{{ url('/password/email') }}">
+                            {{ csrf_field() }}
+                            <div class="form-group {{ $errors->has('email') ? ' has-error' : '' }}">
+                                <div class="col-xs-12">
+                                    <input id="email" type="email" class="form-control" name="email"
+                                           value="{{ old('email') }}" placeholder="Укажите email Вашего акканута">
 
-                    <form class="form-horizontal" role="form" method="POST" action="{{ url('/password/email') }}">
-                        {{ csrf_field() }}
-
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="col-md-4 control-label">E-Mail адреса</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}">
-
-                                @if ($errors->has('email'))
-                                    <span class="help-block">
+                                    @if ($errors->has('email'))
+                                        <span class="help-block">
                                         <strong>{{ $errors->first('email') }}</strong>
                                     </span>
-                                @endif
-                            </div>
-                        </div>
+                                    @endif
 
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fa fa-btn fa-envelope"></i> Вислати  інструкції на пошту
-                                </button>
+                                </div>
                             </div>
-                        </div>
-                    </form>
+                            <div class="auth-block-footer row space">
+                                <div class="col-md-6">
+                                    <button class="btn btn-success btn-lg btn-block" type="submit">
+                                        Выслать инструкции на почту
+                                    </button>
+                                    <div class="small-space"></div>
+                                </div>
+                                <div class="col-md-6 text-right text-center-sm text-center-xs">
+                                    <div><a class="text-muted small" href="{{ url('/login') }}">Вход</a></div>
+                                    <div><a class="text-muted small" href="{{url('/register')}}">Регистрация</a></div>
+
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="space"></div>
         </div>
     </div>
-</div>
+
+
+
 @endsection

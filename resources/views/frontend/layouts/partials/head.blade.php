@@ -1,5 +1,10 @@
+<link href="https://placehold.it/16x16" rel="icon">
 
-<link href="{{ asset("css/bootstrap.min.css") }}" rel="stylesheet" type="text/css"/>
+<!--<link href="{{ asset("css/bootstrap.min.css") }}" rel="stylesheet" type="text/css"/>-->
+<link href="{{ asset("css/main.css") }}" rel="stylesheet" type="text/css"/>
+<link href="{{ asset("css/style.css") }}" rel="stylesheet" type="text/css"/>
+<link href="{{ asset("css/flag-icon.css") }}" rel="stylesheet" type="text/css"/>
+
 <link href="{{ asset("css/font-awesome.min.css") }}" rel="stylesheet" type="text/css"/>
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />

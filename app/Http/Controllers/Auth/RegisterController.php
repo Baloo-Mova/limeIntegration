@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Carbon\Carbon;
 use App\Models\Country;
-
+use App\Models\Lime\LimeParticipants;
 class RegisterController extends Controller
 {
     /*
@@ -75,6 +75,20 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        $guid = LimeParticipants::gen_uuid();
+        LimeParticipants::insert([
+            'participant_id' => $guid,
+            'firstname'=> $data['name'],
+            'lastname' => $data['second_name'],
+            'email' => $data['email'],
+            'language' => null,
+            'blacklisted' =>'N',
+            'owner_uid' =>1,
+            'created_by'=>1,
+            'created' => Carbon::now(config('app.timezone')),
+            'modified' =>null,
+
+        ]);
 
         return User::create([
             'name' => $data['name'],
@@ -83,9 +97,10 @@ class RegisterController extends Controller
             'password' => bcrypt($data['password']),
             'date_birth' => Carbon::parse($data['date_birth']),
             'country_id'=>$data['country'],
-            'region_id'=>$data['region'],
-            'city_id'=>$data['city'],
+            'region_id'=>($data['region']!='undefined') ? $data['region'] : 0,
+            'city_id'=>($data['city']!='undefined') ? $data['city'] : 0,
             'ls_password'=>($data['password']),
+            'ls_participant_id'=>$guid,
 
         ]);
     }

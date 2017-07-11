@@ -2,11 +2,14 @@
 
 namespace App;
 
+use App\Models\BalanceTransactionLog;
+use App\Models\WithdrawBalance;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Models\Country;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\App;
+use App\Models\Lime\LimeParticipants;
 /**
  * App\User
  *
@@ -27,7 +30,9 @@ use Illuminate\Support\Facades\App;
  * @property string|null $phone
  * @property string|null $ls_password
  * @property string|null $ls_session_token
+ * @property string|null $ls_participant_id
  * @property int|null $ls_session_expire
+ * @property int|null $rating
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Country[] $country
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereBalance($value)
@@ -74,6 +79,8 @@ class User extends Authenticatable
         'ls_session_token',
         'ls_session_expire',
         'interests_tags',
+        'ls_participant_id',
+        'rating',
     ];
 
     /**
@@ -92,4 +99,14 @@ class User extends Authenticatable
 	         return $this->hasMany(Country::class, 'country_id','country_id')->where('lang_id',2 );
 	     }
     }
+    public function participant(){
+        return $this->belongsTo(LimeParticipants::class,'ls_participant_id','participant_id');
+    }
+    public function balancetransactionlog(){
+        return $this->hasMany(BalanceTransactionLog::class,'to_user_id');
+    }
+    public function withdrawbalance(){
+        return $this->hasMany(WithdrawBalance::class,'user_id');
+    }
+
 }

@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 */
 Route::get('/actualRegions/{countryId}', ["uses" => "AjaxController@getRegionsInfo", "as" => "get.regions.info"]);
 Route::get('/actualCities/{countryId}', ["uses" => "AjaxController@getCitiesInfo", "as" => "get.cities.info"]);
+Route::get('/test', ["uses" => "AjaxController@updatebalance", "as" => "update.balance.info"]);
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });

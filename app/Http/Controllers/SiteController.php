@@ -27,13 +27,13 @@ class SiteController extends Controller
     //
     public function index() {
        // $surveys =  LimeSurveys::get();
-        $limeSurveys =  LimeSurveys::select('sid','active','type_id','reward')->where(['active'=>'Y'])->paginate(20);
-        $limeSurvey =  LimeSurveys::select('sid','active','type_id','reward')->where(['active'=>'Y'])->first();
-//dd($limeSurvey->LimeSurveysLanguage->first()->surveyls_title);
+
+
+     $limeSurveysLinks =  Auth::user()->participant->getGlobalSurveyLinks()->paginate(20);
 
         return view('frontend.site.index')->with(
             [
-                'surveys' =>$limeSurveys,
+                'surveys' =>$limeSurveysLinks,
 
             ]
 
@@ -41,6 +41,25 @@ class SiteController extends Controller
         );
     }
 
+    public function indexProfiles(){
+        // $surveys =  LimeSurveys::get();
+        $limeSurveysLinks =  Auth::user()->participant->getSurveyLinks()->paginate(20);
+
+        return view('frontend.profiles.index')->with(
+            [
+                'surveys' =>$limeSurveysLinks,
+
+            ]
+
+
+        );
+
+    }
+    public function welcome(){
+
+        return view('welcome');
+
+    }
     protected function limeRemoteControl(){
 
         $LS_USER = 'admin' ;

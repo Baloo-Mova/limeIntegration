@@ -212,12 +212,14 @@ class LimeSurveys extends Model
             return $this->hasMany(LimeSurveysLanguageSettings::class,'surveyls_survey_id','sid')->where(['surveyls_language'=>Lang::getLocale()] );
 
     }
-    public function GetStatus($email){
+    public function GetStatus($search){
         try {
-            $tokens = DB::connection('mysql_lime')->table("tokens_" . $this->sid)->where(['email' => $email])->first();
+            $tokens = DB::connection('mysql_lime')->table("tokens_" . $this->sid)->where(['participant_id' => $search])->orWhere(['email' => $search])->first();
         }catch(\Exception $e){}
-        return isset($tokens) ? (isset($tokens->completed) ? Lang::get('messages.SurveyCompleted') : Lang::get('messages.SurveyNotCompleted')) : Lang::get('messages.SurveyNotCompleted');
+        return isset($tokens) ? $tokens->completed : null;
 
     }
+
+
 
 }

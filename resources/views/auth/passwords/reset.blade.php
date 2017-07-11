@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         <div class="row">
-            <h1 class="text-center">Зміна паролю</h1>
+            <h1 class="text-center">Смена пароля</h1>
             <div class="margin-top-20"></div>
             <div class="col-md-8 col-md-offset-2">
                 <form class="form-horizontal" role="form" method="POST" action="{{ url('/password/reset') }}">
@@ -12,7 +12,7 @@
                     <input type="hidden" name="token" value="{{ $token }}">
 
                     <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                        <label for="email" class="col-md-4 control-label">E-Mail адреса</label>
+                        <label for="email" class="col-md-4 control-label">E-Mail</label>
 
                         <div class="col-md-6">
                             <input id="email" type="email" class="form-control" name="email"
@@ -41,7 +41,7 @@
                     </div>
 
                     <div class="form-group{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
-                        <label for="password-confirm" class="col-md-4 control-label">Підтвердіть пароль</label>
+                        <label for="password-confirm" class="col-md-4 control-label">Подтвердите пароль</label>
                         <div class="col-md-6">
                             <input id="password-confirm" type="password" class="form-control"
                                    name="password_confirmation">
@@ -57,7 +57,7 @@
                     <div class="form-group">
                         <div class="col-md-6 col-md-offset-4">
                             <button type="submit" class="btn btn-primary">
-                                <i class="fa fa-btn fa-refresh"></i> Змінити пароль
+                                <i class="fa fa-btn fa-refresh"></i> Изменить пароль
                             </button>
                         </div>
                     </div>
