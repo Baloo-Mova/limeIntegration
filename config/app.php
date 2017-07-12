@@ -167,9 +167,9 @@ return [
          * Package Service Providers...
          */
         Laravel\Tinker\TinkerServiceProvider::class,
-        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
-        Krlove\EloquentModelGenerator\Provider\GeneratorServiceProvider::class,
-        Reliese\Coders\CodersServiceProvider::class,
+        //Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
+        //Krlove\EloquentModelGenerator\Provider\GeneratorServiceProvider::class,
+        //Reliese\Coders\CodersServiceProvider::class,
         /*
          * Application Service Providers...
          */
