@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Lang;
 
@@ -54,5 +55,28 @@ class WithdrawBalance extends Model
                 break;
         }
 
+    }
+    public function getStatusColor()
+    {
+        switch ($this->status) {
+            case 0:
+                return 'bg-warning';
+                break;
+            case 1:
+                return 'bg-success';
+                break;
+            case 2:
+                return 'bg-danger';
+                break;
+        }
+
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

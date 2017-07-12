@@ -22,7 +22,7 @@ class CreateWithdrawBalance extends Migration
             $table->string('destination');
             $table->integer(  "currency_id")->unsigned()->default(0);
 
-            $table->integer('status')->unsigned()->default(0);
+            $table->integer('status')->default(0);
 
             $table->timestamps();
         });

@@ -1,9 +1,9 @@
 @extends('frontend.layouts.template')
 
 @section('content')
-    <div class="signup" data-reactid=".0.0.1">
-        <div class="auth-block-container container container-center" data-reactid=".0.0.1.0">
-            <div class="row" data-reactid=".0.0.1.0.0">
+    <div class="signup">
+        <div class="auth-block-container container container-center">
+            <div class="row">
                 <div class="col-lg-3 col-md-2 col-sm-1"></div>
                 <div class="col-lg-6 col-md-8 col-sm-10">
                     <a href="{{url('/')}}" class="close fa fa-close" title="Вернуться на главную страницу"></a>
@@ -197,42 +197,50 @@
         var regionId = null;
         $("#country").change(function () {
             countryId = $(this).val();
-            $.getJSON("api/actualRegions/" + $(this).val(), function (jsonData) {
+            $.getJSON("{{url('api/actualRegions')}}/" + $(this).val(), function (jsonData) {
                 select = '';
                 // select += '<option selected> Выбрать</option>';
                 $.each(jsonData, function (i, data) {
                     select += '<option value="' + data.region_id + '">' + data.title + '</option>';
                 });
                 select += '';
-                $("#region").html(select);
 
+                $("#region").html(select);
+                if(select.length==0){
+                    //$("#region").change();
+                    $.getJSON("{{url('api/actualCities')}}/" + countryId , function (jsonData) {
+
+                        select = '';
+                        $.each(jsonData, function (i, data) {
+                            select += '<option value="' + data.city_id + '">' + data.title + '</option>';
+                        });
+                        select += '';
+                        $("#city").html(select);
+                    });
+
+                    // alert("true");
+                }
+                else {$("#city").html('');
+                    $("#region").change();
+                };
             });
 
 
         });
         $("#region").change(function () {
             regionId = $(this).val();
-            $.getJSON("api/actualCities/" + countryId + "?region_id=" + regionId, function (jsonData) {
+
+
+            $.getJSON("{{url('api/actualCities')}}/" + countryId + "?region_id=" + regionId, function (jsonData) {
+
                 select = '';
                 $.each(jsonData, function (i, data) {
-                    select += '<option value="' + data.region_id + '">' + data.title + '</option>';
+                    select += '<option value="' + data.city_id + '">' + data.title + '</option>';
                 });
                 select += '';
                 $("#city").html(select);
             });
         });
-        /*$( "#city" ).click(function()
-         {
-
-         $.getJSON("api/actualCities/"+countryId+(regionId==null ? "" : "?region_id="+regionId), function(jsonData) {
-         select = '';
-         $.each(jsonData, function (i, data) {
-         select += '<option value="' + data.region_id + '">' + data.title + '</option>';
-         });
-         select += '';
-         $("#city").html(select);
-         });
-         });*/
     </script>
 
 @stop

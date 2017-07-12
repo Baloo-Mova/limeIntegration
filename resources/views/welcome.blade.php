@@ -1,5 +1,6 @@
 @extends('frontend.layouts.template')
 
+
 @section('content')
 
     <hr/>
@@ -103,7 +104,6 @@
 
 @section('js')
     <script>
-
     </script>
 
 @stop

@@ -214,7 +214,7 @@ class LimeSurveys extends Model
     }
     public function GetStatus($search){
         try {
-            $tokens = DB::connection('mysql_lime')->table("tokens_" . $this->sid)->where(['participant_id' => $search])->orWhere(['email' => $search])->first();
+            $tokens = DB::connection('mysql_lime')->table("tokens_" . $this->sid)->where(['participant_id' => $search])->first();
         }catch(\Exception $e){}
         return isset($tokens) ? $tokens->completed : null;
 

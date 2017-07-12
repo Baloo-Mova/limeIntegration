@@ -3,6 +3,8 @@
 namespace App;
 
 use App\Models\BalanceTransactionLog;
+use App\Models\City;
+use App\Models\Region;
 use App\Models\WithdrawBalance;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -98,6 +100,16 @@ class User extends Authenticatable
 	     if(Lang::getLocale()=="ru"){
 	         return $this->hasMany(Country::class, 'country_id','country_id')->where('lang_id',2 );
 	     }
+    }
+    public function region(){
+
+        return $this->belongsTo(Region::class, 'region_id','region_id');
+
+    }
+    public function city(){
+
+        return $this->belongsTo(City::class, 'city_id','city_id');
+
     }
     public function participant(){
         return $this->belongsTo(LimeParticipants::class,'ls_participant_id','participant_id');

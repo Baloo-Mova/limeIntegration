@@ -22,6 +22,8 @@ class LimeParticipants extends Model
 {
     protected $connection = 'mysql_lime';
     protected $table = 'participants';
+    public $primaryKey  = 'participant_id';
+    public $timestamps = false;
     /**
      * @var array
      */

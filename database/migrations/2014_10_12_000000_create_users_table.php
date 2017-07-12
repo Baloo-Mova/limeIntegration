@@ -21,9 +21,9 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->integer('balance')->default(0);
             $table->integer('role_id')->default(1);
-            $table->integer('country_id')->default(0);
-            $table->integer('region_id')->default(0);
-            $table->integer('city_id')->default(0);
+            $table->integer('country_id')->nullable();
+            $table->integer('region_id')->nullable();
+            $table->integer('city_id')->nullable();
             $table->date('date_birth');
             $table->rememberToken();
             $table->timestamps();

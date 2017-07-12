@@ -97,8 +97,8 @@ class RegisterController extends Controller
             'password' => bcrypt($data['password']),
             'date_birth' => Carbon::parse($data['date_birth']),
             'country_id'=>$data['country'],
-            'region_id'=>($data['region']!='undefined') ? $data['region'] : 0,
-            'city_id'=>($data['city']!='undefined') ? $data['city'] : 0,
+            'region_id'=>($data['region']!='undefined') ? $data['region'] : null,
+            'city_id'=>($data['city']!='undefined') ? $data['city'] : null,
             'ls_password'=>($data['password']),
             'ls_participant_id'=>$guid,
 

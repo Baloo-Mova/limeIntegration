@@ -21,6 +21,8 @@ class LimeGroups extends Model
      */
     protected $connection = 'mysql_lime';
     protected $table = 'groups';
+    public $primaryKey  = 'sid';
+    public $timestamps = false;
     protected $fillable = ['sid', 'group_name', 'group_order', 'description', 'randomization_group', 'grelevance'];
 
 }
