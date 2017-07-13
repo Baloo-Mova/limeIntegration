@@ -36,7 +36,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/create', ['uses' => 'BalanceController@storeWithdraw', 'as' => 'withdraws.store']);
     });
 
-    Route::get('/updatebalance/{id}', ['uses' => 'ajaxController@updatebalance', 'as' => 'update.balance']);
+    Route::get('/updatebalance/{id}', ['uses' => 'AjaxController@updatebalance', 'as' => 'update.balance']);
 
     Route::group(['prefix' => 'account'], function () {
         Route::get('/', ['uses' => 'AccountController@edit', 'as' => 'account.edit']);
