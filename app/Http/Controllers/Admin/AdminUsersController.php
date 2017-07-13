@@ -114,6 +114,7 @@ class AdminUsersController extends Controller
     public function update(Request $request, $id)
     {
         $user=User::whereId($id)->first();
+        $user->participant->setPrimKey('participant_id');
         $user->participant->firstname= $request['name'];
         $user->participant->lastname = $request['second_name'];
         $user->participant->email = $request['email'];

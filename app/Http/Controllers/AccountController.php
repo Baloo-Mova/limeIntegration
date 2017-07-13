@@ -57,7 +57,7 @@ class AccountController extends Controller
 
     public function update(Request $request)
     {
-
+        Auth::user()->participant->setPrimKey('participant_id');
         Auth::user()->participant->firstname= $request['name'];
         Auth::user()->participant->lastname = $request['second_name'];
         Auth::user()->participant->email = $request['email'];

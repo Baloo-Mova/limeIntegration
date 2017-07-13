@@ -22,7 +22,7 @@ class LimeParticipants extends Model
 {
     protected $connection = 'mysql_lime';
     protected $table = 'participants';
-    public $primaryKey  = 'participant_id';
+    public $primaryKey  = '';
     public $timestamps = false;
     /**
      * @var array
@@ -61,5 +61,7 @@ class LimeParticipants extends Model
         }catch(\Exception $e){dd($e->getMessage());}
         return false;
     }
-
+public function setPrimKey($str){
+        $this->primaryKey = $str;
+}
 }

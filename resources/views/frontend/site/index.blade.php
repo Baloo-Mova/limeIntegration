@@ -4,7 +4,7 @@
 
 <hr/>
 
-<div class="user-profiles container container-center"><h2>Профили</h2>
+<div class="user-profiles container container-center"><h2>Опросы</h2>
     <hr/>
     @if($surveys->count()!=0)
     <table class="table table-hover table-striped space">
@@ -24,7 +24,7 @@
                 <td class="reward-profiles">{{$item->limesurvey->reward}} ₽</td>
                 <td>
                 <? if (Auth::user() != null) {
-                    $status = $item->limesurvey->GetStatus(Auth::user()->email);
+                    $status = $item->limesurvey->GetStatus(Auth::user()->participant->participant_id);
 
                 }
                 ?>
@@ -32,7 +32,7 @@
 
 
                 <td>
-                    <a href="{{config('lime.ls_baceurl').$item->survey_id.'?token='.$item->gettoken()}}"
+                    <a href="{{config('lime.ls_baseurl').$item->survey_id.'?token='.$item->gettoken()}}"
                        class="btn btn-{{$status!='N'? 'finished' : 'danger'}} btn-block btn-lg">
                         {{$status!='N' ? Lang::get('messages.SurveyCompletedButton') : Lang::get('messages.SurveyNotCompletedButton')}}
                     </a>
