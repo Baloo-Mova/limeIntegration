@@ -2,5 +2,6 @@
 
 return [
 
- 'ls_baceurl' => 'http://limesurvey:26665/index.php/'
+
+ 'ls_baseurl' => env('LIME_BASE_URL', 'localhost'),
 ];
