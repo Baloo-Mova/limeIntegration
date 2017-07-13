@@ -122,17 +122,18 @@ $user = User::first();
 
 
 
-        echo($request->input('region'));
+
         $user->name = $request['name'];
         $user->second_name = $request['second_name'];
         $user->email = $request['email'];
+        $user->balance = $request['balance'];
+        $user->rating = $request['rating'];
 
         $user->date_birth = Carbon::parse($request['date_birth']);
         $user->country_id=$request['country'];
         $user->region_id=($request['region']!='undefined') ? $request['region'] : null;
         $user->city_id=($request['city']!='undefined') ? $request['city'] : null;
-
-           $user->save();
+        $user->save();
 
 
 

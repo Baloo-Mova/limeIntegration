@@ -58,7 +58,36 @@
                                 @endif
                             </div>
                         </div>
+                        <div class="form-group{{ $errors->has('balance') ? ' has-danger' : '' }}">
+                            <div class="col-xs-12">
+                                <label for="balance" class="control-label">Баланс</label>
 
+
+                                <input id="balance" type="number" class="form-control" name="balance"
+                                       value="{{ $user->balance }}">
+
+                                @if ($errors->has('balance'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('balance') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="form-group{{ $errors->has('rating') ? ' has-danger' : '' }}">
+                            <div class="col-xs-12">
+                                <label for="email" class="control-label">Рейтинг</label>
+
+
+                                <input id="rating" type="number" class="form-control" name="rating"
+                                       value="{{ $user->rating }}">
+
+                                @if ($errors->has('rating'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('rating') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
 
                         <div class="form-group{{ $errors->has('country') ? ' has-danger' : '' }}">
                             <div class="col-xs-12">
@@ -148,7 +177,7 @@
 
 @endsection
 @section('js')
-
+    <script src="{{ asset("js/jquery.js") }}" type="text/javascript"></script>
 
     <script>
 

@@ -61,26 +61,5 @@ class AdminBalanceController extends Controller
         return view('welcome');
 
     }
-    protected function limeRemoteControl(){
 
-        $LS_USER = 'admin' ;
-        $LS_PASSWORD = 'admin';
-
-// the survey to process
-        $survey_id=457978;
-
-
-// instanciate a new client
-//        $myJSONRPCClient = new JsonRPCClient( config('lime.ls_baceurl').'/admin/remotecontrol');
-//
-//// receive session key
-//        $sessionKey= $myJSONRPCClient->get_session_key( $LS_USER, $LS_PASSWORD );
-//dd ($sessionKey);
-//// receive all ids and info of groups belonging to a given survey
-//        $groups = $myJSONRPCClient->list_groups( $sessionKey, $survey_id );
-//        print_r($groups, null );
-//
-//// release the session key
-//        $myJSONRPCClient->release_session_key( $sessionKey );
-    }
 }

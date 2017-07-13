@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\BalanceTransactionLog;
 use App\Models\WithdrawBalance;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -27,51 +28,40 @@ class AdminWithdrawsController extends Controller
         ]);
     }
 
-    public function create()
-    {
-
-        return view('admin.paymentstypes.create');
-    }
-
-    public function store(Request $request)
-    {
-        $this->validate($request, [
-            'title' => 'required|max:255',
-            'weight_global' => 'required',
-        ]);
-
-
-        PaymentsType::insert([
-            'title' => $request["title"],
-            'weight_global' => (($request["weight_global"] != null) ? $request["weight_global"] : 0),
-            'created_at' => Carbon::now(config('app.timezone')),
-
-        ]);
-        return redirect()->back();
-    }
 
 
     public function updateStatus(Request $request)
     {
         $description = ($request->input('description'));
 //dd($request->input('withdraw_id'));
-        WithdrawBalance::whereId($request["withdraw_id"])->update([
-            'status'=>$request["status"],
-            'description' => isset($description) ? $description : null,
-        ]);
+        $withdrawbalance = WithdrawBalance::whereId($request["withdraw_id"])->first();
+
+        $withdrawbalance->status = $request["status"];
+        $withdrawbalance->description  = isset($description) ? $description : null;
+        $withdrawbalance->save();
 
 
+        switch ($request["status"]) {
+            case '1':
+                BalanceTransactionLog::create([
+                        'to_user_id' =>$withdrawbalance->user->id,
+                        'from_user_id'=> Auth::user()->id,
+                        'description' => "Вывод средств",
+                        'balance_operation'=>-1*($withdrawbalance->amount),
+                        'status'=> 1,
+                        'payment_type_id'=>$withdrawbalance->payment_type_id,
+                        'ls_surveys_id'=>0,
+
+                    ]);
+                $withdrawbalance->user->decrement('balance',$withdrawbalance->amount);
+                break;
+            case '2':
+
+                break;
+
+        }
+       
         return redirect(route('admin.withdraws.index'));
-    }
-    public function show($id)
-    {
-        $paymentstype=PaymentsType::whereId($id)->first();
-        if(!isset($paymentstype))return redirect('admin.paymentstype.index');
-
-          return view('admin.paymentstypes.show')->with([
-              'paymentstype' =>$paymentstype,
-          ]);
-
     }
 
     public function delete($id)

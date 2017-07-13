@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Lime\LimeSurveyLinks;
 use Illuminate\Http\Request;
 
 
@@ -27,24 +28,12 @@ class AdminSiteController extends Controller
     public $client;
     //
     public function index() {
-       // $surveys =  LimeSurveys::get();
-
-
-     $limeSurveysLinks =  Auth::user()->participant->getGlobalSurveyLinks()->paginate(20);
-
-        return view('frontend.site.index')->with(
-            [
-                'surveys' =>$limeSurveysLinks,
-
-            ]
-
-
-        );
+        dd("admin.index");
     }
 
     public function indexProfiles(){
         // $surveys =  LimeSurveys::get();
-        $limeSurveysLinks =  Auth::user()->participant->getSurveyLinks()->paginate(20);
+        $limeSurveysLinks =  LimeSurveyLinks::paginate(20);
 
         return view('frontend.profiles.index')->with(
             [
@@ -58,7 +47,7 @@ class AdminSiteController extends Controller
     }
     public function welcome(){
 
-        return view('welcome');
+        return view('admin.welcome');
 
     }
 
