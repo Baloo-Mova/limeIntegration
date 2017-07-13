@@ -23,6 +23,7 @@
                             <tr>
                                 <th>Id</th>
                                 <th><a class="" href="#">Имя Фамилия</a></th>
+                                <th><a class="" href="#">Права</a></th>
                                 <th><a class="" href="#">Почта</a></th>
                                 <th><a class="" href="#">Баланс</a></th>
                                 <th><a class="" href="#">Страна</a></th>
@@ -38,6 +39,7 @@
                                 <tr>
                                     <td>{{$item->id}}</td>
                                     <td>{{$item->name." ".$item->second_name}}</td>
+                                    <td>{{$item->role->title}}</td>
                                     <td>{{$item->email}}</td>
                                     <td>{{$item->balance}}</td>
                                     <td>{{$item->country->first()->title}}</td>

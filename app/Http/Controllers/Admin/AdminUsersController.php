@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Lang;
@@ -26,10 +27,10 @@ class AdminUsersController extends Controller
      */
     public function index(Request $request)
     {
-$user = User::first();
 
 
-        $users = User::where(['role_id'=>1])->orderBy('id')->paginate(20);
+
+        $users = User::where(['role_id'=>1])->orWhere(['role_id'=>3])->orderBy('id')->paginate(20);
         if(Lang::getLocale()=="ru"){
             $countries = Country::where(['lang_id'=>2])->get();
         }
@@ -100,12 +101,13 @@ $user = User::first();
         $countries = Country::where(['lang_id'=> $lang_id])->orderBy('country_id')->limit(300)->get();
         $regions = Region::where(['country_id'=>$user->country_id])->get();
         $cities = City::where(['country_id'=>$user->country_id, 'region_id'=>$user->region_id ])->get();
-
+        $roles= Role::get();
           return view('admin.users.edit')->with([
               'user'=>$user,
               'countries'=>$countries,
               'regions' => $regions,
               'cities' => $cities,
+              'roles' =>$roles,
           ]);
     }
 
@@ -122,7 +124,7 @@ $user = User::first();
 
 
 
-
+        $user->role_id=($request['role']!='null') ? $request['role'] : $user->role_id;
         $user->name = $request['name'];
         $user->second_name = $request['second_name'];
         $user->email = $request['email'];
@@ -131,6 +133,7 @@ $user = User::first();
 
         $user->date_birth = Carbon::parse($request['date_birth']);
         $user->country_id=$request['country'];
+        $user->region_id=($request['region']!='undefined') ? $request['region'] : null;
         $user->region_id=($request['region']!='undefined') ? $request['region'] : null;
         $user->city_id=($request['city']!='undefined') ? $request['city'] : null;
         $user->save();

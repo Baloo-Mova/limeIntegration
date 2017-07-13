@@ -11,8 +11,26 @@
                 <div class="box-body">
                     <form method="POST" enctype="multipart/form-data" class="form-horizontal">
                         {{ csrf_field() }}
+                        @if(Auth::user()->role->id==2)
+                            <div class="form-group{{ $errors->has('role') ? ' has-danger' : '' }}">
+                                <div class="col-xs-12">
+                                    <label for="role" class="col-form-label">Права</label>
+                                    <select class="form-control" id="role" name="role">
 
-
+                                        @forelse($roles as $item)
+                                            <option value="{{$item->id}}" {{$user->role_id==$item->id ? "selected" :''}}>{{$item->title}}</option>
+                                        @empty
+                                            <option selected>Нет прав</option>
+                                        @endforelse
+                                    </select>
+                                    @if ($errors->has('role'))
+                                        <span class="help-block">
+                                        <strong>{{ $errors->first('role') }}</strong>
+                                    </span>
+                                    @endif
+                                </div>
+                            </div>
+                        @endif
                         <div class="form-group{{ $errors->has('name') ? ' has-danger' : '' }}">
 
                             <div class="col-xs-12">
@@ -95,7 +113,7 @@
                                 <select class="form-control" id="country" name="country">
                                     <option selected>Выбрать страну</option>
                                     @forelse($countries as $item)
-                                        <option value="{{$item->country_id}}" {{Auth::user()->country_id==$item->country_id ? "selected" :''}}>{{$item->title}}</option>
+                                        <option value="{{$item->country_id}}" {{$user->country_id==$item->country_id ? "selected" :''}}>{{$item->title}}</option>
                                     @empty
                                         <option selected>Нет стран</option>
                                     @endforelse
@@ -113,7 +131,7 @@
                                 <select class="form-control" id="region" name="region">
                                     <option selected>Выбрать</option>
                                     @forelse($regions as $item)
-                                        <option value="{{$item->region_id}}" {{Auth::user()->region_id==$item->region_id ? 'selected' :''}}>{{$item->title}}</option>
+                                        <option value="{{$item->region_id}}" {{$user->region_id==$item->region_id ? 'selected' :''}}>{{$item->title}}</option>
                                     @empty
                                         <option selected>Нет областей</option>
                                     @endforelse
@@ -131,7 +149,7 @@
                                 <select class="form-control" id="city" name="city">
                                     <option>Выбрать</option>
                                     @forelse($cities as $item)
-                                        <option value="{{$item->city_id}}" {{Auth::user()->city_id==$item->city_id ? 'selected' :''}}>{{$item->title}}</option>
+                                        <option value="{{$item->city_id}}" {{$user->city_id==$item->city_id ? 'selected' :''}}>{{$item->title}}</option>
                                     @empty
                                         <option selected>Нет городов</option>
                                     @endforelse
@@ -194,9 +212,9 @@
                 select += '';
 
                 $("#region").html(select);
-                if(select.length==0){
+                if (select.length == 0) {
                     //$("#region").change();
-                    $.getJSON("{{url('api/actualCities')}}/" + countryId , function (jsonData) {
+                    $.getJSON("{{url('api/actualCities')}}/" + countryId, function (jsonData) {
 
                         select = '';
                         $.each(jsonData, function (i, data) {
@@ -208,9 +226,11 @@
 
                     // alert("true");
                 }
-                else {$("#city").html('');
+                else {
+                    $("#city").html('');
                     $("#region").change();
-                };
+                }
+                ;
             });
 
 

@@ -22,6 +22,7 @@
                                     </a>
                                 </div>
                                 <div class="media-body">
+                                    <h4>Права: <small class="text-muted">{{$user->role->title}}</small></h4>
                                     <h4>Имя: <small class="text-muted">{{$user->name}}</small></h4>
                                     <h4>Фамилия: <small class="text-muted">{{$user->second_name}}</small></h4>
                                     <h4>Почта: <small class="text-muted">{{$user->email}}</small></h4>

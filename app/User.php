@@ -5,6 +5,7 @@ namespace App;
 use App\Models\BalanceTransactionLog;
 use App\Models\City;
 use App\Models\Region;
+use App\Models\Role;
 use App\Models\WithdrawBalance;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -120,5 +121,7 @@ class User extends Authenticatable
     public function withdrawbalance(){
         return $this->hasMany(WithdrawBalance::class,'user_id');
     }
-
+    public function role(){
+        return $this->belongsTo(Role::class,'role_id','id');
+    }
 }

@@ -60,7 +60,7 @@ class AdminWithdrawsController extends Controller
                 break;
 
         }
-       
+
         return redirect(route('admin.withdraws.index'));
     }
 
