@@ -28,7 +28,7 @@
 
 
                     <td>
-                        <a href="{{config('lime.ls_baseurl').$item->survey_id.'?token='.$item->gettoken()}}"
+                        <a href="{{url('/gotosurvey/'.$item->survey_id.'/'.$item->gettoken())}}"
                            class="btn btn-{{$status!='N'? 'finished' : 'danger'}} btn-block btn-lg">
                            {{$status!='N' ? Lang::get('messages.SurveyCompletedButton') : Lang::get('messages.SurveyNotCompletedButton')}}
                         </a>

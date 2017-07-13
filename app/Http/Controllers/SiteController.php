@@ -60,6 +60,16 @@ class SiteController extends Controller
         return view('welcome');
 
     }
+
+    public function gotoSurvey($id_survey,$token){
+   $settings =  LimeSurveysLanguageSettings::where(['surveyls_survey_id'=>$id_survey])->update([
+       'surveyls_url' => config('app.url').'updatebalance/'.$id_survey,
+
+   ]);
+    return redirect(config('lime.ls_baseurl').$id_survey.'?token='.$token);
+
+    }
+
     protected function limeRemoteControl(){
 
         $LS_USER = 'admin' ;

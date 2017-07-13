@@ -19,8 +19,10 @@ Route::get('/', ['uses' => 'SiteController@welcome', 'as' => 'site.welcome']);
 Route::post('select-regions-ajax', ['as' => 'select-regions-ajax', 'uses' => 'AjaxController@selectRegionsAjax']);
 
 Route::group(['middleware' => 'auth'], function () {
+
     //Route::get('/', ['uses' => 'SiteController@index', 'as' => 'site.index']);
     Route::get('/surveys', ['uses' => 'SiteController@index', 'as' => 'site.index']);
+    Route::get('/gotosurvey/{id}/{token}', ['uses' => 'SiteController@gotoSurvey', 'as' => 'site.goto.survey']);
     Route::group(['prefix' => 'profiles'], function () {
         Route::get('/', ['uses' => 'SiteController@indexProfiles', 'as' => 'profiles.index']);
 

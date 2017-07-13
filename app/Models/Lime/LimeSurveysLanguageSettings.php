@@ -60,7 +60,7 @@ class LimeSurveysLanguageSettings  extends Model
 {
     protected $connection = 'mysql_lime';
     protected $table = 'surveys_languagesettings';
-
+public $timestamps = false;
     /**
      * The attributes that are mass assignable.
      *
