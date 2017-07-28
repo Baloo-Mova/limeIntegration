@@ -36,7 +36,16 @@
             <li class="header">{{ trans('adminlte_lang::message.header') }}</li>
             <!-- Optionally, you can add icons to the links -->
             <li class=""><a href="{{ url('home') }}"><i class='fa fa-link'></i> <span>{{ trans('adminlte_lang::message.home') }}</span></a></li>
-            <li><a href="#"><i class='fa fa-link'></i> <span>{{ trans('adminlte_lang::message.anotherlink') }}</span></a></li>
+            <li><a href="{{ route('admin.surveys.index') }}"><i class='fa fa-link'></i> <span>Опросы</span></a></li>
+            <li><a href="{{ route('admin.manage.index') }}"><i class='fa fa-link'></i> <span>Управление людьми</span></a></li>
+            <li><a href="{{ route('admin.pages.index') }}"><i class='fa fa-link'></i> <span>Страницы</span></a></li>
+            <li class="treeview {{ (Request::is('admin/messages') ? 'active' : (Request::is('admin/messages/*')? "active": "")) }}">
+                <a href="#"><i class='fa fa-link'></i> <span>Сообщения</span> <i class="fa fa-angle-left pull-right"></i></a>
+                <ul class="treeview-menu">
+                    <li class="{{ (Request::is('admin/messages/message-create') ? 'active' : "") }}"><a href="{{ route('admin.messages.create') }}">Сообщения внутри панели</a></li>
+                    <li><a href="{{ route('admin.messages.email') }}">Сообщения E-mail</a></li>
+                </ul>
+            </li>
             <li class="treeview">
                 <a href="#"><i class='fa fa-link'></i> <span>{{ trans('adminlte_lang::message.multilevel') }}</span> <i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">

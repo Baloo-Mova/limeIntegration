@@ -64,5 +64,6 @@ desired effect
     @yield('js')
 @show
 
+{!! Toastr::message() !!}
 </body>
 </html>

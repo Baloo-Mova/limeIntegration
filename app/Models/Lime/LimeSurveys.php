@@ -207,10 +207,10 @@ class LimeSurveys extends Model
      * @return mixed
      */
     public function LimeSurveysLanguage(){
-
-
-            return $this->hasMany(LimeSurveysLanguageSettings::class,'surveyls_survey_id','sid')->where(['surveyls_language'=>Lang::getLocale()] );
-
+        return $this->hasMany(LimeSurveysLanguageSettings::class,'surveyls_survey_id','sid')->where(['surveyls_language'=>Lang::getLocale()] );
+    }
+    public function Questions(){
+        return $this->hasMany(LimeSurveysQuestions::class, 'sid', 'sid');
     }
     public function GetStatus($search){
         try {

@@ -38,7 +38,6 @@ class AdminSiteController extends Controller
         return view('frontend.profiles.index')->with(
             [
                 'surveys' =>$limeSurveysLinks,
-
             ]
 
 

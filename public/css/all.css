@@ -23674,3 +23674,23 @@ button.toast-close-button {
     width: 25em;
   }
 }
+
+.mb10{
+    margin-bottom: 10px;
+}
+.mt10{
+    margin-top: 10px;
+}
+.small_td{
+    width: 20%;
+}
+.normal_td{
+    width: 80%;
+}
+
+.add_form_button:hover{
+    cursor: pointer;
+}
+.add_form_button i{
+    color: green;
+}

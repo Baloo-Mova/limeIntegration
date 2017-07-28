@@ -28,7 +28,6 @@ class SiteController extends Controller
     public function index() {
        // $surveys =  LimeSurveys::get();
 
-
      $limeSurveysLinks =  Auth::user()->participant->getGlobalSurveyLinks()->paginate(20);
 
         return view('frontend.site.index')->with(
@@ -47,7 +46,7 @@ class SiteController extends Controller
 
         return view('frontend.profiles.index')->with(
             [
-                'surveys' =>$limeSurveysLinks,
+                'surveys' => $limeSurveysLinks,
 
             ]
 

@@ -41,7 +41,16 @@ Route::group(['middleware' => 'auth'], function () {
     Route::group(['prefix' => 'account'], function () {
         Route::get('/', ['uses' => 'AccountController@edit', 'as' => 'account.edit']);
         Route::post('/', ['uses' => 'AccountController@update', 'as' => 'account.update']);
+        Route::get('/add-participant-to-survey', ['uses' => 'AccountController@addParticipant', 'as' => 'account.addParticipant']);
+        Route::post('/add-participant-to-survey', ['uses' => 'AccountController@saveParticipant', 'as' => 'account.saveParticipant']);
     });
+
+    Route::group(['prefix' => 'messages'], function () {
+        Route::get('/', ['uses' => 'MessagesController@index', 'as' => 'messages.index']);
+        Route::get('/show/{mid}', ['uses' => 'MessagesController@show', 'as' => 'messages.show']);
+
+    });
+
 });
 
 Route::group(['namespace' => 'Admin', 'middleware' => ['checkadmin']], function () {
@@ -76,6 +85,34 @@ Route::group(['namespace' => 'Admin', 'middleware' => ['checkadmin']], function 
             Route::post('/edit/{user}', ['uses' => 'AdminUsersController@update', 'as' => 'admin.users.update']);
             Route::get('/show/{user}', ['uses' => 'AdminUsersController@show', 'as' => 'admin.users.show']);
             Route::get('/delete/{user}', ['uses' => 'AdminUsersController@delete', 'as' => 'admin.users.delete']);
+        });
+
+        Route::group(['prefix' => 'surveys'], function () {
+            Route::get('/', ['uses' => 'AdminSurveysController@index', 'as' => 'admin.surveys.index']);
+            Route::get('/convert-to-worksheet/{sid}/{type}', ['uses' => 'AdminSurveysController@convertToWorksheet', 'as' => 'admin.surveys.convertToWorksheet']);
+            Route::post('/change-reward', ['uses' => 'AdminSurveysController@changeReward', 'as' => 'admin.surveys.change.rewards']);
+        });
+
+        Route::group(['prefix' => 'messages'], function () {
+            Route::get('/', ['uses' => 'AdminMessagesController@index', 'as' => 'admin.messages.index']);
+            Route::get('/message-create', ['uses' => 'AdminMessagesController@createMessage', 'as' => 'admin.messages.create']);
+            Route::post('/message-create', ['uses' => 'AdminMessagesController@sendBaseMessage', 'as' => 'admin.send.base.messages']);
+            Route::get('/email-message-create', ['uses' => 'AdminMessagesController@createEmailMessage', 'as' => 'admin.messages.email']);
+            Route::post('/email-message-create', ['uses' => 'AdminMessagesController@sendEmailMessage', 'as' => 'admin.messages.send.email']);
+        });
+
+        Route::group(['prefix' => 'pages'], function () {
+            Route::get('/', ['uses' => 'AdminPagesController@index', 'as' => 'admin.pages.index']);
+            Route::get('/create', ['uses' => 'AdminPagesController@create', 'as' => 'admin.pages.create']);
+            Route::post('/create', ['uses' => 'AdminPagesController@store', 'as' => 'admin.pages.store']);
+            Route::get('/delete/{id}', ['uses' => 'AdminPagesController@delete', 'as' => 'admin.pages.delete']);
+            Route::get('/show/{id}', ['uses' => 'AdminPagesController@show', 'as' => 'admin.pages.show']);
+            Route::get('/edit/{id}', ['uses' => 'AdminPagesController@edit', 'as' => 'admin.pages.edit']);
+            Route::post('/edit/{id}', ['uses' => 'AdminPagesController@update', 'as' => 'admin.pages.update']);
+        });
+
+        Route::group(['prefix' => 'manage'], function () {
+            Route::get('/', ['uses' => 'AdminManageSurveyParticipantsController@index', 'as' => 'admin.manage.index']);
         });
 
     });

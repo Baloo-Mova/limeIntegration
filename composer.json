@@ -11,7 +11,9 @@
         "guzzlehttp/guzzle": "~6.0",
         "laravel/framework": "5.4.*",
         "laravel/tinker": "~1.0",
-        "weberhofer/jsonrpcphp": "^2.2"
+        "phpmailer/phpmailer": "^5.2",
+        "weberhofer/jsonrpcphp": "^2.2",
+        "brian2694/laravel-toastr": "^1.0"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.4",

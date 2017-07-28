@@ -46,6 +46,7 @@
                         <li><a href="{{url('/profiles')}}" class="{{ (Request::is('profiles') ? 'active' : '') }}"><span>Профиль</span><!--<span class="badge hasPoll">12</span>--></a>
                         </li>
                         <li><a href="{{url('/rating')}}" class="{{ (Request::is('rating') ? 'active' : '') }}"><span>Рейтинг</span><span class="badge">{{Auth::user()->rating}}</span></a></li>
+                        <li><a href="{{route('messages.index')}}" class="{{ (Request::is('messages') ? 'active' : '') }}"><span>Сообщения</span><span class="badge">{{Auth::user()->unreadNotifications()->count()}}</span></a></li>
                         <li><a href="#"><span>Приведи друга</span> <noscript></noscript></a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">

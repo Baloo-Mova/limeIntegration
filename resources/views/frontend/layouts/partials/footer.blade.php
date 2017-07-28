@@ -1,5 +1,6 @@
 <hr/>
-<div>
+<div class="clearfix"></div>
+<div class="site_footer">
     <div class="container-fluid footer">
         <div class="row">
             <div class="container">

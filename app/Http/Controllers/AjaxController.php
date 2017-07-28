@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Response;
+use App\Models\Lime\LimeSurveysQuestions;
+use App\Models\Lime\LimeSurveysQuestionsAnswers;
 
 class AjaxController extends Controller
 {
@@ -73,5 +75,46 @@ class AjaxController extends Controller
 
        }
         return redirect(route('site.index'));
+    }
+
+    public function getSurveyQuestions(Request $request)
+    {
+        $survey_id = $request->get("sid");
+
+        $survey = LimeSurveys::where(['sid' => $survey_id])->first();
+
+        if(!isset($survey)){
+            return json_encode(["data" => "error"]);
+        }
+
+        $questions = $survey->questions;
+
+        return json_encode($questions);
+    }
+
+    public function getSurveyQuestionsAnswers(Request $request)
+    {
+        $question_id = $request->get("qid");
+        $question = LimeSurveysQuestions::where(['qid' => $question_id])->first();
+
+        if(!isset($question)){
+            return json_encode(["data" => "error"]);
+        }
+
+        $answers = $question->answers;
+        return json_encode(["data" => $answers, "gid" => $question->gid]);
+    }
+
+    public function getSurveyParticipants(Request $request)
+    {
+        $aid = $request->get("aid");
+        $qid = $request->get("qid");
+        $sid = $request->get("sid");
+        $gid = $request->get("gid");
+
+        $lime_base = DB::connection('mysql_lime');
+
+        $participants = $lime_base->table('survey_'.$sid)->where([$sid."X".$gid."X".$qid => $aid])->get();
+        return json_encode($participants);
     }
 }
