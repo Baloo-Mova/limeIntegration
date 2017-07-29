@@ -117,4 +117,43 @@ class AjaxController extends Controller
         $participants = $lime_base->table('survey_'.$sid)->where([$sid."X".$gid."X".$qid => $aid])->get();
         return json_encode($participants);
     }
+
+    public function getListParticipants(Request $request)
+    {
+        $count = $request->get('count');
+        $data = $this->unserializeForm($request->get('data'));
+
+        $type = $data["type_1"];
+        $questions = $data["questions_1"];
+        $answers = $data["answers_1"];
+        $question_condition = $data["question_condition_1"];
+
+        $condition = $question_condition == 0 ? '<>' : '=';
+
+        $lime_base = DB::connection('mysql_lime');
+        $gid = $lime_base->table('questions')->where(['qid' => $questions])->first();
+        $result = $lime_base->table('survey_'.$type)->where($type."X".$gid->gid."X".$questions, $condition, $answers)->get();
+
+        return json_encode($this->findParticipantId($type, $result));
+    }
+
+    protected function findParticipantId($sid, $arr)
+    {
+        $res = [];
+        $lime_base = DB::connection('mysql_lime');
+        foreach ($arr as $item){
+            $f = $lime_base->table('tokens_'.$sid)->where(['token' => $item->token])->first();
+            $res[] = $f->participant_id;
+        }
+        return $res;
+    }
+
+    protected function unserializeForm($str) {
+        $strArray = explode("&", $str);
+        foreach($strArray as $item) {
+            $array = explode("=", $item);
+            $returndata[$array[0]] = $array[1];
+        }
+        return $returndata;
+    }
 }

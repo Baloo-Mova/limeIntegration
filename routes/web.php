@@ -41,8 +41,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::group(['prefix' => 'account'], function () {
         Route::get('/', ['uses' => 'AccountController@edit', 'as' => 'account.edit']);
         Route::post('/', ['uses' => 'AccountController@update', 'as' => 'account.update']);
-        Route::get('/add-participant-to-survey', ['uses' => 'AccountController@addParticipant', 'as' => 'account.addParticipant']);
-        Route::post('/add-participant-to-survey', ['uses' => 'AccountController@saveParticipant', 'as' => 'account.saveParticipant']);
     });
 
     Route::group(['prefix' => 'messages'], function () {
@@ -113,6 +111,8 @@ Route::group(['namespace' => 'Admin', 'middleware' => ['checkadmin']], function 
 
         Route::group(['prefix' => 'manage'], function () {
             Route::get('/', ['uses' => 'AdminManageSurveyParticipantsController@index', 'as' => 'admin.manage.index']);
+            Route::get('/add-participant-to-survey', ['uses' => 'AdminManageSurveyParticipantsController@addParticipant', 'as' => 'admin.manage.addParticipant']);
+            Route::post('/add-participant-to-survey', ['uses' => 'AdminManageSurveyParticipantsController@saveParticipant', 'as' => 'admin.manage.saveParticipant']);
         });
 
     });

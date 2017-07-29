@@ -23694,3 +23694,14 @@ button.toast-close-button {
 .add_form_button i{
     color: green;
 }
+
+.results_wrap{
+    border: 0px solid red;
+    height: 300px;
+    width: 300px;
+    overflow: auto;
+}
+.results_ul{
+    list-style: none;
+    padding-left: 0;
+}

@@ -37,10 +37,10 @@
                                         <td>{{ $survey->LimeSurveysLanguage->first()->surveyls_title }}</td>
                                         <td>{{ $survey->reward }} ₽</td>
                                         <td>{{ ($survey->active == 'Y' ? 'Активен' : 'Не активен') }}</td>
-                                        <td>{{ ($survey->type_id == 1 ? 'Анкета' : 'Опрос') }}</td>
+                                        <td>{{ ($survey->type_id == 0 ? 'Анкета' : 'Опрос') }}</td>
                                         <td>
-                                            @if($survey->type_id == 0)
-                                                <a href="{{route('admin.surveys.convertToWorksheet', ['sid' => $survey->sid, 'type' => 1])}}" title="Сделать анкетой"
+                                            @if($survey->type_id == 1)
+                                                <a href="{{route('admin.surveys.convertToWorksheet', ['sid' => $survey->sid, 'type' => 0])}}" title="Сделать анкетой"
                                                    aria-label="Update"
                                                    data-pjax="0">
                                                     <span class="fa fa-id-card"></span>
@@ -77,7 +77,7 @@
                                                     </div>
                                                 </div>
 
-                                                <a href="{{route('admin.surveys.convertToWorksheet', ['sid' => $survey->sid, 'type' => 0])}}" title="Сделать опросом"
+                                                <a href="{{route('admin.surveys.convertToWorksheet', ['sid' => $survey->sid, 'type' => 1])}}" title="Сделать опросом"
                                                    aria-label="Update"
                                                    data-pjax="0">
                                                     <span class="fa fa-list-ul"></span>

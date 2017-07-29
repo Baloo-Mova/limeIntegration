@@ -18,6 +18,7 @@ Route::get('/test', ["uses" => "AjaxController@updatebalance", "as" => "update.b
 Route::post('/get-survey-questions', ["uses" => "AjaxController@getSurveyQuestions", "as" => "get.survey.questions"]);
 Route::post('/get-questions-answers', ["uses" => "AjaxController@getSurveyQuestionsAnswers", "as" => "get.survey.questions.answers"]);
 Route::post('/get-participants', ["uses" => "AjaxController@getSurveyParticipants", "as" => "get.survey.participants"]);
+Route::post('/get-list-participants', ["uses" => "AjaxController@getListParticipants", "as" => "get.list.participants"]);
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
