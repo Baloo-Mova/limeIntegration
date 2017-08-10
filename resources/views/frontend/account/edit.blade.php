@@ -133,8 +133,8 @@
 
                         <div class="auth-block-footer row space">
                             <div class="col-md-6">
-                                <button type="submit" class="btn btn-success btn-block">
-                                    <i class="fa fa-btn fa-user"></i> Редактировать
+                                <button type="submit" class="btn btn-success">
+                                    Сохранить
                                 </button>
                                 <div class="small-space"></div>
                             </div>

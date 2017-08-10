@@ -27,13 +27,15 @@ class SiteController extends Controller
 
     public function index()
     {
-        $limeSurveysLinks = Auth::user()->participant->getGlobalSurveyLinks()->paginate(20);
+        $user = Auth::user();
+        $limeSurveysLinks = $user->participant->getGlobalSurveyLinks()->paginate(20);
 
-        return view('frontend.site.index')->with(
-            [
-                'surveys' => $limeSurveysLinks,
-            ]
-        );
+            return view('frontend.site.index')->with(
+                [
+                    'surveys' => $limeSurveysLinks,
+                ]
+            );
+
     }
 
     public function indexProfiles()

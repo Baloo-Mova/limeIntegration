@@ -103,28 +103,17 @@ h4.links-header {
 
 
 /*end footer 3.0*/
-.btn.btn-success, .btn.btn-danger {
+.btn.btn-danger {
     background-color: #eb1148;
     border-color: #eb1148;
     outline: none !important;
 }
 
-.btn.btn-success:hover,
-.btn.btn-success:active,
-.btn.btn-success:focus,
 .btn.btn-danger:hover,
 .btn.btn-danger:active,
 .btn.btn-danger:focus {
     background-color: #bb0e39;
     border-color: #bb0e39;
-}
-
-.btn.btn-success[disabled],
-.btn.btn-success[disabled]:active,
-.btn.btn-success[disabled]:hover,
-.btn.btn-success[disabled]:focus {
-    background-color: #f89db4;
-    border-color: #f89db4;
 }
 
 .radio-inline + .radio-inline {
