@@ -1,7 +1,35 @@
 @extends('frontend.layouts.template')
 
 @section('content')
-    <div class="user-profiles container container-center"><h2>Профили</h2>
+    <div class="user-profiles container container-center"><h2>Профиль пользователя:</h2>
+        <div class="user_info">
+            <table class="table table-striped">
+                <tr>
+                    <td>Имя</td>
+                    <td>{{ $user_info->name." ".$user_info->second_name }}</td>
+                </tr>
+                <tr>
+                    <td>E-mail</td>
+                    <td>{{ $user_info->email }}</td>
+                </tr>
+                <tr>
+                    <td>Страна</td>
+                    <td>{{ isset($user_info->country_id) ? $user_info->country->first()->title : " не указана" }}</td>
+                </tr>
+                <tr>
+                    <td>Область (Штат)</td>
+                    <td>{{ isset($user_info->region_id) ? $user_info->region->first()->title : " не указана" }}</td>
+                </tr>
+                <tr>
+                    <td>Город</td>
+                    <td>{{ isset($user_info->city_id) ? $user_info->city->first()->title : " не указан" }}</td>
+                </tr>
+                <tr>
+                    <td>Дата рождения</td>
+                    <td>{{ isset($user_info->date_birth) ? $user_info->date_birth : " не указана" }}</td>
+                </tr>
+            </table>
+        </div>
         <hr/>
         <table class="table table-hover table-striped space">
             <thead>

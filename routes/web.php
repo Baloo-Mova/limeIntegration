@@ -29,6 +29,7 @@ Route::group(['middleware' => 'auth'], function () {
     });
     Route::group(['prefix' => 'rewards'], function () {
         Route::get('/', ['uses' => 'BalanceController@index', 'as' => 'rewards.index']);
+        Route::get('/balance', ['uses' => 'BalanceController@balance', 'as' => 'rewards.balance']);
 
     });
     Route::group(['prefix' => 'withdraws'], function () {

@@ -31,17 +31,17 @@ class BalanceController extends Controller
     //
     public function index()
     {
-        // $surveys =  LimeSurveys::get();
-
-
         $balanceLogs = Auth::user()->balancetransactionlog()->paginate(20);
-
         return view('frontend.rewards.index')->with(
             [
                 'balancelogs' => $balanceLogs,
-
             ]
         );
+    }
+
+    public function balance()
+    {
+        return view('frontend.rewards.balance');
     }
 
     public function indexwithdraw()

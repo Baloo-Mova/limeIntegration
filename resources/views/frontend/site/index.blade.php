@@ -1,9 +1,6 @@
 @extends('frontend.layouts.template')
 
 @section('content')
-
-<hr/>
-
 <div class="user-profiles container container-center"><h2>Опросы</h2>
     <hr/>
     @if($surveys->count()!=0)
