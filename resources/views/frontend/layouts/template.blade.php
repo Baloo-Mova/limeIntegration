@@ -9,25 +9,47 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Lime integrator</title>
-
-
         @include('frontend.layouts.partials.head')
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        html,
+        body,
+        .wrapper {
+            height: 100%;
+        }
+        .content {
+            box-sizing: border-box;
+            min-height: 100%;
+            padding-bottom: 150px;
+            background-color: #F8F8FA;
+        }
+        .footer {
+            height: 150px;
+            margin-top: -150px;
+        }
+    </style>
     </head>
     <body id="top">
-    @include('frontend.layouts.partials.header')
-    <div id="main-content" class="main-content liquid">
-        <div class="liquid">
 
-            <div id="content">
-                <div class="content-wrapper">
-                @yield('content')
-                </div>
-            </div>
+    <div class="wrapper">
 
+
+        <div class="content">
+            @include('frontend.layouts.partials.header')
+            @yield('content')
         </div>
-        <div class="clearfix"></div>
+
+        <div class="footer">
+            <div class="container-fluid">
+                @include('frontend.layouts.partials.footer')
+            </div>
+        </div>
+
     </div>
-    @include('frontend.layouts.partials.footer')
-        @include('frontend.layouts.partials.scripts')
+
+    @include('frontend.layouts.partials.scripts')
     </body>
 </html>
