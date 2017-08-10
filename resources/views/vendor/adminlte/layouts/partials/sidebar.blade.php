@@ -30,10 +30,10 @@
         <!-- /.search form -->
 
         <!-- Sidebar Menu -->
-        {{ (Request::is('admin/payments_types') ? 'active' : (Request::is('admin/payments_types/*')? "active": "no")) }}
+        {{ (Request::is('admin/payments_types') ? 'active' : (Request::is('admin/payments_types/*')? "active": "")) }}
         <ul class="sidebar-menu">
 
-            <li class="header">{{ trans('adminlte_lang::message.header') }}</li>
+            <li class="header">&nbsp;</li>
             <!-- Optionally, you can add icons to the links -->
             <li class=""><a href="{{ url('home') }}"><i class='fa fa-link'></i> <span>{{ trans('adminlte_lang::message.home') }}</span></a></li>
             <li><a href="{{ route('admin.surveys.index') }}"><i class='fa fa-link'></i> <span>Опросы</span></a></li>
