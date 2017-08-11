@@ -36,7 +36,20 @@
             <li class="header">&nbsp;</li>
             <!-- Optionally, you can add icons to the links -->
             <li class=""><a href="{{ url('home') }}"><i class='fa fa-link'></i> <span>{{ trans('adminlte_lang::message.home') }}</span></a></li>
-            <li><a href="{{ route('admin.surveys.index') }}"><i class='fa fa-link'></i> <span>Опросы</span></a></li>
+            <li class="treeview {{ (Request::is('admin/surveys') ? 'active' : (Request::is('admin/surveys/*')? "active": "")) }}">
+                <a href="#"><i class='fa fa-link'></i> <span>Опросы</span> <i class="fa fa-angle-left pull-right"></i></a>
+                <ul class="treeview-menu">
+                    <li class="{{ (Request::is('admin/surveys') ? 'active' : '') }}">
+                        <a href="{{ route('admin.surveys.index') }}"><i class='fa fa-link'></i> <span>Список опросов</span></a>
+                    </li>
+                    <li class="{{ (Request::is('admin/surveys/statistics')? "active": "") }}">
+                        <a href="{{ route('admin.surveys.statistics') }}"><i class='fa fa-link'></i> <span>Статистика опросов</span></a>
+                    </li>
+                    <!--<li class="{{ (Request::is('admin/surveys/processing')? "active": "") }}">
+                        <a href="{{ route('admin.surveys.processing') }}"><i class='fa fa-link'></i> <span>Обработка анкет</span></a>
+                    </li>-->
+                </ul>
+            </li>
             <li class="treeview {{ (Request::is('admin/messages') ? 'active' : (Request::is('admin/messages/*')? "active": "")) }}">
                 <a href="#"><i class='fa fa-link'></i> <span>Управление людьми</span> <i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">

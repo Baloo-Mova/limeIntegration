@@ -219,7 +219,11 @@ class LimeSurveys extends Model
         return isset($tokens) ? $tokens->completed : null;
 
     }
-
-
+    public function getWorksheet(){ // Анкеты
+        return $this->belongsTo(LimeSurveys::class,'survey_id','sid')->where(['language'=>Lang::getLocale(),'active'=>'Y'] );
+    }
+    public function getQuotes(){
+        return $this->hasMany(LimeSurveysQuotes::class, 'sid', 'sid');
+    }
 
 }

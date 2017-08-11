@@ -36,4 +36,12 @@ class LimeSurveyLinks extends Model
         }
         return isset($token) ? $token->token : null;
     }
+    public function scopeFinished($query)
+    {
+        return $query->where('date_completed', '<>', null);
+    }
+    public function scopeNotFinished($query)
+    {
+        return $query->whereNull('date_completed');
+    }
 }

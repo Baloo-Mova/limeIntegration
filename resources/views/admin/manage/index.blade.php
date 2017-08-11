@@ -1,6 +1,6 @@
 @extends('adminlte::layouts.app')
 @section('contentheader_title')
-    Админ. Выбор пользователей <span class="participants_count"></span>
+    Админ. Выбор пользователей <!--<span class="participants_count"></span>-->
 @endsection
 
 @section('main-content')
@@ -8,8 +8,9 @@
     <div class="container-fluid spark-screen">
 
         <div class="row">
-            <div class="box box-primary">
-                <div class="box-body">
+            <div class="col-md-8">
+                <div class="box box-primary">
+                    <div class="box-body">
                     <span class="add_form_button" data-current-id="1">
                         <i class="fa fa-plus-square" aria-hidden="true"></i>
                     </span>
@@ -21,9 +22,9 @@
                                             <label for="exampleTextarea">Анкеты</label>
                                             <select name="type_1" id="" class="form-control type_select type_select_1" data-current-id="1">
                                                 <option value="" selected disabled>Выберите тип</option>
-                                                @forelse($surveys as $survey)
-                                                    <option value="{{ $survey->sid }}">
-                                                        {{ $survey->limeSurveysLanguage->first()->surveyls_title }}
+                                                @forelse($worksheets as $worksheet)
+                                                    <option value="{{ $worksheet->sid }}">
+                                                        {{ $worksheet->limeSurveysLanguage->first()->surveyls_title }}
                                                     </option>
                                                 @empty
                                                     <option value="" disabled>Анкет нет</option>
@@ -39,6 +40,7 @@
                                             </select>
                                         </div>
                                     </div>
+                                    <input type="hidden" name="gid_1" class="gid_1">
                                     <div class="col-md-12 answer_condition_1">
                                         <div class="form-group">
                                             <label for="exampleTextarea">Ответы</label>
@@ -47,14 +49,11 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-12 questions_wrap_1">
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12">
                                         <div class="form-group">
-                                            <label for="exampleTextarea">Условие</label>
-                                            <select name="question_condition_1" id="" class="form-control question_condition question_condition_1" data-current-id="1">
-                                                <option value=""></option>
-                                                <option value="1">Да</option>
-                                                <option value="0">Нет</option>
-                                            </select>
+                                            <button type="submit" class="btn btn-primary count_button">Найти</button>
                                         </div>
                                     </div>
                                 </div>
@@ -65,16 +64,35 @@
 
                                 </div>
                             </div>
-
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <button type="submit" class="btn btn-primary count_button">Выбрать</button>
-                                </div>
-                            </div>
                         </form>
 
                     </div>
                 </div>
+            </div>
+            <div class="col-md-4">
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <form action="{{ route('admin.manage.addListParticipant') }}" method="post">
+                            {{ csrf_field() }}
+                            <div class="form-group">
+                                <label for="survey" class="control-label">Опрос</label>
+                                <select name="survey" id="" class="form-control">
+                                    <option value="" disabled selected>Выберите опрос</option>
+                                    @forelse($surveys as $survey)
+                                        <option value="{{ $survey->sid }}" >{{ $survey->LimeSurveysLanguage->first()->surveyls_title }}</option>
+                                    @empty
+                                        <option value="" disabled>Опросов нет</option>
+                                    @endforelse
+                                </select>
+                            </div>
+                            <div class="participants_wrap">
+
+                            </div>
+                            <button type="submit" class="btn btn-success">Добавить пользователей к опросу</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
             </div>
         </div>
     </div>
@@ -98,13 +116,15 @@
                         console.log(data);
 
                         $(".results_counter").text("Найдено: "+data.length+ " участников");
-                        var questions_str = '<ul class="results_ul">';
+                        var questions_str = '<ul class="results_ul">',
+                            participants_str = '';
                         data.forEach(function (item, i, arr) {
-                            questions_str += '<li class="results_li">'+item+'</li>';
+                            questions_str += '<li class="results_li"><a href="{{ url("/admin/users/show-by-pid") }}/'+item.participant_id+'">'+item.firstname+' '+item.lastname+'</a></li>';
+                            participants_str += '<input type="hidden" name="participant['+i+']" value="'+item.participant_id+'">';
                         });
                         questions_str += '</ul>';
 
-
+                        $(".participants_wrap").html(participants_str);
                         $(".results_wrap").html(questions_str);
 
 
@@ -119,7 +139,8 @@
                 $(this).data("currentId", new_id);
                 $(this).attr("data-current-id", new_id);
 
-                $(".root_wrap").append('<hr><div class="row" data-current-id="'+new_id+'">'+
+                $(".root_wrap").append('<div class="row" data-current-id="'+new_id+'">'+
+                        '<div class="text-center"><i class="fa fa-plus-circle" aria-hidden="true"></i></div>'+
                     '<div class="col-md-12">'+
                     '<div class="form-group">'+
                     '<label for="exampleTextarea">Анкеты</label>'+
@@ -143,21 +164,12 @@
                     '</select>'+
                     '</div>'+
                     '</div>'+
+                    '<input type="hidden" name="gid_'+new_id+'" class="gid_'+new_id+'">'+
                     '<div class="col-md-12 answer_condition_'+new_id+'">'+
                     '<div class="form-group">'+
                     '<label for="exampleTextarea">Ответы</label>'+
                     '<select name="answers_'+new_id+'" id="" class="form-control answers_select answers_select_'+new_id+'" data-sid="" data-gid="" data-qid="" data-current-id="'+new_id+'">'+
 
-                    '</select>'+
-                    '</div>'+
-                    '</div>'+
-                    '<div class="col-md-12 questions_wrap_'+new_id+'">'+
-                    '<div class="form-group">'+
-                    '<label for="exampleTextarea">Условие</label>'+
-                    '<select name="question_condition_'+new_id+'" id="" class="form-control question_condition question_condition_'+new_id+'" data-current-id="'+new_id+'">'+
-                    '<option value=""></option>'+
-                    '<option value="1">Да</option>'+
-                    '<option value="0">Нет</option>'+
                     '</select>'+
                     '</div>'+
                     '</div>'+
@@ -217,6 +229,7 @@
                             $(".answers_select_"+current_id).attr('data-qid', qid);
                             $(".answers_select_"+current_id).data('gid', data.gid);
                             $(".answers_select_"+current_id).attr('data-gid', data.gid);
+                            $(".gid_"+current_id).val(data.gid);
                         }
                     },
                     dataType: "json"
@@ -236,7 +249,7 @@
                     data    : {aid : aid, qid : qid, sid : sid, gid : gid},
                     success : function (data) {
                         if(data != "error"){
-                           $(".participants_count").text("Найдено "+data.length+" участников");
+                           //$(".participants_count").text("Найдено "+data.length+" участников");
                         }
                     },
                     dataType: "json"

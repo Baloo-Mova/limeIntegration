@@ -122,19 +122,65 @@ class AjaxController extends Controller
     {
         $count = $request->get('count');
         $data = $this->unserializeForm($request->get('data'));
-
-        $type = $data["type_1"];
-        $questions = $data["questions_1"];
-        $answers = $data["answers_1"];
-        $question_condition = $data["question_condition_1"];
-
-        $condition = $question_condition == 0 ? '<>' : '=';
-
+        if(!isset($data) || !isset($count)){
+            return json_encode("error");
+        }
         $lime_base = DB::connection('mysql_lime');
-        $gid = $lime_base->table('questions')->where(['qid' => $questions])->first();
-        $result = $lime_base->table('survey_'.$type)->where($type."X".$gid->gid."X".$questions, $condition, $answers)->get();
 
-        return json_encode($this->findParticipantId($type, $result));
+        $result_arr = [];
+
+        for ($i = 1; $i <= $count; $i++){
+            $type = $data["type_".$i];
+            $questions = $data["questions_".$i];
+            $answers = $data["answers_".$i];
+            $gid = $data["gid_".$i];
+            if(!isset($type) || !isset($questions) || !isset($answers) || !isset($gid)){
+                return json_encode("error");
+            }
+            $tmp = $lime_base->table('survey_'.$type)->where($type."X".$gid."X".$questions, '=', $answers)->get();
+            $tmp_arr = [];
+            foreach ($tmp as $t){
+                $tmp_arr[] = [
+                    "survey_id" => $type,
+                    "token" => $t->token
+                ];
+            }
+            $result_arr = $this->unique_multidim_array((array_merge($result_arr, $tmp_arr)), 'token');
+        }
+
+        $result =  $this->findParticipantBySidTid($result_arr);
+        return(json_encode($result));
+
+        return json_encode($this->findParticipantId($type, $result_arr));
+    }
+
+    protected function  unique_multidim_array($array, $key) {
+        $temp_array = array();
+        $i = 0;
+        $key_array = array();
+
+        foreach($array as $val) {
+            if (!in_array($val[$key], $key_array)) {
+                $key_array[$i] = $val[$key];
+                $temp_array[$i] = $val;
+            }
+    $i++;
+    }
+        return $temp_array;
+    }
+
+protected function findParticipantBySidTid($data){
+        $res = [];
+        $lime_base = DB::connection('mysql_lime');
+        foreach ($data as $dt){
+            $f = $lime_base->table('tokens_'.$dt["survey_id"])->where(['token' => $dt["token"]])->first();
+            $res[] = [
+                "firstname" => $f->firstname,
+                "lastname" => $f->lastname,
+                "participant_id" => $f->participant_id
+            ];
+        }
+        return $res;
     }
 
     protected function findParticipantId($sid, $arr)
@@ -146,6 +192,35 @@ class AjaxController extends Controller
             $res[] = $f->participant_id;
         }
         return $res;
+    }
+
+    public function getCountParticipants($survey_id)
+    {
+        $lime_base = DB::connection('mysql_lime');
+        $count = $lime_base->table('tokens_'.$survey_id)->distinct('participant_id')->count('participant_id');
+
+        if(!isset($count)){
+            return json_encode("error");
+        }
+
+        return json_encode($count);
+        return $count;
+    }
+
+    public function getQuotes($survey_id)
+    {
+        $survey = LimeSurveys::where(['sid' => $survey_id])->first();
+
+        if(!isset($survey)){
+            return json_encode("error");
+        }
+
+        $quotes = $survey->getQuotes;
+
+        if(!isset($quotes) || count($quotes) == 0){
+            return json_encode("error");
+        }
+        return json_encode($quotes);
     }
 
     protected function unserializeForm($str) {

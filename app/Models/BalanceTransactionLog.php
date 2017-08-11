@@ -3,6 +3,8 @@
 namespace App\Models;
 
 
+use App\Models\Lime\LimeSurveyLinks;
+use App\Models\Lime\LimeSurveysLanguageSettings;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\PaymentsType;
 use Illuminate\Support\Facades\Lang;
@@ -71,5 +73,10 @@ class BalanceTransactionLog extends Model
                 break;
         }
 
+    }
+
+    public function survey()
+    {
+        return 1;
     }
 }

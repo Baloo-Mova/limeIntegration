@@ -23704,3 +23704,19 @@ button.toast-close-button {
     list-style: none;
     padding-left: 0;
 }
+.admin-surveys__box{
+    min-height: 195px;
+}
+.quotes_list_ul{
+    list-style: none;
+    padding-left: 0;
+}
+.quotes__wrap{
+    padding-top: 20px;
+}
+.pl0{
+    padding-left: 0 !important;
+}
+.pr0{
+    padding-right: 0 !important;
+}

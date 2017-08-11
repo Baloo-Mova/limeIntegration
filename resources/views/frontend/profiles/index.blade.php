@@ -31,6 +31,7 @@
             </table>
         </div>
         <hr/>
+        @if(count($surveys) > 0)
         <table class="table table-hover table-striped space">
             <thead>
             <tr>
@@ -68,6 +69,9 @@
             </tbody>
         </table>
         {!! $surveys->links() !!}
+        @else
+            <h3>{{\Illuminate\Support\Facades\Lang::get('messages.noWorksheets')}}</h3>
+        @endif
     </div>
 
 

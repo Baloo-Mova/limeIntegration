@@ -157,6 +157,15 @@ class AdminUsersController extends Controller
 
     }
 
+    public function showByPid($pid)
+    {
+        $user=User::where(['ls_participant_id' => $pid])->first();
+        if(!isset($user))return redirect('admin.users.index');
+
+        return redirect(route('admin.users.show', ['user' => $user->id]));
+
+    }
+
     public function delete($id)
     {
         try {

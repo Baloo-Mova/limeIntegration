@@ -16,9 +16,11 @@ class AdminManageSurveyParticipantsController extends Controller
 {
     public function index()
     {
-        $surveys = LimeSurveys::where(['type_id' => 0])->get();
+        $worksheets = LimeSurveys::where(['type_id' => 0])->get();
+        $surveys = LimeSurveys::where(['type_id' => 1])->get();
         return view('admin.manage.index', with([
-            'surveys' => $surveys
+            'surveys' => $surveys,
+            'worksheets' => $worksheets
         ]));
     }
 
@@ -47,6 +49,41 @@ class AdminManageSurveyParticipantsController extends Controller
 
         $users = explode("\r\n", $participants);
 
+        if($this->addParticipantsToDb($survey_id, $users)) {
+            Toastr::success("Пользователи успешно добавлены к опросу!", "Сохранено");
+            return back();
+        }else{
+            Toastr::error("Ошибка!", "Ошибка");
+            return back();
+        }
+    }
+
+    public function addListParticipants(Request $request)
+    {
+        $survey_id = $request->get('survey');
+        $participants = $request->get('participant');
+
+        if(!isset($survey_id)){
+            Toastr::error("Вы не указали опрос", "Ошибка");
+            return back();
+        }
+
+        if(!isset($participants)){
+            Toastr::error("Вы не указали участников опроса", "Ошибка");
+            return back();
+        }
+
+        if($this->addParticipantsToDb($survey_id, $participants)) {
+            Toastr::success("Пользователи успешно добавлены к опросу!", "Сохранено");
+            return back();
+        }else{
+            Toastr::error("Ошибка!", "Ошибка");
+            return back();
+        }
+    }
+
+    protected function addParticipantsToDb($survey_id, $participants)
+    {
         $lime_base = DB::connection('mysql_lime');
         $schemaConnAdmin = Schema::connection('mysql_lime');
 
@@ -74,7 +111,7 @@ class AdminManageSurveyParticipantsController extends Controller
 
         $res = [];
 
-        foreach ($users as $user){
+        foreach ($participants as $user){
             $participant = $lime_base->table('tokens_'.$survey_id)->where(['participant_id' => $user])->first();
 
             if(isset($participant)){
@@ -105,9 +142,7 @@ class AdminManageSurveyParticipantsController extends Controller
         }
 
         $lime_base->table('survey_links')->insert($res);
-        Toastr::success("Пользователи успешно добавлены к опросу!", "Сохранено");
-        return back();
-
+        return true;
     }
 
     static function gen_uuid()

@@ -34,7 +34,7 @@ class BalanceController extends Controller
         $balanceLogs = Auth::user()->balancetransactionlog()->paginate(20);
         return view('frontend.rewards.index')->with(
             [
-                'balancelogs' => $balanceLogs,
+                'balancelogs' => $balanceLogs
             ]
         );
     }

@@ -3,7 +3,7 @@
 @section('content')
 <div class="user-profiles container container-center"><h2>Опросы</h2>
     <hr/>
-    @if($surveys->count()!=0)
+    @if(count($surveys)!=0)
     <table class="table table-hover table-striped space">
         <thead>
         <tr>

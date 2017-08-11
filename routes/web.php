@@ -78,6 +78,7 @@ Route::group(['namespace' => 'Admin', 'middleware' => ['checkadmin']], function 
             Route::get('/edit/{user}', ['uses' => 'AdminUsersController@edit', 'as' => 'admin.users.edit']);
             Route::post('/edit/{user}', ['uses' => 'AdminUsersController@update', 'as' => 'admin.users.update']);
             Route::get('/show/{user}', ['uses' => 'AdminUsersController@show', 'as' => 'admin.users.show']);
+            Route::get('/show-by-pid/{pid}', ['uses' => 'AdminUsersController@showByPid', 'as' => 'admin.users.show.pid']);
             Route::get('/delete/{user}', ['uses' => 'AdminUsersController@delete', 'as' => 'admin.users.delete']);
         });
 
@@ -85,6 +86,8 @@ Route::group(['namespace' => 'Admin', 'middleware' => ['checkadmin']], function 
             Route::get('/', ['uses' => 'AdminSurveysController@index', 'as' => 'admin.surveys.index']);
             Route::get('/convert-to-worksheet/{sid}/{type}', ['uses' => 'AdminSurveysController@convertToWorksheet', 'as' => 'admin.surveys.convertToWorksheet']);
             Route::post('/change-reward', ['uses' => 'AdminSurveysController@changeReward', 'as' => 'admin.surveys.change.rewards']);
+            Route::get('/statistics', ['uses' => 'AdminSurveysController@statistics', 'as' => 'admin.surveys.statistics']);
+            Route::get('/processing', ['uses' => 'AdminSurveysController@processing', 'as' => 'admin.surveys.processing']);
         });
 
         Route::group(['prefix' => 'messages'], function () {
@@ -109,6 +112,7 @@ Route::group(['namespace' => 'Admin', 'middleware' => ['checkadmin']], function 
             Route::get('/', ['uses' => 'AdminManageSurveyParticipantsController@index', 'as' => 'admin.manage.index']);
             Route::get('/add-participant-to-survey', ['uses' => 'AdminManageSurveyParticipantsController@addParticipant', 'as' => 'admin.manage.addParticipant']);
             Route::post('/add-participant-to-survey', ['uses' => 'AdminManageSurveyParticipantsController@saveParticipant', 'as' => 'admin.manage.saveParticipant']);
+            Route::post('/add-participant-to-survey-list', ['uses' => 'AdminManageSurveyParticipantsController@addListParticipants', 'as' => 'admin.manage.addListParticipant']);
         });
 
     });

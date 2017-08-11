@@ -9,6 +9,10 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Carbon\Carbon;
 use App\Models\Country;
 use App\Models\Lime\LimeParticipants;
+use App\Models\Lime\LimeSurveys;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
+
 class RegisterController extends Controller
 {
     /*
@@ -76,6 +80,9 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         $guid = LimeParticipants::gen_uuid();
+        $lime_base = DB::connection('mysql_lime');
+        $schemaConnAdmin = Schema::connection('mysql_lime');
+
         LimeParticipants::insert([
             'participant_id' => $guid,
             'firstname'=> $data['name'],
@@ -87,8 +94,54 @@ class RegisterController extends Controller
             'created_by'=>1,
             'created' => Carbon::now(config('app.timezone')),
             'modified' =>null,
-
         ]);
+
+        $surveys = LimeSurveys::where(['type_id' => 0])->get();
+        if(isset($surveys)){
+
+            $res = [];
+
+            foreach ($surveys as $survey){
+                if(!$schemaConnAdmin->hasTable('tokens_'.$survey->sid)){
+                    $schemaConnAdmin->create('tokens_'.$survey->sid, function (Blueprint $table) {
+                        $table->increments('tid');
+                        $table->string('participant_id', 50)->nullable();
+                        $table->string('firstname', 150)->nullable();
+                        $table->string('lastname', 150)->nullable();
+                        $table->text('email')->nullable()->nullable();
+                        $table->text('emailstatus')->nullable();
+                        $table->string('token', 35)->nullable();
+                        $table->string('language', 25)->nullable();
+                        $table->string('blacklisted', 17)->nullable();
+                        $table->string('sent', 17)->default('N');
+                        $table->string('remindersent', 17)->default('N');
+                        $table->integer('remindercount')->default(0);
+                        $table->string('completed', 17)->default('N');
+                        $table->integer('usesleft')->default(1);
+                        $table->datetime('validfrom')->nullable();
+                        $table->datetime('validuntil')->nullable();
+                        $table->integer('mpid')->nullable();
+                    });
+                }
+
+                $t = $lime_base->table('tokens_'.$survey->sid)->insertGetId([
+                    'participant_id' => $guid,
+                    'firstname' => $data['name'],
+                    'lastname' => $data['second_name'],
+                    'email'    => $data['email'],
+                    'token'    => $this->gen_uuid(),
+                    'emailstatus' => 'OK'
+                ]);
+                $res[] = [
+                    'participant_id' => $guid,
+                    'token_id'       => $t,
+                    'survey_id'      => $survey->sid,
+                    'date_created'   => Carbon::now()->toDateTimeString()
+                ];
+            }
+            $lime_base->table('survey_links')->insert($res);
+
+        }
 
         return User::create([
             'name' => $data['name'],
@@ -104,6 +157,18 @@ class RegisterController extends Controller
 
         ]);
     }
+
+    protected function gen_uuid()
+    {
+        return sprintf(
+            '%04x%04x%04x%04x',
+            mt_rand(0, 0xffff),
+            mt_rand(0, 0xffff),
+            mt_rand(0, 0xffff),
+            mt_rand(0, 0x0fff) | 0x4000
+        );
+    }
+
     public function showRegistrationForm(){
         if(config('app.locale')=='ru'){
             $countries_list = Country::where(['lang_id'=>2])->orderBy('country_id')->limit(300)->get();

@@ -30,7 +30,7 @@
 
         {!! $balancelogs->links() !!}
     @else
-        <h3>{{\Illuminate\Support\Facades\Lang::get('messages.noSurveys')}}</h3>
+        <h3>{{\Illuminate\Support\Facades\Lang::get('messages.historyPaidClear')}}</h3>
     @endif
 
 </div>
