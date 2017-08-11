@@ -14,9 +14,6 @@
                         <a href="{{ route('admin.paymentstypes.create') }}" class="btn btn-success center">Создать</a>
                     </div>-->
 
-                    <hr/>
-
-
                     <div class="grid-view">
                         <table class="table table-striped table-bordered text-center">
                             <thead>
