@@ -163,6 +163,21 @@
                         </form>
                     </div>
                 </div>
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <form action="{{ route('admin.send.base.messages.list') }}" method="post">
+                            {{ csrf_field() }}
+                            <div class="form-group">
+                                <label for="survey" class="control-label">Сообщение</label>
+                                <textarea name="text" id="" class="form-control"></textarea>
+                            </div>
+                            <div class="users_wrap">
+
+                            </div>
+                            <button type="submit" class="btn btn-success">Написать пользователям</button>
+                        </form>
+                    </div>
+                </div>
             </div>
             </div>
         </div>
@@ -203,6 +218,7 @@
 
                         $(".participants_wrap").html(participants_str);
                         $(".results_wrap").html(questions_str);
+                        $(".users_wrap").html(participants_str);
 
 
                     },

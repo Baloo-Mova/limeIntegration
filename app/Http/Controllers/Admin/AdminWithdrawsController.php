@@ -19,8 +19,12 @@ class AdminWithdrawsController extends Controller
 
     public function index($column = 'created_at', $direction = 'desc')
     {
-
-        $withdraws = WithdrawBalance::orderBy($column,$direction)->paginate(10);
+        $withdraws = DB::table('withdraw_balances')
+            ->join('users', 'withdraw_balances.user_id', '=', 'users.id')
+            ->join('payments_types', 'withdraw_balances.payment_type_id', '=', 'payments_types.id')
+            ->select('users.name', 'users.second_name', 'withdraw_balances.*', 'payments_types.title')
+            ->orderBy($column, $direction)
+            ->paginate(10);
 
         return view('admin.withdraws.index')->with([
             'withdraws' => $withdraws,
@@ -77,12 +81,14 @@ class AdminWithdrawsController extends Controller
         return back()->with(['message' => 'deleted']);
     }
 
-    public function export()
+    public function export($column, $direction)
     {
         $withdraws = DB::table('withdraw_balances')
             ->join('users', 'withdraw_balances.user_id', '=', 'users.id')
-            ->select('users.email', 'withdraw_balances.*')
-            ->get();
+            ->join('payments_types', 'withdraw_balances.payment_type_id', '=', 'payments_types.id')
+            ->select('users.name', 'users.second_name', 'users.email', 'withdraw_balances.*', 'payments_types.title')
+            ->orderBy($column, $direction)
+        ->get();
 
         $result = [];
         $dt = microtime();

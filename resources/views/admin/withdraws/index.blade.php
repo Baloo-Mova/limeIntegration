@@ -10,48 +10,87 @@
         <div class="row">
             <div class="box box-primary">
                 <div class="box-body">
-                    <a href="{{ route('admin.withdraws.export') }}" class="btn btn-success">Экспорт</a>
+                    <a href="{{ route('admin.withdraws.export', ['column' => $column, 'direction' => $direction]) }}" class="btn btn-success">Экспорт</a>
                     <div class="h10" style="height: 10px;"></div>
                         <table class="table table-bordered text-center">
                             <thead>
                             <tr>
                                 <th class="table-header">
-                                    <a href="">
-                                        Пользователь</a>
+                                    @if($column == "name")
+                                        <a href="{{ $direction == "desc" ? route('admin.withdraws.index', ['column' => 'name', 'direction' => 'asc']) :
+                                                    route('admin.withdraws.index', ['column' => 'name', 'direction' => 'desc']) }}">
+                                            Пользователь
+                                            <i class="fa fa-sort-amount-{{ $direction == "asc" ? "asc" : "desc" }}" aria-hidden="true"></i>
+                                        </a>
+                                    @else
+                                        <a href="{{ route('admin.withdraws.index', ['column' => 'name', 'direction' => 'desc']) }}">
+                                            Пользователь
+                                        </a>
+                                    @endif
                                 </th>
                                 <th class="table-header">
-                                    <a href="">
-                                        Назначение
-                                    </a>
+                                    @if($column == "destination")
+                                        <a href="{{ $direction == "desc" ? route('admin.withdraws.index', ['column' => 'destination', 'direction' => 'asc']) :
+                                                    route('admin.withdraws.index', ['column' => 'destination', 'direction' => 'desc']) }}">
+                                            Назначение
+                                            <i class="fa fa-sort-amount-{{ $direction == "asc" ? "asc" : "desc" }}" aria-hidden="true"></i>
+                                        </a>
+                                    @else
+                                        <a href="{{ route('admin.withdraws.index', ['column' => 'destination', 'direction' => 'desc']) }}">
+                                            Назначение
+                                        </a>
+                                    @endif
                                 </th>
                                 <th class="table-header">
-                                    <a href="">
-                                        Сумма
-                                    </a>
+                                    @if($column == "amount")
+                                        <a href="{{ $direction == "desc" ? route('admin.withdraws.index', ['column' => 'amount', 'direction' => 'asc']) :
+                                                    route('admin.withdraws.index', ['column' => 'amount', 'direction' => 'desc']) }}">
+                                            Сумма
+                                            <i class="fa fa-sort-amount-{{ $direction == "asc" ? "asc" : "desc" }}" aria-hidden="true"></i>
+                                        </a>
+                                    @else
+                                        <a href="{{ route('admin.withdraws.index', ['column' => 'amount', 'direction' => 'desc']) }}">
+                                            Сумма
+                                        </a>
+                                    @endif
                                 </th>
                                 <th class="table-header">
-                                    <a href="">
-                                        Тип
-                                    </a>
+                                    @if($column == "payment_type_id")
+                                        <a href="{{ $direction == "desc" ? route('admin.withdraws.index', ['column' => 'payment_type_id', 'direction' => 'asc']) :
+                                                    route('admin.withdraws.index', ['column' => 'payment_type_id', 'direction' => 'desc']) }}">
+                                            Тип
+                                            <i class="fa fa-sort-amount-{{ $direction == "asc" ? "asc" : "desc" }}" aria-hidden="true"></i>
+                                        </a>
+                                    @else
+                                        <a href="{{ route('admin.withdraws.index', ['column' => 'payment_type_id', 'direction' => 'desc']) }}">
+                                            Тип
+                                        </a>
+                                    @endif
                                 </th>
                                <!-- <th class="table-header">Статус</th>-->
                                 <th class="table-header">
-                                    @if($column == "created_at" &&)
-                                    <a href="{{ route('admin.withdraws.index', ['column' => 'created_at', 'direction' => 'desc']) }}">
-                                        Дата Создания
-                                    </a>
+                                    @if($column == "created_at")
+                                        <a href="{{ $direction == "desc" ? route('admin.withdraws.index', ['column' => 'created_at', 'direction' => 'asc']) :
+                                                    route('admin.withdraws.index', ['column' => 'created_at', 'direction' => 'desc']) }}">
+                                            Дата Создания
+                                            <i class="fa fa-sort-amount-{{ $direction == "asc" ? "asc" : "desc" }}" aria-hidden="true"></i>
+                                        </a>
+                                    @else
+                                        <a href="{{ route('admin.withdraws.index', ['column' => 'created_at', 'direction' => 'desc']) }}">
+                                            Дата Создания
+                                        </a>
+                                    @endif
                                 </th>
                                 <th class="table-header"></th>
                             </tr>
                             </thead>
                             <tbody>
                             @foreach($withdraws as $item)
-                                <tr class="{{$item->getStatusColor()}}">
-                                    <td><a href="{{route('admin.users.show',['id'=>$item->user->id])}}">{{$item->user->name." ".$item->user->second_name}}</a></td>
+                                <tr class="{{$item->status == 0 ? "bg-warning" : ""}}{{$item->status == 1 ? "bg-success" : ""}}{{$item->status == 2 ? "bg-danger" : ""}}">
+                                    <td><a href="{{route('admin.users.show',['id'=>$item->user_id])}}">{{$item->name." ".$item->second_name}}</a></td>
                                     <td>{{$item->destination}}</td>
                                     <td>{{$item->amount}} ₽</td>
-                                    <td>{{$item->payment_type_id==0 ? \Illuminate\Support\Facades\Lang::get('messages.paymentstypeLocal') : $item->paymentstype->title}} </td>
-                                    <!--<td>{{$item->getStatusMessage() }} </td>-->
+                                    <td>{{$item->title}} </td>
                                     <td>{{$item->created_at}} </td>
                                     <td>
                                         @if($item->status==0)

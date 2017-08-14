@@ -58,13 +58,13 @@
                 </ul>
             </li>
             <li><a href="{{ route('admin.pages.index') }}"><i class='fa fa-link'></i> <span>Страницы</span></a></li>
-            <li class="treeview {{ (Request::is('admin/messages') ? 'active' : (Request::is('admin/messages/*')? "active": "")) }}">
-                <a href="#"><i class='fa fa-link'></i> <span>Сообщения</span> <i class="fa fa-angle-left pull-right"></i></a>
-                <ul class="treeview-menu">
-                    <li class="{{ (Request::is('admin/messages/message-create') ? 'active' : "") }}"><a href="{{ route('admin.messages.create') }}">Сообщения внутри панели</a></li>
-                    <li><a href="{{ route('admin.messages.email') }}">Сообщения E-mail</a></li>
-                </ul>
+            <li class="{{ (Request::is('admin/messages/message-create') ? 'active' : "") }}">
+                <a href="{{ route('admin.messages.create') }}">
+                    <i class='fa fa-link'></i>
+                    <span>Сообщения</span>
+                </a>
             </li>
+
             <li class="treeview {{ (Request::is('admin/payments') ? 'active' : (Request::is('admin/payments/*')? "active": "")) }}">
                 <a href="#"><i class='fa fa-money'></i> <span>Финансовая часть</span> <i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">

@@ -5,6 +5,9 @@
 <script src="{{ asset('js/jquery.js') }}" type="text/javascript"></script>
 <script src="http://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
 <script src="{{ url (mix('/js/app.js')) }}" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+<script src="https://unpkg.com/bootstrap-switch"></script>
+
 
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
       Both of these plugins are recommended to enhance the

@@ -29,18 +29,60 @@ class AdminMessagesController extends Controller
     public function sendBaseMessage(Request $request)
     {
         $text = $request->get('text');
-        $user_id = $request->get('user');
+        $users = $request->get('user');
+        $send_all = $request->get('send_all');
 
-        if(!isset($user_id) || !isset($text)){
+        if(!isset($text)){
             return back();
         }
 
-        $user = User::find($user_id);
+        if($send_all == "on"){
+            $users = User::all();
+            if(!isset($users)) {
+                Toastr::error('Сообщение не отправлено!', 'Ошибка');
+                return back();
+            }
+            foreach ($users as $user){
+                if($user->role_id == 2){
+                    continue;
+                }
+                $user->notify(new SendMessage($text));
+            }
+        }else{
+            foreach ($users as $user){
+                $u = User::find($user);
+                if(!isset($u)) {
+                    Toastr::error('Сообщение не отправлено!', 'Ошибка');
+                    return back();
+                }
+                $u->notify(new SendMessage($text));
+            }
+        }
 
-        $user->notify(new SendMessage($text));
-
+        Toastr::success('Сообщение успешно отправлено!', 'Отправлено');
         return back();
 
+    }
+
+    public function sendBaseMessageToList(Request $request)
+    {
+        $text = $request->get('text');
+        $users = $request->get('participant');
+
+        if(!isset($users) || !isset($text)){
+            Toastr::error('Сообщение не отправлено!', 'Ошибка');
+            return back();
+        }
+        foreach ($users as $user){
+            $u = User::where(['ls_participant_id' => $user])->first();
+            if(!isset($u)) {
+                Toastr::error('Сообщение не отправлено!', 'Ошибка');
+                return back();
+            }
+            $u->notify(new SendMessage($text));
+        }
+        Toastr::success('Сообщение успешно отправлено!', 'Отправлено');
+        return back();
     }
 
     public function createEmailMessage()

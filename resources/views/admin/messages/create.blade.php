@@ -17,7 +17,7 @@
                             <div class="form-group">
                                 <div class="col-xs-12">
                                     <label for="date_birth" class="col-form-label">Респондент</label><br>
-                                    <select name="user" id="" class="form-control" required>
+                                    <select name="user[]" id="" class="form-control select_user" required multiple="multiple">
                                         <option value="">Выберите пользователя</option>
                                         @foreach($users as $user)
                                             @if($user->name != "admin")
@@ -25,6 +25,10 @@
                                             @endif
                                         @endforeach
                                     </select>
+                                </div>
+                                <div class="col-xs-12">
+                                    <label for="date_birth" class="col-form-label">Отправить всем</label><br>
+                                    <input type="checkbox" name="send_all" class="send_all">
                                 </div>
                                 <div class="col-xs-12">
                                     <label for="date_birth" class="col-form-label">Сообщение</label><br>
@@ -43,6 +47,26 @@
     </div>
 @stop
 
-@section('js')
+@section('css')
+    <style>
+        .select2-container--default .select2-selection--multiple .select2-selection__choice{
+            color: #1c1c1c;
+        }
+    </style>
+@stop
 
+@section('js')
+    <script>
+        $(document).ready(function () {
+           $(".select_user").select2();
+            $(".send_all").bootstrapSwitch();
+        });
+        $('.send_all').on('switchChange.bootstrapSwitch', function(event, state) {
+            if(state){
+                $(".select_user").attr("disabled", true);
+            }else{
+                $(".select_user").attr("disabled", false);
+            }
+        });
+    </script>
 @stop

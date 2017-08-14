@@ -69,7 +69,7 @@ Route::group(['namespace' => 'Admin', 'middleware' => ['checkadmin']], function 
                 Route::post('/status/edit', ['uses' => 'AdminWithdrawsController@updateStatus', 'as' => 'admin.withdraws.status.update']);
                 Route::get('/show/{withdraw}', ['uses' => 'AdminWithdrawsController@show', 'as' => 'admin.withdraws.show']);
                 Route::get('/delete/{withdraw}', ['uses' => 'AdminWithdrawsController@delete', 'as' => 'admin.withdraws.delete']);
-                Route::get('/export', ['uses' => 'AdminWithdrawsController@export', 'as' => 'admin.withdraws.export']);
+                Route::get('/export/{column}/{direction}', ['uses' => 'AdminWithdrawsController@export', 'as' => 'admin.withdraws.export']);
             });
         });
         Route::group(['prefix' => 'users'], function () {
@@ -96,6 +96,7 @@ Route::group(['namespace' => 'Admin', 'middleware' => ['checkadmin']], function 
             Route::get('/', ['uses' => 'AdminMessagesController@index', 'as' => 'admin.messages.index']);
             Route::get('/message-create', ['uses' => 'AdminMessagesController@createMessage', 'as' => 'admin.messages.create']);
             Route::post('/message-create', ['uses' => 'AdminMessagesController@sendBaseMessage', 'as' => 'admin.send.base.messages']);
+            Route::post('/message-to-list', ['uses' => 'AdminMessagesController@sendBaseMessageToList', 'as' => 'admin.send.base.messages.list']);
             Route::get('/email-message-create', ['uses' => 'AdminMessagesController@createEmailMessage', 'as' => 'admin.messages.email']);
             Route::post('/email-message-create', ['uses' => 'AdminMessagesController@sendEmailMessage', 'as' => 'admin.messages.send.email']);
         });
