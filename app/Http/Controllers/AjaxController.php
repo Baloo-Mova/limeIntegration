@@ -122,6 +122,7 @@ class AjaxController extends Controller
     {
         $count = $request->get('count');
         $data = $this->unserializeForm($request->get('data'));
+
         if(!isset($data) || !isset($count)){
             return json_encode("error");
         }
@@ -130,21 +131,28 @@ class AjaxController extends Controller
         $result_arr = [];
 
         for ($i = 1; $i <= $count; $i++){
-            $type = $data["type_".$i];
-            $questions = $data["questions_".$i];
-            $answers = $data["answers_".$i];
-            $gid = $data["gid_".$i];
-            if(!isset($type) || !isset($questions) || !isset($answers) || !isset($gid)){
-                return json_encode("error");
+            $search_type = $data["type_search_".$i];
+
+            if($search_type == 1){
+
+            }else{
+                $type = $data["type_".$i];
+                $questions = $data["questions_".$i];
+                $answers = $data["answers_".$i];
+                $gid = $data["gid_".$i];
+                if(!isset($type) || !isset($questions) || !isset($answers) || !isset($gid)){
+                    return json_encode("error");
+                }
+                $tmp = $lime_base->table('survey_'.$type)->where($type."X".$gid."X".$questions, '=', $answers)->get();
+                $tmp_arr = [];
+                foreach ($tmp as $t){
+                    $tmp_arr[] = [
+                        "survey_id" => $type,
+                        "token" => $t->token
+                    ];
+                }
             }
-            $tmp = $lime_base->table('survey_'.$type)->where($type."X".$gid."X".$questions, '=', $answers)->get();
-            $tmp_arr = [];
-            foreach ($tmp as $t){
-                $tmp_arr[] = [
-                    "survey_id" => $type,
-                    "token" => $t->token
-                ];
-            }
+
             $result_arr = $this->unique_multidim_array((array_merge($result_arr, $tmp_arr)), 'token');
         }
 

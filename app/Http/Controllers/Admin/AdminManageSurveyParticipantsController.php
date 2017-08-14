@@ -11,6 +11,9 @@ use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Carbon\Carbon;
+use App\Notifications\UserNotification;
+use App\User;
+use App\Models\Country;
 
 class AdminManageSurveyParticipantsController extends Controller
 {
@@ -18,9 +21,18 @@ class AdminManageSurveyParticipantsController extends Controller
     {
         $worksheets = LimeSurveys::where(['type_id' => 0])->get();
         $surveys = LimeSurveys::where(['type_id' => 1])->get();
+        if(config('app.locale')=='ru'){
+            $countries_list = Country::where(['lang_id'=>2])->orderBy('title', 'asc')->limit(300)->get();
+
+        }
+        if(config('app.locale')=='ua'){
+            $countries_list = Country::where(['lang_id'=>1])->orderBy('title', 'asc')->limit(300)->get();
+
+        }
         return view('admin.manage.index', with([
             'surveys' => $surveys,
-            'worksheets' => $worksheets
+            'worksheets' => $worksheets,
+            'countries' => $countries_list
         ]));
     }
 
@@ -137,6 +149,27 @@ class AdminManageSurveyParticipantsController extends Controller
                 'survey_id'      => $survey_id,
                 'date_created'   => Carbon::now()->toDateTimeString()
             ]);
+
+            $user_for_notificate = User::where('ls_participant_id', $user)->first();
+            if(!isset($user_for_notificate)){
+                continue;
+            }
+            $token = $lime_base->table('tokens_'.$survey_id)->where('tid', $t)->first();
+            if(!isset($token)){
+                continue;
+            }
+            $url = "/gotosurvey/".$survey_id."/".$token->token;
+            $message = [
+                'text' => "Для Вас доступен новый опрос.",
+                'greeting' => "Здравствуйте, ".$user_for_notificate->name." ".$user_for_notificate->second_name."!",
+                'action_title' => "Пройти опрос",
+                'subject' => "Вам доступен новый опрос",
+                'url' => $url,
+                'button' => "Вы можете пройти его по <a href='".url($url)."'>этой ссылке</a>",
+            ];
+            $user_for_notificate->notify(new UserNotification($message, 'mail'));
+
+
         }
 
         return true;

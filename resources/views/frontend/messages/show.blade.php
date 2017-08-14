@@ -4,7 +4,7 @@
     <div class="user-profiles container container-center">
         <h2>Сообщение <span class="message_date">{{ $message->created_at }}</span></h2>
             <p>
-                {{ $text }}
+                {!! htmlspecialchars_decode($text) !!}
             </p>
     </div>
 @stop

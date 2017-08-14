@@ -11,7 +11,9 @@ use Illuminate\Support\Facades\DB;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\Schema;
 use Carbon\Carbon;
-
+use App\User;
+use App\Notifications\SendMessage;
+use App\Notifications\UserNotification;
 
 class AdminSurveysController extends Controller
 {
@@ -116,6 +118,25 @@ class AdminSurveysController extends Controller
                 'date_created'   => Carbon::now()->toDateTimeString()
             ];
 
+            $user_for_notificate = User::where('ls_participant_id', $p->participant_id)->first();
+            if(!isset($user_for_notificate)){
+                continue;
+            }
+            $token = $lime_base->table('tokens_'.$sid)->where('tid', $t)->first();
+            if(!isset($token)){
+                continue;
+            }
+            $url = "/gotosurvey/".$sid."/".$token->token;
+            $message = [
+                'text' => "Для Вас доступен новый опрос.",
+                'greeting' => "Здравствуйте, ".$user_for_notificate->name." ".$user_for_notificate->second_name."!",
+                'action_title' => "Пройти опрос",
+                'subject' => "Вам доступен новый опрос",
+                'url' => $url,
+                'button' => "Вы можете пройти его по <a href='".url($url)."'>этой ссылке</a>",
+            ];
+            $user_for_notificate->notify(new UserNotification($message, 'mail'));
+
         }
 
         $lime_base->table('survey_links')->insert($res);
@@ -205,8 +226,19 @@ class AdminSurveysController extends Controller
             if(!isset($u)){
                 continue;
             }
-            $url = "<a href='".route('site.goto.survey', '')."'>этой ссылке</a>";
-            $u->notify(new SendMessage("Здравствуйте, ".$u->name." ".$u->second_name."! Напоминаем, что для вас доступен новый опрос. Пройти опрос Вы можете по ".$url));
+            $url = "/gotosurvey/".$sid."/".$user->token;
+            $message = [
+                'text' => "Напоминаем, что для Вас доступен новый опрос.",
+                'greeting' => "Здравствуйте, ".$u->name." ".$u->second_name."!",
+                'action_title' => "Пройти опрос",
+                'subject' => "Напоминание об опросе",
+                'url' => $url,
+                'button' => "Вы можете пройти его по <a href='".url($url)."'>этой ссылке</a>",
+            ];
+            $u->notify(new UserNotification($message, 'mail'));
         }
+
+        Toastr::success('Напоминания отправлены всем непрошедшим пользователям!', 'Сохранено!');
+        return back();
     }
 }

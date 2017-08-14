@@ -156,7 +156,6 @@ class RegisterController extends Controller
             'city_id'=>($data['city']!='undefined') ? $data['city'] : null,
             'ls_password'=>($data['password']),
             'ls_participant_id'=>$guid,
-
         ]);
     }
 
