@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Response;
 use App\Models\Lime\LimeSurveysQuestions;
 use App\Models\Lime\LimeSurveysQuestionsAnswers;
+use App\User;
+use Carbon\Carbon;
 
 class AjaxController extends Controller
 {
@@ -134,6 +136,38 @@ class AjaxController extends Controller
             $search_type = $data["type_search_".$i];
 
             if($search_type == 1){
+                $country = $data["country_".$i];
+                $region = $data["region_".$i];
+                $city = $data["city_".$i];
+                $gender = $data["gender_".$i];
+                $age_from = $data["age_from_".$i];
+                $age_to = $data["age_to_".$i];
+
+                $dt = Carbon::now();
+                $age1 = Carbon::now()->subYears($age_from)->format("Y-m-d");
+                $age2 = Carbon::now()->subYears($age_to)->format("Y-m-d");
+
+                $users = User::where([
+                        'country_id' => $country,
+                        'region_id' => $region,
+                        'city_id' => $city,
+                        'gender' => $gender
+                    ])
+                    ->whereBetween('date_birth', [$age2, $age1])
+                    ->get();
+
+                if(!isset($users)){
+                    return json_encode("error");
+                }
+
+                $users_array = [];
+                foreach ($users as $user){
+                    $users_array[] = [
+                        "firstname" => $user->name,
+                        "lastname" => $user->second_name,
+                        "participant_id" => $user->ls_participant_id
+                    ];
+                }
 
             }else{
                 $type = $data["type_".$i];
@@ -151,15 +185,14 @@ class AjaxController extends Controller
                         "token" => $t->token
                     ];
                 }
+                $result_arr = $this->unique_multidim_array((array_merge($result_arr, $tmp_arr)), 'token');
             }
 
-            $result_arr = $this->unique_multidim_array((array_merge($result_arr, $tmp_arr)), 'token');
+
         }
 
         $result =  $this->findParticipantBySidTid($result_arr);
-        return(json_encode($result));
-
-        return json_encode($this->findParticipantId($type, $result_arr));
+        return json_encode($this->unique_multidim_array((array_merge($result, $users_array)), 'participant_id'));
     }
 
     protected function  unique_multidim_array($array, $key) {

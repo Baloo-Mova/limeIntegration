@@ -44,6 +44,5 @@ class Test extends Command
     public function handle()
     {
 
-
     }
 }
