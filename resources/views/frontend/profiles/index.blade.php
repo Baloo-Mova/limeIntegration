@@ -13,6 +13,10 @@
                     <td>{{ $user_info->email }}</td>
                 </tr>
                 <tr>
+                    <td>Пол</td>
+                    <td>{{ $user_info->gender == 0 ? "Мужской" : "Женский" }}</td>
+                </tr>
+                <tr>
                     <td>Страна</td>
                     <td>{{ isset($user_info->country_id) ? $user_info->country->first()->title : " не указана" }}</td>
                 </tr>

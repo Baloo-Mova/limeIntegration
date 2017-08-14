@@ -70,6 +70,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'second_name',
+        'gender',
         'email',
         'password',
         'balance',
@@ -103,14 +104,10 @@ class User extends Authenticatable
 	     }
     }
     public function region(){
-
-        return $this->belongsTo(Region::class, 'region_id','region_id');
-
+        return $this->belongsTo(Region::class, 'region_id','region_id')->where(['country_id' => $this->country_id]);
     }
     public function city(){
-
-        return $this->belongsTo(City::class, 'city_id','city_id');
-
+        return $this->belongsTo(City::class, 'city_id','city_id')->where(['country_id' => $this->country_id]);
     }
     public function participant(){
         return $this->belongsTo(LimeParticipants::class,'ls_participant_id','participant_id');

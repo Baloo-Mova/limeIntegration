@@ -56,6 +56,22 @@
                             </div>
                         </div>
 
+                        <div class="form-group{{ $errors->has('gender') ? ' has-danger' : '' }}">
+                            <div class="col-xs-12" >
+                                <label for="country" class="col-form-label">Пол*</label>
+                                <select class="form-control" id="gender" name="gender" required>
+                                    <option selected>Выберите пол</option>
+                                    <option value="0">Мужской</option>
+                                    <option value="1">Женский</option>
+                                </select>
+                                @if ($errors->has('gender'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('gender') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
 
                         <div class="form-group{{ $errors->has('email') ? ' has-danger' : '' }}">
                             <div class="col-xs-12" >

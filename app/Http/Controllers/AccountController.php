@@ -75,6 +75,7 @@ class AccountController extends Controller
 
         Auth::user()->name = $request['name'];
         Auth::user()->second_name = $request['second_name'];
+        Auth::user()->gender = $request['gender'];
         Auth::user()->email = $request['email'];
 
         Auth::user()->date_birth = Carbon::parse($request['date_birth']);
