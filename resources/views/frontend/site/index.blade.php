@@ -20,10 +20,10 @@
                 <td>{{$item->limesurvey->LimeSurveysLanguage->first()->surveyls_title}}</td>
                 <td class="reward-profiles">{{$item->limesurvey->reward}} ₽</td>
                 <td>
-                <? if (Auth::user() != null) {
-                    $status = $item->limesurvey->GetStatus(Auth::user()->participant->participant_id);
-
-                }
+                <?php
+                    if (Auth::user() != null) {
+                        $status = $item->limesurvey->GetStatus(Auth::user()->participant->participant_id);
+                    }
                 ?>
                 {{Auth::user()!=null ? ($status!='N' ? (Lang::get('messages.SurveyCompleted'). ' ('. $status.')') :  Lang::get('messages.SurveyNotCompleted') ) : Lang::get('messages.SurveyNotCompleted')}}
 

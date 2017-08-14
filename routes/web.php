@@ -88,6 +88,7 @@ Route::group(['namespace' => 'Admin', 'middleware' => ['checkadmin']], function 
             Route::post('/change-reward', ['uses' => 'AdminSurveysController@changeReward', 'as' => 'admin.surveys.change.rewards']);
             Route::get('/statistics', ['uses' => 'AdminSurveysController@statistics', 'as' => 'admin.surveys.statistics']);
             Route::get('/processing', ['uses' => 'AdminSurveysController@processing', 'as' => 'admin.surveys.processing']);
+            Route::get('/remind/{sid}', ['uses' => 'AdminSurveysController@remind', 'as' => 'admin.surveys.remind']);
         });
 
         Route::group(['prefix' => 'messages'], function () {

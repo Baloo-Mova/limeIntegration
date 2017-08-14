@@ -20,7 +20,7 @@ class AjaxController extends Controller
     public function getRegionsInfo($countryid){
 
 
-            $regions = DB::table('regions')->select('region_id','title')->where('country_id', '=', $countryid)->get();
+            $regions = DB::table('regions')->select('region_id','title')->where('country_id', '=', $countryid)->orderBy('title', 'asc')->get();
             return Response::json( $regions );
 
 
@@ -34,7 +34,7 @@ class AjaxController extends Controller
 
         $req_arr  ['country_id'] =$countryid;
 
-        $cities = DB::table('cities')->select('city_id','title','area')->where($req_arr)->get();
+        $cities = DB::table('cities')->select('city_id','title','area')->where($req_arr)->orderBy('title', 'asc')->get();
         return Response::json( $cities );
 
 
@@ -174,6 +174,9 @@ protected function findParticipantBySidTid($data){
         $lime_base = DB::connection('mysql_lime');
         foreach ($data as $dt){
             $f = $lime_base->table('tokens_'.$dt["survey_id"])->where(['token' => $dt["token"]])->first();
+            if(!isset($f)){
+                continue;
+            }
             $res[] = [
                 "firstname" => $f->firstname,
                 "lastname" => $f->lastname,

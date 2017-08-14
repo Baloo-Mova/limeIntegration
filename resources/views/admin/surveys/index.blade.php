@@ -82,6 +82,11 @@
 
                                             @endif
                                                 <a href="#myModalBox" class="call_modal"  data-toggle="modal" title="Изменить вознаграждение" data-money="{{ $survey->reward }}" data-sid="{{ $survey->sid }}"><span class="fa fa-money"> </span></a>
+                                                <a href="{{route('admin.surveys.remind', ['sid' => $survey->sid])}}" title="Напомнить о прохождении"
+                                                   aria-label="Update"
+                                                   data-pjax="0">
+                                                    <span class="fa fa-refresh"></span>
+                                                </a>
                                         </td>
                                     </tr>
                                 @empty

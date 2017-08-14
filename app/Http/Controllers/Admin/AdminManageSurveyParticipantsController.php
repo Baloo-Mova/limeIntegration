@@ -123,25 +123,22 @@ class AdminManageSurveyParticipantsController extends Controller
             if(!isset($u)){
                 continue;
             }
-
             $t = $lime_base->table('tokens_'.$survey_id)->insertGetId([
                 'participant_id' => $user,
-                'firstname' => $u->name,
-                'lastname' => $u->second_name,
+                'firstname' => $u->firstname,
+                'lastname' => $u->lastname,
                 'email'    => $u->email,
                 'token'    => $this->gen_uuid(),
                 'emailstatus' => 'OK'
             ]);
-            $res[] = [
+            $lime_base->table('survey_links')->insert([
                 'participant_id' => $user,
                 'token_id'       => $t,
                 'survey_id'      => $survey_id,
                 'date_created'   => Carbon::now()->toDateTimeString()
-            ];
-
+            ]);
         }
 
-        $lime_base->table('survey_links')->insert($res);
         return true;
     }
 

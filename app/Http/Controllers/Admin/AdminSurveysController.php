@@ -103,8 +103,8 @@ class AdminSurveysController extends Controller
 
             $t = $lime_base->table('tokens_'.$sid)->insertGetId([
                 'participant_id' => $p->participant_id,
-                'firstname' => $p->name,
-                'lastname' => $p->second_name,
+                'firstname' => $p->firstname,
+                'lastname' => $p->lastname,
                 'email'    => $p->email,
                 'token'    => $this->gen_uuid(),
                 'emailstatus' => 'OK'
@@ -188,5 +188,25 @@ class AdminSurveysController extends Controller
 
         Toastr::success('Сумма вознаграждения изменена', 'Сохранено!');
         return back();
+    }
+
+    public function remind($sid)
+    {
+        $lime_base = DB::connection('mysql_lime');
+        $users = $lime_base->table('tokens_'.$sid)->where('completed', 'N')->get();
+
+        if(!isset($users)){
+            Toastr::error('Не найдено непрошедших этот опрос пользователей!', 'Ошибка!');
+            return back();
+        }
+
+        foreach ($users as $user){
+            $u = User::where('ls_participant_id', $user->participant_id)->first();
+            if(!isset($u)){
+                continue;
+            }
+            $url = "<a href='".route('site.goto.survey', '')."'>этой ссылке</a>";
+            $u->notify(new SendMessage("Здравствуйте, ".$u->name." ".$u->second_name."! Напоминаем, что для вас доступен новый опрос. Пройти опрос Вы можете по ".$url));
+        }
     }
 }
