@@ -41,7 +41,7 @@
                 <div class="collapse navbar-collapse" id="main-navbar-collapse">
                     <ul class="nav navbar-nav">
                         <li><a href="{{url('/surveys')}}" class="{{ (Request::is('surveys') ? 'active' : '') }}"><span>Текущие опросы</span><noscript></noscript></a></li>
-                        <li><a href="{{url('/rewards')}}" class="{{ (Request::is('rewards') ? 'active' : '') }}"><span>Пройденные опросы </span></a>
+                        <li><a href="{{url('/rewards')}}" class="{{ (Request::is('rewards') ? 'active' : '') }}"><span>История начислений </span></a>
                         </li>
                         <li><a href="{{url('/profiles')}}" class="{{ (Request::is('profiles') ? 'active' : '') }}"><span>Профиль</span><!--<span class="badge hasPoll">12</span>--></a>
                         </li>

@@ -75,6 +75,10 @@ class SiteController extends Controller
 
     public function welcome()
     {
+        if(Auth::check()){
+            return redirect(route('site.index'));
+        }
+
         return view('welcome');
     }
 

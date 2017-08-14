@@ -30,7 +30,7 @@
                 </tr>
                 <tr>
                     <td>Дата рождения</td>
-                    <td>{{ isset($user_info->date_birth) ? $user_info->date_birth : " не указана" }}</td>
+                    <td>{{ isset($user_info->date_birth) ? date_format(date_create($user_info->date_birth),'d-m-Y') : " не указана" }}</td>
                 </tr>
             </table>
         </div>

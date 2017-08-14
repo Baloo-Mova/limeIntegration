@@ -16,9 +16,6 @@ class AddColToUserTable extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->integer('rating')->after('balance')->default(100);
             $table->string('ls_participant_id',50)->nullable();
-
-
-
         });
     }
 

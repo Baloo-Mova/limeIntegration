@@ -17,8 +17,6 @@ class AddColToLimeSurveysTable extends Migration
             $table->longText('interests_tags')->nullable();
             $table->integer('type_id')->unsigned()->default(0);
             $table->integer('reward')->default(0);
-
-
         });
     }
 

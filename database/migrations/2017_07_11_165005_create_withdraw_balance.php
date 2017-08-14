@@ -21,9 +21,7 @@ class CreateWithdrawBalance extends Migration
             $table->integer('payment_type_id')->unsigned()->default(0);
             $table->string('destination');
             $table->integer(  "currency_id")->unsigned()->default(0);
-
             $table->integer('status')->default(0);
-
             $table->timestamps();
         });
     }
