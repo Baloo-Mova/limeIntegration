@@ -122,7 +122,7 @@
                         <div class="form-group{{ $errors->has('country') ? ' has-danger' : '' }}">
                             <div class="col-xs-12" >
                                 <label for="country" class="col-form-label">Страна*</label>
-                                <select class="form-control" id="country" name="country">
+                                <select class="form-control country_select" id="country" name="country">
                                     <option selected>Выбрать страну</option>
                                     @forelse($countries as $item)
                                         <option value="{{$item->country_id}}">{{$item->title}}</option>
@@ -140,11 +140,8 @@
                         <div class="form-group{{ $errors->has('region') ? ' has-danger' : '' }}" id="regionSelect">
                             <div class="col-xs-12" >
                                 <label for="country" class="col-form-label">Область(Штат)</label>
-                                <select class="form-control" id="region" name="region">
-                                    <option selected>Выбрать</option>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
+                                <select class="form-control region_select" id="region" name="region">
+                                    <option selected>Выберите область (штат)</option>
                                 </select>
                                 @if ($errors->has('region'))
                                     <span class="help-block">
@@ -156,11 +153,8 @@
                         <div class="form-group{{ $errors->has('city') ? ' has-danger' : '' }}" id="citySelect">
                             <div class="col-xs-12" >
                                 <label for="country" class="col-form-label">Город</label>
-                                <select class="form-control" id="city" name="city">
-                                    <option selected>Choose...</option>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
+                                <select class="form-control city_select" id="city" name="city">
+                                    <option selected>Выберите город</option>
                                 </select>
                                 @if ($errors->has('city'))
                                     <span class="help-block">
@@ -207,56 +201,82 @@
 
 
 @endsection
+
+@section('css')
+    <style>
+        .select2-container
+        .select2-selection--single{
+            height: 40px !important;
+        }
+        .select2-container--default .select2-selection--single
+        .select2-selection__rendered {
+            padding-top: 6px;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__arrow b {
+            top: 70%;
+        }
+    </style>
+@stop
+
 @section('js')
     <script>
-        var countryId = null;
-        var regionId = null;
-        $("#country").change(function () {
-            countryId = $(this).val();
-            $.getJSON("{{url('api/actualRegions')}}/" + $(this).val(), function (jsonData) {
-                select = '';
-                // select += '<option selected> Выбрать</option>';
-                $.each(jsonData, function (i, data) {
-                    select += '<option value="' + data.region_id + '">' + data.title + '</option>';
-                });
-                select += '';
 
-                $("#region").html(select);
-                if(select.length==0){
-                    //$("#region").change();
-                    $.getJSON("{{url('api/actualCities')}}/" + countryId , function (jsonData) {
+        $(document).ready(function(){
+            $('.country_select').select2();
+            $('.region_select').select2();
+            $('.city_select').select2();
 
-                        select = '';
-                        $.each(jsonData, function (i, data) {
-                            select += '<option value="' + data.city_id + '">' + data.title + '</option>';
-                        });
-                        select += '';
-                        $("#city").html(select);
+            var countryId = null;
+            var regionId = null;
+            $("#country").change(function () {
+                countryId = $(this).val();
+                $.getJSON("{{url('api/actualRegions')}}/" + $(this).val(), function (jsonData) {
+                    select = '';
+                    // select += '<option selected> Выбрать</option>';
+                    $.each(jsonData, function (i, data) {
+                        select += '<option value="' + data.region_id + '">' + data.title + '</option>';
                     });
+                    select += '';
 
-                    // alert("true");
-                }
-                else {$("#city").html('');
-                    $("#region").change();
-                };
-            });
+                    $("#region").html(select);
+                    if(select.length==0){
+                        //$("#region").change();
+                        $.getJSON("{{url('api/actualCities')}}/" + countryId , function (jsonData) {
 
+                            select = '';
+                            $.each(jsonData, function (i, data) {
+                                select += '<option value="' + data.city_id + '">' + data.title + '</option>';
+                            });
+                            select += '';
+                            $("#city").html(select);
+                        });
 
-        });
-        $("#region").change(function () {
-            regionId = $(this).val();
-
-
-            $.getJSON("{{url('api/actualCities')}}/" + countryId + "?region_id=" + regionId, function (jsonData) {
-
-                select = '';
-                $.each(jsonData, function (i, data) {
-                    select += '<option value="' + data.city_id + '">' + data.title + '</option>';
+                        // alert("true");
+                    }
+                    else {$("#city").html('');
+                        $("#region").change();
+                    };
                 });
-                select += '';
-                $("#city").html(select);
+
+
+            });
+            $("#region").change(function () {
+                regionId = $(this).val();
+
+
+                $.getJSON("{{url('api/actualCities')}}/" + countryId + "?region_id=" + regionId, function (jsonData) {
+
+                    select = '';
+                    $.each(jsonData, function (i, data) {
+                        select += '<option value="' + data.city_id + '">' + data.title + '</option>';
+                    });
+                    select += '';
+                    $("#city").html(select);
+                });
             });
         });
+
+
     </script>
 
 @stop
