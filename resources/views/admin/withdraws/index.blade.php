@@ -10,18 +10,37 @@
         <div class="row">
             <div class="box box-primary">
                 <div class="box-body">
-
-
-
+                    <a href="{{ route('admin.withdraws.export') }}" class="btn btn-success">Экспорт</a>
+                    <div class="h10" style="height: 10px;"></div>
                         <table class="table table-bordered text-center">
                             <thead>
                             <tr>
-                                <th class="table-header">Пользователь</th>
-                                <th class="table-header">Назначение</th>
-                                <th class="table-header">Сумма</th>
-                                <th class="table-header">Тип</th>
+                                <th class="table-header">
+                                    <a href="">
+                                        Пользователь</a>
+                                </th>
+                                <th class="table-header">
+                                    <a href="">
+                                        Назначение
+                                    </a>
+                                </th>
+                                <th class="table-header">
+                                    <a href="">
+                                        Сумма
+                                    </a>
+                                </th>
+                                <th class="table-header">
+                                    <a href="">
+                                        Тип
+                                    </a>
+                                </th>
                                <!-- <th class="table-header">Статус</th>-->
-                                <th class="table-header">Дата Создания</th>
+                                <th class="table-header">
+                                    @if($column == "created_at" &&)
+                                    <a href="{{ route('admin.withdraws.index', ['column' => 'created_at', 'direction' => 'desc']) }}">
+                                        Дата Создания
+                                    </a>
+                                </th>
                                 <th class="table-header"></th>
                             </tr>
                             </thead>

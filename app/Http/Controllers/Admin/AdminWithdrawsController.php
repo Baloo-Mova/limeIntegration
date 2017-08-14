@@ -10,21 +10,22 @@ use App\Http\Controllers\Controller;
 use App\Models\PaymentsType;
 use Carbon\Carbon;
 use App\Http\Requests\PaymentsType\UpdateRequest;
+use Illuminate\Support\Facades\DB;
+
 class AdminWithdrawsController extends Controller
 {
     //
 
 
-    public function index()
+    public function index($column = 'created_at', $direction = 'desc')
     {
 
-        $withdraws = WithdrawBalance::orderBy('status','asc')->orderBy('created_at','desc')->paginate(20);
+        $withdraws = WithdrawBalance::orderBy($column,$direction)->paginate(10);
 
         return view('admin.withdraws.index')->with([
-
             'withdraws' => $withdraws,
-
-
+            'column' => $column,
+            'direction' => $direction
         ]);
     }
 
@@ -74,5 +75,48 @@ class AdminWithdrawsController extends Controller
 
 
         return back()->with(['message' => 'deleted']);
+    }
+
+    public function export()
+    {
+        $withdraws = DB::table('withdraw_balances')
+            ->join('users', 'withdraw_balances.user_id', '=', 'users.id')
+            ->select('users.email', 'withdraw_balances.*')
+            ->get();
+
+        $result = [];
+        $dt = microtime();
+
+        if(!file_exists(storage_path('app/csv/'))){
+            mkdir(storage_path('app/csv/'));
+        }
+        $file = fopen(storage_path('app/csv/')."export" . $dt . ".csv", 'w');
+        fputcsv($file, [
+            'user_id',
+            'user_email',
+            'description',
+            'amount',
+            'status',
+            'date'
+        ], ";");
+        foreach ($withdraws as $w){
+            fputcsv($file, [
+                $w->user_id,
+                $this->icv($w->email),
+                $this->icv($w->description),
+                $this->icv($w->amount),
+                $w->status == 0 ? $this->icv("не выплачено") : $this->icv("выплачено"),
+                $w->created_at
+            ], ";");
+        }
+        fclose($file);
+
+        return response()->download(storage_path('app/csv/').'export' . $dt . '.csv');
+    }
+
+    private function icv($str)
+    {
+        $res = "=\"" . iconv("UTF-8", "Windows-1251//IGNORE", $str) . "\"";
+        return $res;
     }
 }

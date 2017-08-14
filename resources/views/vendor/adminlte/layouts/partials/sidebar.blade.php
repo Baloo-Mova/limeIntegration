@@ -69,7 +69,7 @@
                 <a href="#"><i class='fa fa-money'></i> <span>Финансовая часть</span> <i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
                     <li class="{{ (Request::is('admin/payments/payments_types') ? 'active' : (Request::is('admin/payments/payments_types/*')? "active": "")) }}"><a href="{{route('admin.paymentstypes.index')}}"><i class='fa fa-money'></i><span>Способ(вид) оплаты</span></a></li>
-                    <li class="{{ (Request::is('admin/payments/withdraws') ? 'active' : (Request::is('admin/payments/withdrawss/*')? "active": "")) }}"><a href="{{route('admin.withdraws.index')}}"><i class='fa fa-money'></i><span>Задачи вывода средств</span></a></li>
+                    <li class="{{ (Request::is('admin/payments/withdraws') ? 'active' : (Request::is('admin/payments/withdrawss/*')? "active": "")) }}"><a href="{{route('admin.withdraws.index', ['column' => 'created_at', 'direction' => 'desc'])}}"><i class='fa fa-money'></i><span>Задачи вывода средств</span></a></li>
 
                 </ul>
             </li>
