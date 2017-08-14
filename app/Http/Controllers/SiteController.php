@@ -53,10 +53,17 @@ class SiteController extends Controller
             $limeSurveysLinks = $user->participant->getSurveyLinks()->paginate(20);
         }
 
+        $regions = DB::table('regions')->select('region_id','title')->where('country_id', '=', $user->country_id)->first();
+        $cities = DB::table('cities')->select('city_id','title','area')->where([
+            'region_id' => $regions->region_id,
+            'country_id' => $user->country_id
+        ])->first();
         return view('frontend.profiles.index')->with(
             [
                 'surveys' => $limeSurveysLinks,
-                'user_info' => $user
+                'user_info' => $user,
+                'region' => $regions,
+                'city' => $cities
             ]
         );
 

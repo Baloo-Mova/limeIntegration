@@ -22,11 +22,11 @@
                 </tr>
                 <tr>
                     <td>Область (Штат)</td>
-                    <td>{{ isset($user_info->region_id) ? $user_info->region->first()->title : " не указана" }}</td>
+                    <td>{{ isset($region) ? $region->title : " не указана" }}</td>
                 </tr>
                 <tr>
                     <td>Город</td>
-                    <td>{{ isset($user_info->city_id) ? $user_info->city->first()->title : " не указан" }}</td>
+                    <td>{{ isset($city) ? $city->title : " не указан" }}</td>
                 </tr>
                 <tr>
                     <td>Дата рождения</td>
