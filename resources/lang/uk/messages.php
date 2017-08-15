@@ -21,10 +21,10 @@ return [
 
     /* add 15.08 */
 
-    'menu_item_current_surveys' => 'Текущие опросы',
-    'menu_item_history_of_charges' => 'История начислений',
-    'menu_item_profile' => 'Профиль',
-    'menu_item_messages' => 'Сообщения администратора',
+    'menu_item_current_surveys' => 'Поточні опитування',
+    'menu_item_history_of_charges' => 'Історія нарахувань',
+    'menu_item_profile' => 'Профіль',
+    'menu_item_messages' => 'Повідомлення адміністратора',
     'menu_item_balance' => 'Баланс',
 
 ];

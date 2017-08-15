@@ -18,6 +18,7 @@ Route::post('select-regions-ajax', ['as' => 'select-regions-ajax', 'uses' => 'Aj
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/surveys', ['uses' => 'SiteController@index', 'as' => 'site.index']);
+    Route::get('/change-locale/{locale}', ['uses' => 'SiteController@changeLocale', 'as' => 'site.change.locale']);
     Route::get('/gotosurvey/{id}/{token}', ['uses' => 'SiteController@gotoSurvey', 'as' => 'site.goto.survey']);
     Route::group(['prefix' => 'profiles'], function () {
         Route::get('/', ['uses' => 'SiteController@indexProfiles', 'as' => 'profiles.index']);
@@ -45,6 +46,14 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/show/{mid}', ['uses' => 'MessagesController@show', 'as' => 'messages.show']);
     });
 
+    Route::group(['prefix' => 'pages'], function () {
+        Route::get('/about-us', ['uses' => 'PagesController@aboutUs', 'as' => 'pages.about.us']);
+        Route::get('/faq', ['uses' => 'PagesController@faq', 'as' => 'pages.faq']);
+        Route::get('/confidentiality', ['uses' => 'PagesController@confidentiality', 'as' => 'pages.confidentiality']);
+        Route::get('/terms', ['uses' => 'PagesController@terms', 'as' => 'pages.terms']);
+        Route::get('/feedback', ['uses' => 'PagesController@feedback', 'as' => 'pages.feedback']);
+    });
+
 });
 
 Route::group(['namespace' => 'Admin', 'middleware' => ['checkadmin']], function () {
@@ -60,7 +69,7 @@ Route::group(['namespace' => 'Admin', 'middleware' => ['checkadmin']], function 
                 Route::get('/show/{paymentstype}', ['uses' => 'AdminPaymentsTypesController@show', 'as' => 'admin.paymentstypes.show']);
                 Route::get('/delete/{paymentstype}', ['uses' => 'AdminPaymentsTypesController@delete', 'as' => 'admin.paymentstypes.delete']);
             });
-            Route::group(['prefix' => 'withdraws'], function () {
+            Route::group(['prefix' => 'withdraws', 'middleware' => ['admin']], function () {
                 Route::get('/{column}/{direction}', ['uses' => 'AdminWithdrawsController@index', 'as' => 'admin.withdraws.index']);
                 Route::get('/create', ['uses' => 'AdminWithdrawsController@create', 'as' => 'admin.withdraws.create']);
                 Route::post('/create', ['uses' => 'AdminWithdrawsController@store', 'as' => 'admin.withdraws.store']);
@@ -88,11 +97,10 @@ Route::group(['namespace' => 'Admin', 'middleware' => ['checkadmin']], function 
             Route::get('/convert-to-worksheet/{sid}/{type}', ['uses' => 'AdminSurveysController@convertToWorksheet', 'as' => 'admin.surveys.convertToWorksheet']);
             Route::post('/change-reward', ['uses' => 'AdminSurveysController@changeReward', 'as' => 'admin.surveys.change.rewards']);
             Route::get('/statistics', ['uses' => 'AdminSurveysController@statistics', 'as' => 'admin.surveys.statistics']);
-            Route::get('/processing', ['uses' => 'AdminSurveysController@processing', 'as' => 'admin.surveys.processing']);
             Route::get('/remind/{sid}', ['uses' => 'AdminSurveysController@remind', 'as' => 'admin.surveys.remind']);
         });
 
-        Route::group(['prefix' => 'messages'], function () {
+        Route::group(['prefix' => 'messages', 'middleware' => ['admin']], function () {
             Route::get('/', ['uses' => 'AdminMessagesController@index', 'as' => 'admin.messages.index']);
             Route::get('/message-create', ['uses' => 'AdminMessagesController@createMessage', 'as' => 'admin.messages.create']);
             Route::post('/message-create', ['uses' => 'AdminMessagesController@sendBaseMessage', 'as' => 'admin.send.base.messages']);
@@ -116,6 +124,13 @@ Route::group(['namespace' => 'Admin', 'middleware' => ['checkadmin']], function 
             Route::get('/add-participant-to-survey', ['uses' => 'AdminManageSurveyParticipantsController@addParticipant', 'as' => 'admin.manage.addParticipant']);
             Route::post('/add-participant-to-survey', ['uses' => 'AdminManageSurveyParticipantsController@saveParticipant', 'as' => 'admin.manage.saveParticipant']);
             Route::post('/add-participant-to-survey-list', ['uses' => 'AdminManageSurveyParticipantsController@addListParticipants', 'as' => 'admin.manage.addListParticipant']);
+        });
+
+        Route::group(['prefix' => 'processing'], function () {
+            Route::get('/', ['uses' => 'AdminSurveysProcessingController@index', 'as' => 'admin.surveys.processing.index']);
+            Route::get('/finished-worksheets', ['uses' => 'AdminSurveysProcessingController@finishedWorksheets', 'as' => 'admin.surveys.processing.finished.worksheets']);
+            Route::get('/not-finished-worksheets', ['uses' => 'AdminSurveysProcessingController@notFinishedWorksheets', 'as' => 'admin.surveys.processing.not.finished.worksheets']);
+            Route::get('/all-worksheets', ['uses' => 'AdminSurveysProcessingController@allWorksheets', 'as' => 'admin.surveys.processing.all.worksheets']);
         });
 
     });

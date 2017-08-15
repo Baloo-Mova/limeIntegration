@@ -18,7 +18,7 @@
 
 
                     <div class="grid-view">
-                        <table class="table table-striped table-bordered text-center">
+                        <table class="table table-striped table-bordered">
                             <thead>
                             <tr>
                                 <th><a class="" href="#">Название</a></th>
@@ -26,7 +26,7 @@
                             </tr>
 
                             </thead>
-                            <tbody class='text-center'>
+                            <tbody>
                                 @forelse($pages as $page)
                                     <tr>
                                         <td>

@@ -45,9 +45,9 @@
                     <li class="{{ (Request::is('admin/surveys/statistics')? "active": "") }}">
                         <a href="{{ route('admin.surveys.statistics') }}"><i class='fa fa-link'></i> <span>Статистика опросов</span></a>
                     </li>
-                    <!--<li class="{{ (Request::is('admin/surveys/processing')? "active": "") }}">
-                        <a href="{{ route('admin.surveys.processing') }}"><i class='fa fa-link'></i> <span>Обработка анкет</span></a>
-                    </li>-->
+                    <li class="{{ (Request::is('admin/processing')? "active": "") }}">
+                        <a href="{{ route('admin.surveys.processing.index') }}"><i class='fa fa-link'></i> <span>Обработка анкет</span></a>
+                    </li>
                 </ul>
             </li>
             <li class="treeview {{ (Request::is('admin/messages') ? 'active' : (Request::is('admin/messages/*')? "active": "")) }}">
@@ -57,7 +57,9 @@
                     <li><a href="{{ route('admin.manage.addParticipant') }}">Добавление к опросу</a></li>
                 </ul>
             </li>
+            @if(\Auth::user()->role_id == 2)
             <li><a href="{{ route('admin.pages.index') }}"><i class='fa fa-link'></i> <span>Страницы</span></a></li>
+            @endif
             <li class="{{ (Request::is('admin/messages/message-create') ? 'active' : "") }}">
                 <a href="{{ route('admin.messages.create') }}">
                     <i class='fa fa-link'></i>
@@ -65,6 +67,7 @@
                 </a>
             </li>
 
+            @if(\Auth::user()->role_id == 2)
             <li class="treeview {{ (Request::is('admin/payments') ? 'active' : (Request::is('admin/payments/*')? "active": "")) }}">
                 <a href="#"><i class='fa fa-money'></i> <span>Финансовая часть</span> <i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
@@ -73,6 +76,7 @@
 
                 </ul>
             </li>
+            @endif
             <li class="{{ (Request::is('admin/users') ? 'active' : (Request::is('admin/users/*')? "active": "")) }}"><a href="{{route('admin.users.index')}}"><i class='fa fa-user'></i> <span>Пользователи</span></a></li>
            </ul><!-- /.sidebar-menu -->
     </section>

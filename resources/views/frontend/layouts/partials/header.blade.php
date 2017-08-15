@@ -40,13 +40,13 @@
                 </div>
                 <div class="collapse navbar-collapse" id="main-navbar-collapse">
                     <ul class="nav navbar-nav">
-                        <li><a href="{{url('/surveys')}}" class="{{ (Request::is('surveys') ? 'active' : '') }}"><span>Текущие опросы</span><noscript></noscript></a></li>
-                        <li><a href="{{url('/rewards')}}" class="{{ (Request::is('rewards') ? 'active' : '') }}"><span>История начислений </span></a>
+                        <li><a href="{{url('/surveys')}}" class="{{ (Request::is('surveys') ? 'active' : '') }}"><span> @lang('messages.menu_item_current_surveys') </span><noscript></noscript></a></li>
+                        <li><a href="{{url('/rewards')}}" class="{{ (Request::is('rewards') ? 'active' : '') }}"><span> @lang('messages.menu_item_history_of_charges') </span></a>
                         </li>
-                        <li><a href="{{url('/profiles')}}" class="{{ (Request::is('profiles') ? 'active' : '') }}"><span>Профиль</span><!--<span class="badge hasPoll">12</span>--></a>
+                        <li><a href="{{url('/profiles')}}" class="{{ (Request::is('profiles') ? 'active' : '') }}"><span>@lang('messages.menu_item_profile')</span><!--<span class="badge hasPoll">12</span>--></a>
                         </li>
-                        <li><a href="{{route('messages.index')}}" class="{{ (Request::is('messages') ? 'active' : '') }}"><span>Сообщения администратора</span><span class="badge">{{Auth::user()->unreadNotifications()->count()}}</span></a></li>
-                        <li><a href="{{route('rewards.balance')}}" class="{{ (Request::is('rewards/balance') ? 'active' : '') }}"><span>Баланс </span><span class="badge">{{Auth::user()->balance}} ₽</span></a>
+                        <li><a href="{{route('messages.index')}}" class="{{ (Request::is('messages') ? 'active' : '') }}"><span>@lang('messages.menu_item_messages')</span><span class="badge">{{Auth::user()->unreadNotifications()->count()}}</span></a></li>
+                        <li><a href="{{route('rewards.balance')}}" class="{{ (Request::is('rewards/balance') ? 'active' : '') }}"><span>@lang('messages.menu_item_balance') </span><span class="badge">{{Auth::user()->balance}} ₽</span></a>
                         </li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">

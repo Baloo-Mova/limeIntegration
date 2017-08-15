@@ -44,4 +44,8 @@ class LimeSurveyLinks extends Model
     {
         return $query->whereNull('date_completed');
     }
+
+    public function worksheetsForAllUsers(){
+        return $this->belongsToMany(\App\User::class, 'ls_participant_id', 'participant_id');
+    }
 }

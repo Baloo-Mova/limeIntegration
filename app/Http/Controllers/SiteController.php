@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use org\jsonrpcphp\JsonRPCClient;
+use Illuminate\Support\Facades\App;
 
 
 class SiteController extends Controller
@@ -90,5 +91,13 @@ class SiteController extends Controller
         ]);
         return redirect(config('lime.ls_baseurl') . $id_survey . '?token=' . $token);
 
+    }
+
+    public function changeLocale($locale)
+    {
+        var_dump(App::getLocale());
+        App::setLocale($locale);
+        dd(App::getLocale());
+        return back();
     }
 }

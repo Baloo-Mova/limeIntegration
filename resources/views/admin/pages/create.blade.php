@@ -20,6 +20,10 @@
                                     <input type="text" name="title" class="form-control" required>
                                 </div>
                                 <div class="col-xs-12">
+                                    <label for="date_birth" class="col-form-label">Имя страницы</label><br>
+                                    <input type="text" name="name" class="form-control" required>
+                                </div>
+                                <div class="col-xs-12">
                                     <label for="date_birth" class="col-form-label">Текст страницы</label><br>
                                     <textarea name="page_content" class="form-control"cols="30" rows="10" required></textarea>
                                 </div>
