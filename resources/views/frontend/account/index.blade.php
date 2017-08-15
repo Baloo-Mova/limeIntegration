@@ -16,7 +16,6 @@
 
                     <hr/>
 
-
                     <div class="grid-view ">
                         <table class="table table-striped table-bordered">
                             <thead>

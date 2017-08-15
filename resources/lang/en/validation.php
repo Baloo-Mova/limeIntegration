@@ -88,6 +88,7 @@ return [
     'uploaded'             => 'The :attribute failed to upload.',
     'url'                  => 'The :attribute format is invalid.',
     'older_than'           => 'Set real date of birthday',
+    'city'=>'The :attribute field is required',
     /*
     |--------------------------------------------------------------------------
     | Custom Validation Language Lines

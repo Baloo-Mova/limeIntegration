@@ -13,7 +13,7 @@ return [
     | другие, которые лучше подходят для вашего приложения.
     |
     */
-
+    'city'=>'The :attribute field is required',
     'accepted'             => 'Вы должны принять :attribute.',
     'active_url'           => 'Поле :attribute содержит недействительный URL.',
     'after'                => 'В поле :attribute должна быть дата после :date.',

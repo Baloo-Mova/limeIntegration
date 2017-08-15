@@ -18,6 +18,7 @@ use App\Models\Lime\LimeParticipants;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Validator;
 
 class AccountController extends Controller
 {
@@ -61,17 +62,30 @@ class AccountController extends Controller
 
     public function update(Request $request)
     {
+        Validator::extend('olderThan', function($attribute, $value, $parameters)
+        {
+            $minAge = ( ! empty($parameters)) ? (int) $parameters[0] : 13;
+
+            return Carbon::now()->diff(new Carbon($value))->y >= $minAge;
+        });
+
+        $this->validate($request, [
+            'name' => 'required|string|max:255',
+            'second_name' => 'required|string|max:255',
+            'gender' => 'required',
+            'email' => 'required|string|email|max:255',
+            'date_birth' => 'required|olderThan:15',
+            'country' => 'integer',
+        ],[
+            'country.integer' => __('validation.city')
+        ]);
+
         Auth::user()->participant->setPrimKey('participant_id');
         Auth::user()->participant->firstname= $request['name'];
         Auth::user()->participant->lastname = $request['second_name'];
         Auth::user()->participant->email = $request['email'];
-
         Auth::user()->participant->modified =Carbon::now(config('app.timezone'));
-
         Auth::user()->participant->save();
-
-
-
 
         Auth::user()->name = $request['name'];
         Auth::user()->second_name = $request['second_name'];
@@ -84,10 +98,6 @@ class AccountController extends Controller
         Auth::user()->city_id=($request['city']!='undefined') ? $request['city'] : null;
 
         Auth::user()->save();
-
-
-
-
 
         return redirect(route('account.edit'));
     }

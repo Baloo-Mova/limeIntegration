@@ -13,6 +13,7 @@ use App\Models\Country;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\App;
 use App\Models\Lime\LimeParticipants;
+
 /**
  * App\User
  *
@@ -97,30 +98,64 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
-	 public function  isAdmin(){
-     return $this->role_id;
+
+    public function isAdmin()
+    {
+        return $this->role_id;
     }
-    public function country(){
-	     if(Lang::getLocale()=="ru"){
-	         return $this->hasMany(Country::class, 'country_id','country_id')->where('lang_id',2 );
-	     }
+
+    public function country()
+    {
+        if (Lang::getLocale() == "ru") {
+            return $this->hasMany(Country::class, 'country_id', 'country_id')->where('lang_id', 2);
+        }
     }
-    public function region(){
-        return $this->belongsTo(Region::class, 'region_id','region_id')->where(['country_id' => $this->country_id]);
+
+    public function region()
+    {
+        return $this->belongsTo(Region::class, 'region_id', 'region_id')->where(['country_id' => $this->country_id]);
     }
-    public function city(){
-        return $this->belongsTo(City::class, 'city_id','city_id')->where(['country_id' => $this->country_id]);
+
+    public function city()
+    {
+        return $this->belongsTo(City::class, 'city_id', 'city_id')->where(['country_id' => $this->country_id]);
     }
-    public function participant(){
-        return $this->belongsTo(LimeParticipants::class,'ls_participant_id','participant_id');
+
+    public function participant()
+    {
+        return $this->belongsTo(LimeParticipants::class, 'ls_participant_id', 'participant_id');
     }
-    public function balancetransactionlog(){
-        return $this->hasMany(BalanceTransactionLog::class,'to_user_id');
+
+    public function balancetransactionlog()
+    {
+        return $this->hasMany(BalanceTransactionLog::class, 'to_user_id');
     }
-    public function withdrawbalance(){
-        return $this->hasMany(WithdrawBalance::class,'user_id');
+
+    public function withdrawbalance()
+    {
+        return $this->hasMany(WithdrawBalance::class, 'user_id');
     }
-    public function role(){
-        return $this->belongsTo(Role::class,'role_id','id');
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class, 'role_id', 'id');
+    }
+
+    public function checkFullData()
+    {
+        $success = [
+            'name',
+            'second_name',
+            'gender',
+            'email',
+            'city_id',
+        ];
+
+        foreach ($success as $item) {
+            if (!isset($this->$item) || strlen($this->$item."") < 1) {
+                return false;
+            }
+        }
+        return true;
     }
 }
