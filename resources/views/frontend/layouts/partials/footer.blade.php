@@ -48,22 +48,22 @@
                 </a>
             </li>
             <li>
-                <a href="{{ route('site.change.locale', ['locale' => 'ua']) }}" class="external-link flags-list__item  ">
+                <a href="{{ route('site.change.locale', ['locale' => 'en']) }}" class="external-link flags-list__item  ">
                     <span class="flag-icon flag-icon-gb"></span>
                 </a>
             </li>
             <li>
-                <a href="{{ route('site.change.locale', ['locale' => 'ua']) }}" class="external-link flags-list__item  ">
+                <a href="{{ route('site.change.locale', ['locale' => 'de']) }}" class="external-link flags-list__item  ">
                     <span class="flag-icon flag-icon-de"></span>
                 </a>
             </li>
             <li>
-                <a href="{{ route('site.change.locale', ['locale' => 'ua']) }}" class="external-link flags-list__item  ">
+                <a href="{{ route('site.change.locale', ['locale' => 'by']) }}" class="external-link flags-list__item  ">
                     <span class="flag-icon flag-icon-by"></span>
                 </a>
             </li>
             <li>
-                <a href="{{ route('site.change.locale', ['locale' => 'ua']) }}" class="external-link  flags-list__item  ">
+                <a href="{{ route('site.change.locale', ['locale' => 'kz']) }}" class="external-link  flags-list__item  ">
                     <span class="flag-icon flag-icon-kz"></span>
                 </a>
             </li>
