@@ -69,6 +69,10 @@ class AdminSurveysProcessingController extends Controller
 
                 $questions = LimeSurveysQuestions::where('sid','=',$item->sid)->get();
 
+                foreach ($questions as $question){
+
+                }
+
             }
         }
 
