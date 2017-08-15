@@ -11,12 +11,12 @@
 
                 </div>
                 <div class="col-sm-7  col-xs-7  col-md-8">
-                    <h3 class="slogan-h">Проходите опросы, получайте вознаграждение. Изменим мир к лучшему вместе!</h3>
+                    <h3 class="slogan-h">@lang('messages.main_site_header_title')</h3>
                 </div>
                 <div class="col-sm-3 col-xs-3  col-md-2 container-lang-login">
                     <div class="login-block">
                         @if(!Auth::check())
-                            <a class="btn btn-login" href="{{ url('/login') }}">Войти</a>
+                            <a class="btn btn-login" href="{{ url('/login') }}">@lang('messages.enter_button')</a>
                         @endif
                     </div>
                 </div>
@@ -54,14 +54,14 @@
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                                 <span>{{Auth::user()->name}}</span><span> </span><span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li><a href="{{url('/account')}}"><span>Настройки</span>
+                                <li><a href="{{url('/account')}}"><span>@lang('messages.menu_item_settings')</span>
                                         <noscript></noscript>
                                     </a></li>
                                 <li role="separator"></li>
                                 <li><a href="{{ url('/logout') }}"
                                        onclick="event.preventDefault();
                                                  document.getElementById('logout-form').submit();">
-                                        Выхoд
+                                        @lang('messages.menu_item_exit')
                                     </a>
 
                                     <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">

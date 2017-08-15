@@ -1,17 +1,17 @@
 @extends('frontend.layouts.template')
 
 @section('content')
-<div class="user-profiles container container-center"><h2>История начислений:</h2>
+<div class="user-profiles container container-center"><h2>@lang('messages.rewards_page_title')</h2>
     @if($balancelogs->count()!=0)
     <table class="table table-hover table-striped space charges-list table-condensed">
         <thead>
         <tr>
 
-            <th class="table-header  no-on-mobile">Сумма</th>
-            <th class="table-header">Операция</th>
-            <th class="table-header">Тип</th>
-            <th class="table-header">Статус</th>
-            <th class="table-header">Дата</th>
+            <th class="table-header no-on-mobile">@lang('messages.rewards_page_table_sum')</th>
+            <th class="table-header">@lang('messages.rewards_page_table_operation')</th>
+            <th class="table-header">@lang('messages.rewards_page_table_type')</th>
+            <th class="table-header">@lang('messages.rewards_page_table_status')</th>
+            <th class="table-header">@lang('messages.rewards_page_table_date')</th>
         </tr>
         </thead>
         <tbody>

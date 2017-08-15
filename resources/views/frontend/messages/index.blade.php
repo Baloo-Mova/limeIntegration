@@ -1,14 +1,14 @@
 @extends('frontend.layouts.template')
 
 @section('content')
-    <div class="user-profiles container container-center"><h2>Сообщения</h2>
+    <div class="user-profiles container container-center"><h2>@lang('messages.messages_page_title')</h2>
         <hr/>
         <table class="table table-hover table-striped space">
             <thead>
             <tr>
-                <th class="table-header">Сообщение</th>
-                <th class="table-header">Статус</th>
-                <th class="table-header" style="width:8em;">Действия</th>
+                <th class="table-header">@lang('messages.messages_page_table_message')</th>
+                <th class="table-header">@lang('messages.messages_page_table_status')</th>
+                <th class="table-header" style="width:8em;">@lang('messages.messages_page_table_actions')</th>
             </tr>
             </thead>
             <tbody>
@@ -21,10 +21,10 @@
                             </div>
                         </td>
                         <td>
-                            {{ $message->read_at == null ? "Новое сообщение" : "Прочитано"}}
+                            {{ $message->read_at == null ? Lang::get('messages.newMessage'): Lang::get('messages.readed')}}
                         </td>
                         <td>
-                            <a href="{{route('messages.show', ['mid' => $message->id])}}" title="Просмотреть полностью"
+                            <a href="{{route('messages.show', ['mid' => $message->id])}}" title="@lang('messages.see_all')"
                                aria-label="Update"
                                data-pjax="0">
                                 <span class="fa fa-eye"></span>
@@ -34,7 +34,7 @@
                     @endif
                 @empty
                     <td class="text-center">
-                        <p>Нет новых сообщений</p>
+                        <p>@lang('messages.no_new_messages')</p>
                     </td>
                 @endforelse
 

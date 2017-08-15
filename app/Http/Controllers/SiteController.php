@@ -20,6 +20,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use org\jsonrpcphp\JsonRPCClient;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Session;
 
 
 class SiteController extends Controller
@@ -95,9 +97,9 @@ class SiteController extends Controller
 
     public function changeLocale($locale)
     {
-        var_dump(App::getLocale());
-        App::setLocale($locale);
-        dd(App::getLocale());
+        if (array_key_exists($locale, Config::get('languages'))) {
+            Session::put('applocale', $locale);
+        }
         return back();
     }
 }

@@ -16,6 +16,7 @@ use App\Models\Country;
 use App\Models\Region;
 use App\Models\City;
 use App\Models\Lime\LimeParticipants;
+use Illuminate\Support\Facades\Session;
 class AdminUsersController extends Controller
 {
     //
@@ -27,8 +28,6 @@ class AdminUsersController extends Controller
      */
     public function index(Request $request)
     {
-
-
 
         $users = User::where(['role_id'=>1])->orWhere(['role_id'=>3])->orderBy('id')->paginate(20);
 

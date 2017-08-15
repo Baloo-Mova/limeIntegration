@@ -6,19 +6,19 @@
             <h4 class="page-footer__links-header"></h4>
             <ul class="page-footer__links-list text-left">
                 <li class="page-footer__links-list-item">
-                    <a class="external-link"  href="{{ route('pages.about.us') }}">О нас</a>
+                    <a class="external-link"  href="{{ route('pages.about.us') }}">@lang('messages.footer_links_aboutUs')</a>
                 </li>
                 <li class="page-footer__links-list-item">
-                    <a class="external-link"  href="{{ route('pages.faq') }}">Faq</a>
+                    <a class="external-link"  href="{{ route('pages.faq') }}">@lang('messages.footer_links_faq')</a>
                 </li>
                 <li class="page-footer__links-list-item">
-                    <a class="external-link"  href="{{ route('pages.confidentiality') }}">Конфиденциальность</a>
+                    <a class="external-link"  href="{{ route('pages.confidentiality') }}">@lang('messages.footer_links_confidentiality')</a>
                 </li>
                 <li class="page-footer__links-list-item">
-                    <a class="external-link"  href="{{ route('pages.terms') }}">Пользовательское соглашение</a>
+                    <a class="external-link"  href="{{ route('pages.terms') }}">@lang('messages.footer_links_terms')</a>
                 </li>
                 <li class="page-footer__links-list-item">
-                    <a  href="{{ route('pages.feedback') }}">Обратная связь</a>
+                    <a href="{{ route('pages.feedback') }}">@lang('messages.footer_links_feedback')</a>
                 </li>
             </ul>
         </div>

@@ -1,35 +1,35 @@
 @extends('frontend.layouts.template')
 
 @section('content')
-    <div class="user-profiles container container-center"><h2>Профиль пользователя:</h2>
+    <div class="user-profiles container container-center"><h2>@lang('messages.profile_page_title')</h2>
         <div class="user_info">
             <table class="table table-striped">
                 <tr>
-                    <td>Имя</td>
+                    <td>@lang('messages.profile_page_table_name')</td>
                     <td>{{ $user_info->name." ".$user_info->second_name }}</td>
                 </tr>
                 <tr>
-                    <td>E-mail</td>
+                    <td>@lang('messages.profile_page_table_email')</td>
                     <td>{{ $user_info->email }}</td>
                 </tr>
                 <tr>
-                    <td>Пол</td>
+                    <td>@lang('messages.profile_page_table_gender')</td>
                     <td>{{ $user_info->gender == 0 ? "Мужской" : "Женский" }}</td>
                 </tr>
                 <tr>
-                    <td>Страна</td>
+                    <td>@lang('messages.profile_page_table_country')</td>
                     <td>{{ isset($user_info->country_id) ? $user_info->country->first()->title : " не указана" }}</td>
                 </tr>
                 <tr>
-                    <td>Область (Штат)</td>
+                    <td>@lang('messages.profile_page_table_region')</td>
                     <td>{{ isset($region) ? $region->title : " не указана" }}</td>
                 </tr>
                 <tr>
-                    <td>Город</td>
+                    <td>@lang('messages.profile_page_table_city')</td>
                     <td>{{ isset($city) ? $city->title : " не указан" }}</td>
                 </tr>
                 <tr>
-                    <td>Дата рождения</td>
+                    <td>@lang('messages.profile_page_table_birthday')</td>
                     <td>{{ isset($user_info->date_birth) ? date_format(date_create($user_info->date_birth),'d-m-Y') : " не указана" }}</td>
                 </tr>
             </table>
@@ -39,9 +39,9 @@
         <table class="table table-hover table-striped space">
             <thead>
             <tr>
-                <th class="table-header">Название</th>
-                <th class="table-header  no-on-mobile">Вознаграждение</th>
-                <th class="table-header">Статус</th>
+                <th class="table-header">@lang('messages.profile_page_table2_name')</th>
+                <th class="table-header  no-on-mobile">@lang('messages.profile_page_table2_reward')</th>
+                <th class="table-header">@lang('messages.profile_page_table2_status')</th>
                 <th class="table-header" style="width:8em;">&nbsp;</th>
             </tr>
             </thead>
