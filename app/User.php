@@ -25,6 +25,7 @@ use App\Models\Lime\LimeParticipants;
  * @property int $role_id
  * @property int $country_id
  * @property int $region_id
+ * @property int $facebook
  * @property int $city_id
  * @property string $date_birth
  * @property string|null $remember_token
@@ -85,6 +86,7 @@ class User extends Authenticatable
         'interests_tags',
         'ls_participant_id',
         'rating',
+        'facebook'
     ];
 
     /**
