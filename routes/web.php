@@ -132,9 +132,9 @@ Route::group(['namespace' => 'Admin', 'middleware' => ['checkadmin']], function 
 
         Route::group(['prefix' => 'processing'], function () {
             Route::get('/', ['uses' => 'AdminSurveysProcessingController@index', 'as' => 'admin.surveys.processing.index']);
-            Route::get('/finished-worksheets', ['uses' => 'AdminSurveysProcessingController@finishedWorksheets', 'as' => 'admin.surveys.processing.finished.worksheets']);
-            Route::get('/not-finished-worksheets', ['uses' => 'AdminSurveysProcessingController@notFinishedWorksheets', 'as' => 'admin.surveys.processing.not.finished.worksheets']);
-            Route::get('/all-worksheets', ['uses' => 'AdminSurveysProcessingController@allWorksheets', 'as' => 'admin.surveys.processing.all.worksheets']);
+            Route::post('/finished-worksheets', ['uses' => 'AdminSurveysProcessingController@finishedWorksheets', 'as' => 'admin.surveys.processing.finished.worksheets']);
+            Route::post('/not-finished-worksheets', ['uses' => 'AdminSurveysProcessingController@notFinishedWorksheets', 'as' => 'admin.surveys.processing.not.finished.worksheets']);
+            Route::post('/all-worksheets', ['uses' => 'AdminSurveysProcessingController@allWorksheets', 'as' => 'admin.surveys.processing.all.worksheets']);
         });
 
     });
