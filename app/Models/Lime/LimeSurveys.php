@@ -225,5 +225,9 @@ class LimeSurveys extends Model
     public function getQuotes(){
         return $this->hasMany(LimeSurveysQuotes::class, 'sid', 'sid');
     }
+    /*public function scopeAllWorksheets($query)
+    {
+        return $query->where(['type_id' => 0]);
+    }*/
 
 }

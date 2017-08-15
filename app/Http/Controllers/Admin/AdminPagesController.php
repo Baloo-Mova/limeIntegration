@@ -26,6 +26,7 @@ class AdminPagesController extends Controller
     {
         $page_content = $request->get('page_content');
         $title = $request->get('title');
+        $name = $request->get('name');
 
         if (!isset($title)){
             Toastr::error('Вы не указали заголовок страницы', 'Ошибка');
@@ -35,9 +36,14 @@ class AdminPagesController extends Controller
             Toastr::error('Вы не указали содержание страницы', 'Ошибка');
         }
 
+        if (!isset($page_content)){
+            Toastr::error('Вы не указали имя страницы', 'Ошибка');
+        }
+
         $page = new Pages();
         $page->title = $title;
         $page->page_content = $page_content;
+        $page->name = $name;
         $page->save();
 
         Toastr::success('Страница успешно добавлена', 'Сохранено');

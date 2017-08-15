@@ -38,10 +38,6 @@ class AdminSurveysController extends Controller
         ]);
     }
 
-    public function processing()
-    {
-        return view('admin.surveys.processing');
-    }
     public function convertToWorksheet($sid, $type)
     {
         $survey = LimeSurveys::where(['sid' => $sid])->first();
