@@ -2,15 +2,16 @@
 
 @section('content')
 
-    <hr/>
 
     <div class="signup">
         <div class="auth-block-container container container-center">
             <div class="row">
                 <div class="col-lg-3 col-md-2 col-sm-1"></div>
                 <div class="col-lg-6 col-md-8 col-sm-10">
-                    <a href="{{url('/')}}" class="close fa fa-close" title="Вернуться на главную страницу"></a>
                     <h2>Изменение пользователя</h2>
+                    @if($errors->has('needFull'))
+                        <span style="color: red;">* @lang('auth.needFull') </span>
+                    @endif
                     <form method="POST" enctype="multipart/form-data" class="form-horizontal">
                         {{ csrf_field() }}
 
@@ -45,7 +46,7 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('gender') ? ' has-danger' : '' }}">
-                            <div class="col-xs-12" >
+                            <div class="col-xs-12">
                                 <label for="country" class="col-form-label">Пол*</label>
                                 <select class="form-control" id="gender" name="gender" required>
                                     <option selected>Выберите пол</option>
@@ -183,9 +184,9 @@
                 select += '';
 
                 $("#region").html(select);
-                if(select.length==0){
+                if (select.length == 0) {
                     //$("#region").change();
-                    $.getJSON("{{url('api/actualCities')}}/" + countryId , function (jsonData) {
+                    $.getJSON("{{url('api/actualCities')}}/" + countryId, function (jsonData) {
 
                         select = '';
                         $.each(jsonData, function (i, data) {
@@ -197,9 +198,11 @@
 
                     // alert("true");
                 }
-                else {$("#city").html('');
+                else {
+                    $("#city").html('');
                     $("#region").change();
-                };
+                }
+                ;
             });
 
 

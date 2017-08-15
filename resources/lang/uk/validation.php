@@ -12,7 +12,7 @@ return [
     | наприклад, size. Ви можете змінити будь-яке з цих повідомлень.
     |
     */
-
+    'city'=>'The :attribute field is required',
     'accepted'             => 'Ви повинні прийняти :attribute.',
     'active_url'           => 'Поле :attribute не є правильним URL.',
     'after'                => 'Поле :attribute має містити дату не раніше :date.',

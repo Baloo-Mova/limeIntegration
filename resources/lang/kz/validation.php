@@ -108,7 +108,7 @@ return [
     |   ],
     |
     */
-
+    'city'=>'The :attribute field is required',
     'custom'               => [
         'attribute-name' => [
             'rule-name' => 'custom-message',

@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\NotAllData;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -59,5 +60,6 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'checkadmin' => \App\Http\Middleware\RedirectIfNotAdmin::class,
         'admin' => \App\Http\Middleware\Admin::class,
+        'checkFull' => NotAllData::class
     ];
 }

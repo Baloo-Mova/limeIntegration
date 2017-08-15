@@ -8,7 +8,9 @@
             <div class="row">
                 <div class="col-lg-3 col-md-2 col-sm-1"></div>
                 <div class="col-lg-6 col-md-8 col-sm-10">
-                    <a href="{{url('/')}}" class="close fa fa-close" title="Вернуться на главную страницу"></a>
+                    @if($errors->has('alreadyExist'))
+                        <span style="color:red"> {{$errors->first('alreadyExist')}}</span>
+                    @endif
                     <h2>Вход в систему</h2>
                     <div class="oauth-signup">
                         <div>

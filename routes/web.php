@@ -20,7 +20,7 @@ Route::get('/', ['uses' => 'SiteController@welcome', 'as' => 'site.welcome']);
 
 Route::post('select-regions-ajax', ['as' => 'select-regions-ajax', 'uses' => 'AjaxController@selectRegionsAjax']);
 Route::get('error/{error}', ['uses' => 'SiteController@error', 'as' => 'error']);
-Route::group(['middleware' => 'auth'], function () {
+Route::group(['middleware' => ['auth','checkFull']], function () {
     Route::get('/surveys', ['uses' => 'SiteController@index', 'as' => 'site.index']);
     Route::get('/change-locale/{locale}', ['uses' => 'SiteController@changeLocale', 'as' => 'site.change.locale']);
     Route::get('/gotosurvey/{id}/{token}', ['uses' => 'SiteController@gotoSurvey', 'as' => 'site.goto.survey']);
