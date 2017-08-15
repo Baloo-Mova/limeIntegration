@@ -15,7 +15,7 @@ Auth::routes();
 Route::get('/', ['uses' => 'SiteController@welcome', 'as' => 'site.welcome']);
 
 Route::post('select-regions-ajax', ['as' => 'select-regions-ajax', 'uses' => 'AjaxController@selectRegionsAjax']);
-
+Route::get('error/{error}', ['uses' => 'SiteController@error', 'as' => 'error']);
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/surveys', ['uses' => 'SiteController@index', 'as' => 'site.index']);
     Route::get('/change-locale/{locale}', ['uses' => 'SiteController@changeLocale', 'as' => 'site.change.locale']);
