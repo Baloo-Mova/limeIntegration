@@ -46,6 +46,11 @@ class SiteController extends Controller
 
     }
 
+    public function error($error)
+    {
+        return view('error', ['error' => $error]);
+    }
+
     public function indexProfiles()
     {
         $user = Auth::user();
