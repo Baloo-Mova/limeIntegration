@@ -12,9 +12,15 @@
 */
 Auth::routes();
 
+
+Route::get('/redirect', ['uses' => 'Auth\SocialController@redirectFaceBook', 'as' => 'facebook.socialite.redirect']);
+Route::get('/callback', ['uses' => 'Auth\SocialController@callbackFaceBook', 'as' => 'facebook.socialite.callback']);
+
 Route::get('/', ['uses' => 'SiteController@welcome', 'as' => 'site.welcome']);
 
 Route::post('select-regions-ajax', ['as' => 'select-regions-ajax', 'uses' => 'AjaxController@selectRegionsAjax']);
+
+
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/surveys', ['uses' => 'SiteController@index', 'as' => 'site.index']);

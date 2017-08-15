@@ -34,5 +34,11 @@ return [
         'key' => env('STRIPE_KEY'),
         'secret' => env('STRIPE_SECRET'),
     ],
+    'facebook' => [
+        'client_id' => '503473176673445',
+        'client_secret' => '5e3b864c565e8a527b53e0f822fe251c',
+        'redirect' => 'http://lime.local/callback',
+        'guzzle' => ['verify' => false]
+    ]
 
 ];

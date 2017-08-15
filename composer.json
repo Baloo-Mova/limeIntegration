@@ -7,13 +7,14 @@
     "require": {
         "php": ">=5.6.4",
         "acacha/admin-lte-template-laravel": "4.*",
+        "brian2694/laravel-toastr": "^1.0",
         "doctrine/dbal": "^2.5",
         "guzzlehttp/guzzle": "~6.0",
         "laravel/framework": "5.4.*",
+        "laravel/socialite": "^3.0",
         "laravel/tinker": "~1.0",
         "phpmailer/phpmailer": "^5.2",
-        "weberhofer/jsonrpcphp": "^2.2",
-        "brian2694/laravel-toastr": "^1.0"
+        "weberhofer/jsonrpcphp": "^2.2"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.4",
