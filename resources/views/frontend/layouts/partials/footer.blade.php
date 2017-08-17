@@ -28,7 +28,7 @@
         </div>
         <div class="col-md-4 col-sm-4 col-xs-3 text-center">
             <ul class="social-list">
-                <li><a href="http://vk.com/expertnoemnenie"
+                <li><a href="#"
                        class="external-link  social-list__item  social-list__item--vk"></a></li>
                 <li><a href="#"
                        class="external-link  social-list__item  social-list__item--fb"></a></li>
