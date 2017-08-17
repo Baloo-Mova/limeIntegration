@@ -62,6 +62,10 @@ Route::group(['middleware' => ['auth','checkFull']], function () {
 
 Route::group(['namespace' => 'Admin', 'middleware' => ['checkadmin']], function () {
     Route::group(['prefix' => 'admin'], function () {
+
+
+        Route::get('/getUsers', ['uses' => 'AdminSurveysProcessingController@getUsers', 'as' => 'admin.get.users']);
+
         Route::get('/', ['uses' => 'AdminSiteController@welcome', 'as' => 'admin.welcome']);
         Route::group(['prefix' => 'payments'], function () {
             Route::group(['prefix' => 'payments_types'], function () {

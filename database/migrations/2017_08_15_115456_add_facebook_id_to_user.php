@@ -14,7 +14,7 @@ class AddFacebookIdToUser extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->integer('facebook')->nullable();
+            $table->bigInteger('facebook')->nullable();
             $table->date('date_birth')->nullable()->change();
         });
     }

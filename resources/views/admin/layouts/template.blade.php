@@ -9,8 +9,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Lime integrator</title>
-
-
         @include('frontend.layouts.partials.head')
     </head>
     <body>

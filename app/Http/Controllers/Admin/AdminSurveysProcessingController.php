@@ -6,23 +6,43 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Lime\LimeParticipants;
 use App\Models\Lime\LimeSurveyLinks;
+use App\Models\Lime\LimeSurveysLanguageSettings;
 use App\Models\Lime\LimeSurveysQuestions;
+use App\Models\Lime\LimeSurveysQuestionsAnswers;
 use Brian2694\Toastr\Toastr;
 use Illuminate\Http\Request;
 use App\Models\Lime\LimeSurveys;
 use App\User;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 
 class AdminSurveysProcessingController extends Controller
 {
     public function index()
     {
-        $users = LimeParticipants::all();
         $surveys = LimeSurveys::where(['type_id' => 0])->get();
         return view('admin.processing.index', [
-            'users' => $users,
             'surveys' => $surveys
         ]);
+    }
+
+    public function getUsers(Request $request)
+    {
+        $users = LimeParticipants::select(['participant_id', 'email'])
+            ->where('email', 'like', '%' . $request->email['term'] . '%')
+            ->offset($request->page == null ? 0 : $request->page * 10)
+            ->limit(10)
+            ->get();
+
+        $response = [];
+        foreach ($users as $item) {
+            $response[] = [
+                'id' => $item->participant_id,
+                'text' => $item->email
+            ];
+        }
+
+        return response()->json($response);
     }
 
     public function finishedWorksheets(Request $request)
@@ -33,76 +53,62 @@ class AdminSurveysProcessingController extends Controller
             $date_from = substr($daterange, 0, $find);
             $date_to = substr($daterange, $find + 3);
         }
-        $export_type = $request->get('export_type');
+
         $user = $request->get('user');
         $surveys = $request->get('surveys');
         $type_survey = $request->get('type_survey');
 
-        if (!isset($export_type)) {
-            Toastr::error('Не указан обязательный параметр!', 'Ошибка!');
+        $user = User::where('ls_participant_id', '=', $user)->first();
+        if (!isset($user)) {
+            Toastr::error('Пользователь не найден');
             return back();
         }
 
-        if ($export_type == 1) {
-            $surveysList = LimeSurveys::where('type_id', '=', 0)->get();
-            foreach ($surveysList as $item) {
-                $items = DB::connection('mysql_lime')->table('tokens_' . $item->sid)->select();
-                if ($type_survey != 3) {
-                    $items->where('completed', $type_survey == 1 ? '<>' : "=", "N");
-                }
+        $surveysList = LimeSurveys::where('type_id', '=', 0);
+        if (isset($surveys) && $type_survey == 0) {
+            $surveysList = $surveysList->whereIn('sid', $surveys);
+        }
+        $surveysList = $surveysList->get();
+        $resultSet = [];
+        foreach ($surveysList as $item) {
+            $items = DB::connection('mysql_lime')->table('tokens_' . $item->sid)->select();
+            if ($type_survey != 3 && $type_survey != 0) {
+                $items = $items->where('completed', $type_survey == 1 ? '<>' : "=", "N");
+            }
+            $data = $items->where('participant_id', '=', $user->ls_participant_id)->first();
+            if (!isset($data)) {
+                continue;
+            }
+            $oprosName = LimeSurveysLanguageSettings::where(['surveyls_survey_id' => $item->sid])->first()->surveyls_title;
+            $resultSet[$oprosName] = [];
+            $data = (array)DB::connection('mysql_lime')->table('survey_' . $item->sid)->where('token', '=', $data->token)->first();
+            if (!isset($data)) {
+                continue;
+            }
 
-                if (isset($daterange) && $type_survey == 1) {
-                    $items->whereBetween('completed', [$date_from, $date_to]);
-                }
-
-                $items->where('participant_id', '=', $user);
-
-                $data = $items->first();
-
-                if (!isset($data)) {
-                    continue;
-                }
-                $data = DB::table('survey_' . $item->sid)->connection('mysql_lime')->where('token', '=', $data->token)->first();
-                if (!isset($data)) {
-                    continue;
-                }
-
-                $questions = LimeSurveysQuestions::where('sid','=',$item->sid)->get();
-
-                foreach ($questions as $question){
-
-                }
-
+            $questions = LimeSurveysQuestions::where('sid', '=', $item->sid)->get();
+            foreach ($questions as $question) {
+                $itemName = $item->sid . 'X' . $question->gid . "X" . $question->qid;
+                $answer = $data[$itemName];
+                $answerData = LimeSurveysQuestionsAnswers::where(['qid' => $question->qid, 'code' => $answer])->first();
+                $resultSet[$oprosName][$question->question] = $answerData->answer;
             }
         }
+        $fileName = $user->id . "_" . time() . ".txt";
+        $filePath = storage_path('app/download/' . $fileName);
+        file_put_contents($filePath, "Пользователь " . $user->name . " " . $user->second_name . " email: " . $user->email . "\nАнкеты:\n\n");
 
-        $lime_base = DB::connection('mysql_lime');
-
-        $surveys = $lime_base->table('participants')
-            ->join('survey_links', 'participants.participant_id', '=', 'survey_links.participant_id')
-            ->select('*')
-            ->get();
-
-        dd($surveys);
-
-        $dt = microtime();
-
-        if (!file_exists(storage_path('app/csv/'))) {
-            mkdir(storage_path('app/csv/'));
+        foreach ($resultSet as $key => $item) {
+            $str = $key . "\n";
+            $i = 1;
+            foreach ($item as $question => $answer) {
+                $str .= $i . '. ' . $question . "  " . $answer.PHP_EOL;
+                $i++;
+            }
+            file_put_contents($filePath, $str . PHP_EOL, 8);
         }
-        $file = fopen(storage_path('app/csv/') . "export_finished_worksheets" . $dt . ".csv", 'w');
-        fputcsv($file, [
-            'Имя',
-            'Токен',
-            'Страна',
-            'Регион',
-            'Город',
-            'Пол',
-            'Дата рождения',
-            'Название опроса',
-            'Вопрос',
-            'Ответ',
-        ], ";");
+
+        return response()->download($filePath);
     }
 
     public function notFinishedWorksheets(Request $request)
