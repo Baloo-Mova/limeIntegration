@@ -79,27 +79,26 @@ class AccountController extends Controller
             'country.integer' => __('validation.city')
         ]);
 
-        try {
-            Auth::user()->participant->setPrimKey('participant_id');
-            Auth::user()->participant->firstname = $request['name'];
-            Auth::user()->participant->lastname = $request['second_name'];
-            Auth::user()->participant->email = $request['email'];
-            Auth::user()->participant->modified = Carbon::now(config('app.timezone'));
-            Auth::user()->participant->save();
-        } catch (Exception $ex) {
+        $user = Auth::user();
 
+        if (isset($user->participant)) {
+            $user->participant->setPrimKey('participant_id');
+            $user->participant->firstname = $request['name'];
+            $user->participant->lastname = $request['second_name'];
+            $user->participant->email = $request['email'];
+            $user->participant->modified = Carbon::now(config('app.timezone'));
+            $user->participant->save();
         }
-        Auth::user()->name = $request['name'];
-        Auth::user()->second_name = $request['second_name'];
-        Auth::user()->gender = $request['gender'];
-        Auth::user()->email = $request['email'];
+        $user->name = $request['name'];
+        $user->second_name = $request['second_name'];
+        $user->gender = $request['gender'];
+        $user->email = $request['email'];
 
-        Auth::user()->date_birth = Carbon::parse($request['date_birth']);
-        Auth::user()->country_id = $request['country'];
-        Auth::user()->region_id = ($request['region'] != 'undefined') ? $request['region'] : null;
-        Auth::user()->city_id = ($request['city'] != 'undefined') ? $request['city'] : null;
-
-        Auth::user()->save();
+        $user->date_birth = Carbon::parse($request['date_birth']);
+        $user->country_id = $request['country'];
+        $user->region_id = ($request['region'] != 'undefined') ? $request['region'] : null;
+        $user->city_id = ($request['city'] != 'undefined') ? $request['city'] : null;
+        $user->save();
 
         return redirect(route('account.edit'));
     }
