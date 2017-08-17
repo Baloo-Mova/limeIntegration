@@ -106,6 +106,7 @@ class SocialController extends Controller
                 $user->gender = $providerUser->user['gender'] == "male" ? 0 : 1;
                 $user->ls_password = $password;
                 $user->ls_participant_id = $guid;
+                $user->facebook = $providerUser->id;
                 $user->save();
             }
 
