@@ -28,7 +28,7 @@
                                     <h4>Почта: <small class="text-muted">{{$user->email}}</small></h4>
                                     <h4>Баланс: <small class="text-muted">{{$user->balance}} ₽</small></h4>
                                     <h4>Рейтинг: <small class="text-muted">{{$user->rating}}</small></h4>
-                                    <h4>Страна: <small class="text-muted">{{$user->country->first()->title}}</small></h4>
+                                    <h4>Страна: <small class="text-muted">{{$user->country->title}}</small></h4>
                                     <h4>Область(Штат): <small class="text-muted">{{isset($user->region->title) ? $user->region->title : ""}}</small></h4>
                                     <h4>Город: <small class="text-muted">{{isset($user->city->title) ? $user->city->title : ""}}</small></h4>
                                     <h4>Дата рождения: <small class="text-muted">{{$user->date_birth}}</small></h4>

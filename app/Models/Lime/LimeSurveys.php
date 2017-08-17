@@ -206,23 +206,33 @@ class LimeSurveys extends Model
     /**
      * @return mixed
      */
-    public function LimeSurveysLanguage(){
-        return $this->hasMany(LimeSurveysLanguageSettings::class,'surveyls_survey_id','sid')->where(['surveyls_language'=>Lang::getLocale()] );
+    public function LimeSurveysLanguage()
+    {
+        return $this->hasOne(LimeSurveysLanguageSettings::class, 'surveyls_survey_id', 'sid');
     }
-    public function Questions(){
+
+    public function Questions()
+    {
         return $this->hasMany(LimeSurveysQuestions::class, 'sid', 'sid');
     }
-    public function GetStatus($search){
+
+    public function GetStatus($search)
+    {
         try {
             $tokens = DB::connection('mysql_lime')->table("tokens_" . $this->sid)->where(['participant_id' => $search])->first();
-        }catch(\Exception $e){}
+        } catch (\Exception $e) {
+        }
         return isset($tokens) ? $tokens->completed : null;
 
     }
-    public function getWorksheet(){ // Анкеты
-        return $this->belongsTo(LimeSurveys::class,'survey_id','sid')->where(['language'=>Lang::getLocale(),'active'=>'Y'] );
+
+    public function getWorksheet()
+    { // Анкеты
+        return $this->belongsTo(LimeSurveys::class, 'survey_id', 'sid')->where(['language' => Lang::getLocale(), 'active' => 'Y']);
     }
-    public function getQuotes(){
+
+    public function getQuotes()
+    {
         return $this->hasMany(LimeSurveysQuotes::class, 'sid', 'sid');
     }
     /*public function scopeAllWorksheets($query)

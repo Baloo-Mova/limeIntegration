@@ -342,8 +342,6 @@
                 $(".country_wrap_"+new_id).hide();
                 $(".region_wrap_"+new_id).hide();
                 $(".city_wrap_"+new_id).hide();
-                $(".age_wrap_"+new_id).hide();
-                $(".gender_wrap_"+new_id).hide();
             });
 
 
@@ -355,6 +353,9 @@
 
                 if(type == 1){
                     $(".country_wrap_"+current_id).show();
+
+                    $(".age_wrap_"+current_id).show();
+                    $(".gender_wrap_"+current_id).show();
                 }else{
                     $(".type_wrap_"+current_id).show();
                     $(".country_wrap_"+current_id).hide();

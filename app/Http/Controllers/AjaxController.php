@@ -32,7 +32,7 @@ class AjaxController extends Controller
             $req_arr ['region_id'] = $request["region_id"];
         }
         $req_arr  ['country_id'] = $countryid;
-        $cities = DB::table('cities')->select('city_id', 'title','area')->where($req_arr)->groupBy('title')->orderBy('title', 'asc')->get();
+        $cities = DB::table('cities')->select('city_id', 'title', 'area')->where($req_arr)->groupBy('title')->orderBy('title', 'asc')->get();
         return Response::json($cities);
     }
 
@@ -131,24 +131,27 @@ class AjaxController extends Controller
             $search_type = $data["type_search_" . $i];
 
             if ($search_type == 1) {
-                $country = $data["country_" . $i];
-                $region = $data["region_" . $i];
-                $city = $data["city_" . $i];
-                $gender = $data["gender_" . $i];
-                $age_from = $data["age_from_" . $i];
-                $age_to = $data["age_to_" . $i];
+                $userWhere = [];
+                if (isset($data["country_" . $i])) {
+                    $userWhere[] = ['country_id', '=', $data["country_" . $i]];
+                }
+                if (isset($data["region_" . $i])) {
+                    $userWhere[] = ['region_id', '=', $data["region_" . $i]];
+                }
+                if (isset($data['city_' . $i])) {
+                    $userWhere[] = ['city_id', '=', $data["city_" . $i]];
+                }
+                if (isset($data['gender_' . $i])) {
+                    $userWhere[] = ['gender', '=', $data["gender_" . $i]];
+                }
+                if (isset($data["age_from_" . $i]) && !empty($data['age_from_' . $i])) {
+                    $userWhere[] = ['date_birth', '>', Carbon::now()->subYears($data["age_from_" . $i])->format("Y-m-d")];
+                }
+                if (isset($data["age_to_" . $i]) && !empty($data['age_to_' . $i])) {
+                    $userWhere[] = ['date_birth', '<', Carbon::now()->subYears($data["age_to_" . $i])->format("Y-m-d")];
+                }
 
-                $dt = Carbon::now();
-                $age1 = Carbon::now()->subYears($age_from)->format("Y-m-d");
-                $age2 = Carbon::now()->subYears($age_to)->format("Y-m-d");
-
-                $users = User::where([
-                    'country_id' => $country,
-                    'region_id' => $region,
-                    'city_id' => $city,
-                    'gender' => $gender
-                ])
-                    ->whereBetween('date_birth', [$age2, $age1])
+                $users = User::where($userWhere)
                     ->get();
 
                 if (!isset($users)) {

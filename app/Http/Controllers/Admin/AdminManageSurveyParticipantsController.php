@@ -21,14 +21,7 @@ class AdminManageSurveyParticipantsController extends Controller
     {
         $worksheets = LimeSurveys::where(['type_id' => 0])->get();
         $surveys = LimeSurveys::where(['type_id' => 1])->get();
-        if(config('app.locale')=='ru'){
-            $countries_list = Country::where(['lang_id'=>2])->orderBy('title', 'asc')->limit(300)->get();
-
-        }
-        if(config('app.locale')=='ua'){
-            $countries_list = Country::where(['lang_id'=>1])->orderBy('title', 'asc')->limit(300)->get();
-
-        }
+        $countries_list = Country::orderBy('title', 'asc')->limit(300)->get();
         return view('admin.manage.index', with([
             'surveys' => $surveys,
             'worksheets' => $worksheets,
@@ -49,22 +42,22 @@ class AdminManageSurveyParticipantsController extends Controller
         $survey_id = $request->get('survey');
         $participants = $request->get('participants');
 
-        if(!isset($survey_id)){
+        if (!isset($survey_id)) {
             Toastr::error("Вы не указали опрос", "Ошибка");
             return back();
         }
 
-        if(!isset($participants)){
+        if (!isset($participants)) {
             Toastr::error("Вы не указали участников опроса", "Ошибка");
             return back();
         }
 
         $users = explode("\r\n", $participants);
 
-        if($this->addParticipantsToDb($survey_id, $users)) {
+        if ($this->addParticipantsToDb($survey_id, $users)) {
             Toastr::success("Пользователи успешно добавлены к опросу!", "Сохранено");
             return back();
-        }else{
+        } else {
             Toastr::error("Ошибка!", "Ошибка");
             return back();
         }
@@ -75,20 +68,20 @@ class AdminManageSurveyParticipantsController extends Controller
         $survey_id = $request->get('survey');
         $participants = $request->get('participant');
 
-        if(!isset($survey_id)){
+        if (!isset($survey_id)) {
             Toastr::error("Вы не указали опрос", "Ошибка");
             return back();
         }
 
-        if(!isset($participants)){
+        if (!isset($participants)) {
             Toastr::error("Вы не указали участников опроса", "Ошибка");
             return back();
         }
 
-        if($this->addParticipantsToDb($survey_id, $participants)) {
+        if ($this->addParticipantsToDb($survey_id, $participants)) {
             Toastr::success("Пользователи успешно добавлены к опросу!", "Сохранено");
             return back();
-        }else{
+        } else {
             Toastr::error("Ошибка!", "Ошибка");
             return back();
         }
@@ -99,8 +92,8 @@ class AdminManageSurveyParticipantsController extends Controller
         $lime_base = DB::connection('mysql_lime');
         $schemaConnAdmin = Schema::connection('mysql_lime');
 
-        if(!$schemaConnAdmin->hasTable('tokens_'.$survey_id)){
-            $schemaConnAdmin->create('tokens_'.$survey_id, function (Blueprint $table) {
+        if (!$schemaConnAdmin->hasTable('tokens_' . $survey_id)) {
+            $schemaConnAdmin->create('tokens_' . $survey_id, function (Blueprint $table) {
                 $table->increments('tid');
                 $table->string('participant_id', 50)->nullable();
                 $table->string('firstname', 150)->nullable();
@@ -123,49 +116,49 @@ class AdminManageSurveyParticipantsController extends Controller
 
         $res = [];
 
-        foreach ($participants as $user){
-            $participant = $lime_base->table('tokens_'.$survey_id)->where(['participant_id' => $user])->first();
+        foreach ($participants as $user) {
+            $participant = $lime_base->table('tokens_' . $survey_id)->where(['participant_id' => $user])->first();
 
-            if(isset($participant)){
+            if (isset($participant)) {
                 continue;
             }
 
             $u = LimeParticipants::where(['participant_id' => $user])->first();
 
-            if(!isset($u)){
+            if (!isset($u)) {
                 continue;
             }
-            $t = $lime_base->table('tokens_'.$survey_id)->insertGetId([
+            $t = $lime_base->table('tokens_' . $survey_id)->insertGetId([
                 'participant_id' => $user,
                 'firstname' => $u->firstname,
                 'lastname' => $u->lastname,
-                'email'    => $u->email,
-                'token'    => $this->gen_uuid(),
+                'email' => $u->email,
+                'token' => $this->gen_uuid(),
                 'emailstatus' => 'OK'
             ]);
             $lime_base->table('survey_links')->insert([
                 'participant_id' => $user,
-                'token_id'       => $t,
-                'survey_id'      => $survey_id,
-                'date_created'   => Carbon::now()->toDateTimeString()
+                'token_id' => $t,
+                'survey_id' => $survey_id,
+                'date_created' => Carbon::now()->toDateTimeString()
             ]);
 
             $user_for_notificate = User::where('ls_participant_id', $user)->first();
-            if(!isset($user_for_notificate)){
+            if (!isset($user_for_notificate)) {
                 continue;
             }
-            $token = $lime_base->table('tokens_'.$survey_id)->where('tid', $t)->first();
-            if(!isset($token)){
+            $token = $lime_base->table('tokens_' . $survey_id)->where('tid', $t)->first();
+            if (!isset($token)) {
                 continue;
             }
-            $url = "/gotosurvey/".$survey_id."/".$token->token;
+            $url = "/gotosurvey/" . $survey_id . "/" . $token->token;
             $message = [
                 'text' => "Для Вас доступен новый опрос.",
-                'greeting' => "Здравствуйте, ".$user_for_notificate->name." ".$user_for_notificate->second_name."!",
+                'greeting' => "Здравствуйте, " . $user_for_notificate->name . " " . $user_for_notificate->second_name . "!",
                 'action_title' => "Пройти опрос",
                 'subject' => "Вам доступен новый опрос",
                 'url' => $url,
-                'button' => "Вы можете пройти его по <a href='".url($url)."'>этой ссылке</a>",
+                'button' => "Вы можете пройти его по <a href='" . url($url) . "'>этой ссылке</a>",
             ];
             $user_for_notificate->notify(new UserNotification($message, 'mail'));
 

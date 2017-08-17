@@ -48,7 +48,7 @@ class AccountController extends Controller
         }
 
 
-        $countries = Country::where(['lang_id' => $lang_id])->orderBy('country_id')->limit(300)->get();
+        $countries = Country::orderBy('country_id')->limit(300)->get();
         $regions = Region::where(['country_id' => Auth::user()->country_id])->get();
         $cities = City::where(['country_id' => Auth::user()->country_id, 'region_id' => Auth::user()->region_id])->get();
 

@@ -107,7 +107,7 @@ class User extends Authenticatable
     public function country()
     {
         //if (Lang::getLocale() == "ru") {
-            return $this->hasMany(Country::class, 'country_id', 'country_id')->where('lang_id', 2);
+            return $this->hasOne(Country::class, 'country_id', 'country_id');
         //}
     }
 
