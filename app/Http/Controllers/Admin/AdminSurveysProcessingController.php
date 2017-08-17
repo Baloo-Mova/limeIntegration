@@ -80,9 +80,10 @@ class AdminSurveysProcessingController extends Controller
                 continue;
             }
             $oprosName = LimeSurveysLanguageSettings::where(['surveyls_survey_id' => $item->sid])->first()->surveyls_title;
-            $resultSet[$oprosName] = [];
+
             $data = (array)DB::connection('mysql_lime')->table('survey_' . $item->sid)->where('token', '=', $data->token)->first();
-            if (!isset($data)) {
+            $resultSet[$oprosName] = [];
+            if (!isset($data) || empty($data)) {
                 continue;
             }
 

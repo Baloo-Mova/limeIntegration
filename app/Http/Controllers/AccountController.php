@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Validator;
+use Mockery\Exception;
 
 class AccountController extends Controller
 {
@@ -36,35 +37,33 @@ class AccountController extends Controller
 
         switch (Lang::getLocale()) {
             case "ua":
-                $lang_id=1;
+                $lang_id = 1;
                 break;
             case "ru":
-                $lang_id=2;
+                $lang_id = 2;
                 break;
             case "en":
-                $lang_id=3;
+                $lang_id = 3;
                 break;
         }
 
 
+        $countries = Country::where(['lang_id' => $lang_id])->orderBy('country_id')->limit(300)->get();
+        $regions = Region::where(['country_id' => Auth::user()->country_id])->get();
+        $cities = City::where(['country_id' => Auth::user()->country_id, 'region_id' => Auth::user()->region_id])->get();
 
-        $countries = Country::where(['lang_id'=> $lang_id])->orderBy('country_id')->limit(300)->get();
-        $regions = Region::where(['country_id'=>Auth::user()->country_id])->get();
-        $cities = City::where(['country_id'=>Auth::user()->country_id, 'region_id'=>Auth::user()->region_id ])->get();
-
-          return view('frontend.account.edit')->with([
-              'user'=>Auth::user(),
-              'countries'=>$countries,
-              'regions' => $regions,
-              'cities' => $cities,
-          ]);
+        return view('frontend.account.edit')->with([
+            'user' => Auth::user(),
+            'countries' => $countries,
+            'regions' => $regions,
+            'cities' => $cities,
+        ]);
     }
 
     public function update(Request $request)
     {
-        Validator::extend('olderThan', function($attribute, $value, $parameters)
-        {
-            $minAge = ( ! empty($parameters)) ? (int) $parameters[0] : 13;
+        Validator::extend('olderThan', function ($attribute, $value, $parameters) {
+            $minAge = (!empty($parameters)) ? (int)$parameters[0] : 13;
 
             return Carbon::now()->diff(new Carbon($value))->y >= $minAge;
         });
@@ -76,26 +75,29 @@ class AccountController extends Controller
             'email' => 'required|string|email|max:255',
             'date_birth' => 'required|olderThan:15',
             'country' => 'integer',
-        ],[
+        ], [
             'country.integer' => __('validation.city')
         ]);
 
-        Auth::user()->participant->setPrimKey('participant_id');
-        Auth::user()->participant->firstname= $request['name'];
-        Auth::user()->participant->lastname = $request['second_name'];
-        Auth::user()->participant->email = $request['email'];
-        Auth::user()->participant->modified =Carbon::now(config('app.timezone'));
-        Auth::user()->participant->save();
+        try {
+            Auth::user()->participant->setPrimKey('participant_id');
+            Auth::user()->participant->firstname = $request['name'];
+            Auth::user()->participant->lastname = $request['second_name'];
+            Auth::user()->participant->email = $request['email'];
+            Auth::user()->participant->modified = Carbon::now(config('app.timezone'));
+            Auth::user()->participant->save();
+        } catch (Exception $ex) {
 
+        }
         Auth::user()->name = $request['name'];
         Auth::user()->second_name = $request['second_name'];
         Auth::user()->gender = $request['gender'];
         Auth::user()->email = $request['email'];
 
         Auth::user()->date_birth = Carbon::parse($request['date_birth']);
-        Auth::user()->country_id=$request['country'];
-        Auth::user()->region_id=($request['region']!='undefined') ? $request['region'] : null;
-        Auth::user()->city_id=($request['city']!='undefined') ? $request['city'] : null;
+        Auth::user()->country_id = $request['country'];
+        Auth::user()->region_id = ($request['region'] != 'undefined') ? $request['region'] : null;
+        Auth::user()->city_id = ($request['city'] != 'undefined') ? $request['city'] : null;
 
         Auth::user()->save();
 
@@ -103,12 +105,11 @@ class AccountController extends Controller
     }
 
 
-
     public function delete($id)
     {
         try {
             User::whereId($id)->delete();
-        }catch(\Exception $ex){
+        } catch (\Exception $ex) {
             return redirect('site.index');
         }
 
