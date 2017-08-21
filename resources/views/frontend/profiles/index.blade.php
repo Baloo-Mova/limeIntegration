@@ -18,7 +18,7 @@
                 </tr>
                 <tr>
                     <td>@lang('messages.profile_page_table_country')</td>
-                    <td>{{ isset($user_info->country_id) ? $user_info->country->first()->title : " не указана" }}</td>
+                    <td>{{ isset($user_info->country_id) ? $user_info->country->title : " не указана" }}</td>
                 </tr>
                 <tr>
                     <td>@lang('messages.profile_page_table_region')</td>

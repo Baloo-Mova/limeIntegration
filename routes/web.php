@@ -60,6 +60,12 @@ Route::group(['namespace' => 'Admin', 'middleware' => ['checkadmin']], function 
         Route::get('/getUsers', ['uses' => 'AdminSurveysProcessingController@getUsers', 'as' => 'admin.get.users']);
 
         Route::get('/', ['uses' => 'AdminSiteController@welcome', 'as' => 'admin.welcome']);
+
+        Route::group(['prefix'=>'settings'],function(){
+            Route::get('/',['uses'=>'AdminSettings@index','as'=>'admin.settings']);
+            Route::post('/',['uses'=>'AdminSettings@store','as'=>'admin.settings.store']);
+        });
+
         Route::group(['prefix' => 'payments'], function () {
             Route::group(['prefix' => 'payments_types'], function () {
                 Route::get('/', ['uses' => 'AdminPaymentsTypesController@index', 'as' => 'admin.paymentstypes.index']);

@@ -76,6 +76,9 @@
 
                 </ul>
             </li>
+                <li class="{{ (Request::is('admin/settings') ? 'active' : "") }}">
+                    <a href="{{route('admin.settings')}}"><i class='fa fa-cogs'></i> <span>Настройки</span></a>
+                </li>
             @endif
             <li class="{{ (Request::is('admin/users') ? 'active' : (Request::is('admin/users/*')? "active": "")) }}"><a href="{{route('admin.users.index')}}"><i class='fa fa-user'></i> <span>Пользователи</span></a></li>
            </ul><!-- /.sidebar-menu -->

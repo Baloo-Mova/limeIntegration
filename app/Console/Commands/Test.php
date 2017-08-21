@@ -43,6 +43,9 @@ class Test extends Command
      */
     public function handle()
     {
-
+        dd((new MailMessage)
+            ->subject("subj")
+            ->greeting("gr")
+            ->line("line"));
     }
 }
