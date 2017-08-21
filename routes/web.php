@@ -64,6 +64,8 @@ Route::group(['namespace' => 'Admin', 'middleware' => ['checkadmin']], function 
         Route::group(['prefix'=>'settings'],function(){
             Route::get('/',['uses'=>'AdminSettings@index','as'=>'admin.settings']);
             Route::post('/',['uses'=>'AdminSettings@store','as'=>'admin.settings.store']);
+            Route::post('/save-smtp',['uses'=>'AdminSettings@saveSmtp','as'=>'admin.settings.save.smtp']);
+            Route::post('/check-smtp',['uses'=>'AdminSettings@checkSmtp','as'=>'admin.settings.check.smtp']);
         });
 
         Route::group(['prefix' => 'payments'], function () {

@@ -23723,3 +23723,7 @@ button.toast-close-button {
 .select2-container{
     width: 100% !important;
 }
+.admin_settings_ul{
+    list-style: none;
+    padding-left: 0;
+}
