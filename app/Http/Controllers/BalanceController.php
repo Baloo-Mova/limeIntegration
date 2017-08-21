@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\BalanceTransactionLog;
 use App\Models\PaymentsType;
+use App\Models\Settings;
 use App\Models\WithdrawBalance;
 use Illuminate\Http\Request;
 
@@ -41,7 +42,12 @@ class BalanceController extends Controller
 
     public function balance()
     {
-        return view('frontend.rewards.balance');
+        $settings = Settings::find(1);
+        if(!isset($settings)){
+            $min_sum = 500;
+        }
+        $min_sum = $settings->min_sum;
+        return view('frontend.rewards.balance', ['min_sum' => $min_sum]);
     }
 
     public function indexwithdraw()

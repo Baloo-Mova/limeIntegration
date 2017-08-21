@@ -14,6 +14,8 @@ use Carbon\Carbon;
 use App\User;
 use App\Notifications\SendMessage;
 use App\Notifications\UserNotification;
+use App\Models\Settings;
+use App\Jobs\SendJob;
 
 class AdminSurveysController extends Controller
 {
@@ -124,14 +126,14 @@ class AdminSurveysController extends Controller
             }
             $url = "/gotosurvey/" . $sid . "/" . $token->token;
             $message = [
-                'text' => "Для Вас доступен новый опрос.",
-                'greeting' => "Здравствуйте, " . $user_for_notificate->name . " " . $user_for_notificate->second_name . "!",
-                'action_title' => "Пройти опрос",
-                'subject' => "Вам доступен новый опрос",
-                'url' => $url,
+                'type' => "new_survey",
+                'name' => $user_for_notificate->name,
+                'surname' => $user_for_notificate->second_name,
+                'email' => $user_for_notificate->email,
+                'url' => url($url),
                 'button' => "Вы можете пройти его по <a href='" . url($url) . "'>этой ссылке</a>",
             ];
-            $user_for_notificate->notify(new UserNotification($message, 'mail'));
+            dispatch(new SendJob($message));
 
         }
 
@@ -227,15 +229,16 @@ class AdminSurveysController extends Controller
                 continue;
             }
             $url = "/gotosurvey/" . $sid . "/" . $user->token;
+
             $message = [
-                'text' => "Напоминаем, что для Вас доступен новый опрос.",
-                'greeting' => "Здравствуйте, " . $u->name . " " . $u->second_name . "!",
-                'action_title' => "Пройти опрос",
-                'subject' => "Напоминание об опросе",
-                'url' => $url,
+                'type' => "new_survey",
+                'name' => $u->name,
+                'surname' => $u->second_name,
+                'email' => $u->email,
+                'url' => url($url),
                 'button' => "Вы можете пройти его по <a href='" . url($url) . "'>этой ссылке</a>",
             ];
-            $u->notify(new UserNotification($message, 'mail'));
+            dispatch(new SendJob($message));
         }
 
         Toastr::success('Напоминания отправлены всем непрошедшим пользователям!', 'Сохранено!');

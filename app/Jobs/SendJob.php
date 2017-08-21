@@ -1,66 +1,45 @@
 <?php
 
-namespace App\Notifications;
+namespace App\Jobs;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Notification;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Messages\DatabaseMessage;
+use Illuminate\Foundation\Bus\Dispatchable;
 use PHPMailer;
 use App\Helpers\Macros;
 use App\Models\Settings;
 
-class UserNotification extends Notification
+class SendJob implements ShouldQueue
 {
-    use Queueable;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     private $message;
-    private $via;
+
     /**
-     * Create a new notification instance.
+     * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($message, $via)
+    public function __construct($message)
     {
         $this->message = [
             'url' => $message["url"],
+            'name' => $message["name"],
+            'surname' => $message["surname"],
+            'email' => $message["email"],
             'type' => $message["type"],
             'button' => $message["button"]
         ];
-        $this->via = $via;
     }
 
     /**
-     * Get the notification's delivery channels.
+     * Execute the job.
      *
-     * @param  mixed  $notifiable
-     * @return array
+     * @return void
      */
-    public function via($notifiable)
+    public function handle()
     {
-        switch ($this->via){
-            case "all":
-                return ['mail', 'database'];
-                break;
-            case "mail":
-                return ['mail'];
-                break;
-            case "database":
-                return ['database'];
-                break;
-        }
-    }
-
-    /**
-     * Get the mail representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
-     */
-    public function toMail($notifiable)
-    {
-
         $settings = Settings::find(1);
         if(!isset($settings)){
             return false;
@@ -75,8 +54,8 @@ class UserNotification extends Notification
         }
 
         $text = str_replace(["[name]", "[surname]", "[link]"],
-                            [$notifiable->name, $notifiable->second_name, $this->message['url']],
-                            $text_tmp);
+            [ $this->message['name'],  $this->message['surname'], $this->message['url']],
+            $text_tmp);
 
         try {
             $mail = new PHPMailer;
@@ -90,7 +69,7 @@ class UserNotification extends Notification
             $mail->Port = $settings->smtp_port;                                    // TCP port to connect to
             $mail->CharSet = 'UTF-8';
             $mail->setFrom(\Auth::user()->email);
-            $mail->addAddress($notifiable->email);     // Add a recipient
+            $mail->addAddress( $this->message['email']);     // Add a recipient
 
             $mail->Subject = $subject;
             $mail->Body = $text;
@@ -103,27 +82,5 @@ class UserNotification extends Notification
         } catch (\Exception $ex) {
             return false;
         }
-
-
-
-    }
-
-    /**
-     * Get the array representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
-    public function toArray($notifiable)
-    {
-        $text_tmp = Macros::convertMacro($this->message['text']);
-
-        $text = str_replace(["[name]", "[surname]", "[link]"],
-            [$this->user->name, $this->user->second_name, $this->message['url']],
-            $text_tmp);
-
-        return new DatabaseMessage([
-            'message' => $text."<br>".$this->message["button"]
-        ]);
     }
 }

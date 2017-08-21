@@ -14,6 +14,8 @@ use Carbon\Carbon;
 use App\Notifications\UserNotification;
 use App\User;
 use App\Models\Country;
+use App\Models\Settings;
+use App\Jobs\SendJob;
 
 class AdminManageSurveyParticipantsController extends Controller
 {
@@ -153,14 +155,14 @@ class AdminManageSurveyParticipantsController extends Controller
             }
             $url = "/gotosurvey/" . $survey_id . "/" . $token->token;
             $message = [
-                'text' => "Для Вас доступен новый опрос.",
-                'greeting' => "Здравствуйте, " . $user_for_notificate->name . " " . $user_for_notificate->second_name . "!",
-                'action_title' => "Пройти опрос",
-                'subject' => "Вам доступен новый опрос",
-                'url' => $url,
+                'type' => "new_survey",
+                'name' => $user_for_notificate->name,
+                'surname' => $user_for_notificate->second_name,
+                'email' => $user_for_notificate->email,
+                'url' => url($url),
                 'button' => "Вы можете пройти его по <a href='" . url($url) . "'>этой ссылке</a>",
             ];
-            $user_for_notificate->notify(new UserNotification($message, 'mail'));
+            dispatch(new SendJob($message));
 
 
         }

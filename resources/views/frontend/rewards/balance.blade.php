@@ -14,9 +14,9 @@
         </div>
         <div class="row">
             <div class="lead col-xs-12 col-sm-12 col-md-12 text-danger">
-                @lang('messages.balance_page_message1') <b>{{config('app.min_sum')}}</b>.
+                @lang('messages.balance_page_message1') <b>{{$min_sum}}</b>.
                 @if(Auth::user()->balance < config('app.min_sum'))
-                    @lang('messages.balance_page_message2') <b>{{config('app.min_sum')-Auth::user()->balance}}</b>.
+                    @lang('messages.balance_page_message2') <b>{{$min_sum-Auth::user()->balance}}</b>.
                 @endif
                 <br>
                 @lang('messages.balance_page_message3')
