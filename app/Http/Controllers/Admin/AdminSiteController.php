@@ -46,7 +46,7 @@ class AdminSiteController extends Controller
     }
     public function welcome(){
 
-        return view('admin.welcome');
+        return view('admin.surveys.index');
 
     }
 

@@ -1,7 +1,3 @@
-<!DOCTYPE html>
-<!--
-Landing page based on Pratt: http://blacktie.co/demo/pratt/
--->
 <html lang="en">
 <head>
     <meta charset="utf-8">
