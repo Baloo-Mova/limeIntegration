@@ -32,7 +32,7 @@
                                 <tr>
                                     <td>{{ $survey->sid }}</td>
                                     <td>{{ $survey->LimeSurveysLanguage->surveyls_title }}</td>
-                                    <td>{{ $survey->reward }} ₽</td>
+                                    <td>{{ $survey->reward }}</td>
                                     <td>{{ ($survey->active == 'Y' ? 'Активен' : 'Не активен') }}</td>
                                     <td>{{ ($survey->type_id == 0 ? 'Анкета' : 'Опрос') }}</td>
                                     <td>

@@ -94,7 +94,7 @@
                                                 <option value="" selected disabled>Выберите анкету</option>
                                                 @forelse($worksheets as $worksheet)
                                                     <option value="{{ $worksheet->sid }}">
-                                                        {{ $worksheet->limeSurveysLanguage->first()->surveyls_title }}
+                                                        {{ $worksheet->limeSurveysLanguage->surveyls_title }}
                                                     </option>
                                                 @empty
                                                     <option value="" disabled>Анкет нет</option>
@@ -150,7 +150,7 @@
                                 <select name="survey" id="" class="form-control">
                                     <option value="" disabled selected>Выберите опрос</option>
                                     @forelse($surveys as $survey)
-                                        <option value="{{ $survey->sid }}" >{{ $survey->LimeSurveysLanguage->first()->surveyls_title }}</option>
+                                        <option value="{{ $survey->sid }}" >{{ $survey->LimeSurveysLanguage->surveyls_title }}</option>
                                     @empty
                                         <option value="" disabled>Опросов нет</option>
                                     @endforelse
