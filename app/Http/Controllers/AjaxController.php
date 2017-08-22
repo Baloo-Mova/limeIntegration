@@ -214,7 +214,10 @@ class AjaxController extends Controller
         $res = [];
         $lime_base = DB::connection('mysql_lime');
         foreach ($data as $dt) {
-            $f = $lime_base->table('tokens_' . $dt["survey_id"])->where(['token' => $dt["token"]])->first();
+            try {
+                $f = $lime_base->table('tokens_' . $dt["survey_id"])->where(['token' => $dt["token"]])->first();
+            } catch (\Exception $ex) {
+            }
             if (!isset($f)) {
                 continue;
             }
@@ -230,25 +233,33 @@ class AjaxController extends Controller
     protected function findParticipantId($sid, $arr)
     {
         $res = [];
+
         $lime_base = DB::connection('mysql_lime');
         foreach ($arr as $item) {
-            $f = $lime_base->table('tokens_' . $sid)->where(['token' => $item->token])->first();
-            $res[] = $f->participant_id;
+            try {
+                $f = $lime_base->table('tokens_' . $sid)->where(['token' => $item->token])->first();
+                $res[] = $f->participant_id;
+            } catch (\Exception $ex) {
+            }
         }
+
         return $res;
     }
 
     public function getCountParticipants($survey_id)
     {
-        $lime_base = DB::connection('mysql_lime');
-        $count = $lime_base->table('tokens_' . $survey_id)->distinct('participant_id')->count('participant_id');
+        $count = 0;
+        try {
+            $lime_base = DB::connection('mysql_lime');
+            $count = $lime_base->table('tokens_' . $survey_id)->distinct('participant_id')->count('participant_id');
 
+        } catch (\Exception $ex) {
+        }
         if (!isset($count)) {
             return json_encode("error");
         }
 
         return json_encode($count);
-        return $count;
     }
 
     public function getQuotes($survey_id)
