@@ -39,7 +39,7 @@
                             <select class="form-control survey_select">
                                 <option disabled selected></option>
                                 @forelse($surveys as $survey)
-                                    <option value="{{ $survey->sid }}">{{ $survey->LimeSurveysLanguage->first()->surveyls_title }}</option>
+                                    <option value="{{ $survey->sid }}">{{ $survey->LimeSurveysLanguage->surveyls_title }}</option>
                                 @empty
                                     <option disabled>Нет опросов</option>
                                 @endforelse
@@ -61,7 +61,7 @@
                                 <select class="form-control survey_select_quote">
                                         <option disabled selected></option>
                                     @forelse($surveys as $survey)
-                                        <option value="{{ $survey->sid }}">{{ $survey->LimeSurveysLanguage->first()->surveyls_title }}</option>
+                                        <option value="{{ $survey->sid }}">{{ $survey->LimeSurveysLanguage->surveyls_title }}</option>
                                     @empty
                                         <option disabled>Нет опросов</option>
                                     @endforelse

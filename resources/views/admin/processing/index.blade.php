@@ -40,7 +40,7 @@
                                             <label for="surveys">Анкеты</label><br>
                                             <select name="surveys[]" class="surveys" id="surveys" multiple>
                                                 @forelse($surveys as $survey)
-                                                    <option value="{{ $survey->sid }}">{{ $survey->LimeSurveysLanguage->first()->surveyls_title }}</option>
+                                                    <option value="{{ $survey->sid }}">{{ $survey->LimeSurveysLanguage->surveyls_title }}</option>
                                                 @empty
                                                     <option disabled selected>Нет пользователей</option>
                                                 @endforelse

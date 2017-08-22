@@ -310,7 +310,7 @@
                     '<option value="" selected disabled>Выберите анкету</option>'+
                 '@forelse($worksheets as $worksheet)'+
                 '<option value="{{ $worksheet->sid }}">'+
-                        '{{ $worksheet->limeSurveysLanguage->first()->surveyls_title }}'+
+                        '{{ $worksheet->limeSurveysLanguage->surveyls_title }}'+
                     '</option>'+
                         '@empty'+
                     '<option value="" disabled>Анкет нет</option>'+

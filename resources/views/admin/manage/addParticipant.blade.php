@@ -18,7 +18,7 @@
                                         <select name="survey" id="" class="form-control">
                                             <option value="" disabled selected>Выберите опрос</option>
                                             @forelse($surveys as $survey)
-                                                <option value="{{ $survey->sid }}" >{{ $survey->LimeSurveysLanguage->first()->surveyls_title }}</option>
+                                                <option value="{{ $survey->sid }}" >{{ $survey->LimeSurveysLanguage->surveyls_title }}</option>
                                             @empty
                                                 <option value="" disabled>Опросов нет</option>
                                             @endforelse
