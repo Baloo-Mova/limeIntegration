@@ -101,6 +101,15 @@
                                            data-pjax="0">
                                             <span class="fa fa-refresh"></span>
                                         </a>
+
+                                        @if($survey->type_id == 1)
+                                        <a href="{{route('admin.surveys.to.all', ['sid' => $survey->sid])}}"
+                                           title="Общий опрос"
+                                           aria-label="Update"
+                                           data-pjax="0">
+                                            <span class="fa fa-users"></span>
+                                        </a>
+                                        @endif
                                     </td>
                                 </tr>
                             @empty

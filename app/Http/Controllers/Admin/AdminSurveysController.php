@@ -224,4 +224,11 @@ class AdminSurveysController extends Controller
         Toastr::success('Напоминания отправлены всем непрошедшим пользователям!', 'Сохранено!');
         return back();
     }
+
+    protected function toAll($sid)
+    {
+        $this->addParticipantsToWorksheet($sid);
+        Toastr::success('Пользователи успешно добавлены к опросу!', 'Сохранено!');
+        return back();
+    }
 }
