@@ -124,18 +124,11 @@ class AdminSurveysController extends Controller
             if (!isset($token)) {
                 continue;
             }
-            $url = "/gotosurvey/" . $sid . "/" . $token->token;
-            $message = [
-                'type' => "new_survey",
-                'name' => $user_for_notificate->name,
-                'surname' => $user_for_notificate->second_name,
-                'email' => $user_for_notificate->email,
-                'url' => url($url),
-                'button' => "Вы можете пройти его по <a href='" . url($url) . "'>этой ссылке</a>",
-            ];
-            dispatch(new SendJob($message));
-
         }
+        dispatch(new SendJob([
+            'type' => "new_survey",
+            'survey_id' => $sid
+        ], array_column($partisipants->toArray(), 'participant_id')));
 
         $lime_base->table('survey_links')->insert($res);
 
@@ -223,23 +216,10 @@ class AdminSurveysController extends Controller
             return back();
         }
 
-        foreach ($users as $user) {
-            $u = User::where('ls_participant_id', $user->participant_id)->first();
-            if (!isset($u)) {
-                continue;
-            }
-            $url = "/gotosurvey/" . $sid . "/" . $user->token;
-
-            $message = [
-                'type' => "new_survey",
-                'name' => $u->name,
-                'surname' => $u->second_name,
-                'email' => $u->email,
-                'url' => url($url),
-                'button' => "Вы можете пройти его по <a href='" . url($url) . "'>этой ссылке</a>",
-            ];
-            dispatch(new SendJob($message));
-        }
+        dispatch(new SendJob([
+            'type' => "remind_survey",
+            'survey_id' => $sid
+        ], array_column(collect($users)->map(function($x){ return (array) $x; })->toArray(), 'participant_id')));
 
         Toastr::success('Напоминания отправлены всем непрошедшим пользователям!', 'Сохранено!');
         return back();

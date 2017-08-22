@@ -10,27 +10,26 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use PHPMailer;
 use App\Helpers\Macros;
 use App\Models\Settings;
+use Illuminate\Support\Facades\DB;
 
 class SendJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     private $message;
+    private $users;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($message)
+    public function __construct($message, $users)
     {
         $this->message = [
-            'url' => $message["url"],
-            'name' => $message["name"],
-            'surname' => $message["surname"],
-            'email' => $message["email"],
             'type' => $message["type"],
-            'button' => $message["button"]
+            'survey_id' => $message["survey_id"]
         ];
+        $this->users = $users;
     }
 
     /**
@@ -52,35 +51,43 @@ class SendJob implements ShouldQueue
             $subject = 'Напоминание об опросе';
             $text_tmp = Macros::convertMacro($settings->remind_message_text);
         }
+        foreach ($this->users as $user){
+            $participant = DB::connection('mysql_lime')->table('tokens_' . $this->message['survey_id'])->where(['participant_id' => $user])->first();
 
-        $text = str_replace(["[name]", "[surname]", "[link]"],
-            [ $this->message['name'],  $this->message['surname'], $this->message['url']],
-            $text_tmp);
+            $url = url("/gotosurvey/" . $this->message['survey_id'] . "/" . $participant->token);
+            $button = "Вы можете пройти его по <a href='" . $url . "'>этой ссылке</a>";
 
-        try {
-            $mail = new PHPMailer;
-            // $mail->SMTPDebug = 3;                               // Enable verbose debug output
-            $mail->isSMTP();                                      // Set mailer to use SMTP
-            $mail->Host = $settings->smtp;  // Specify main and backup SMTP servers
-            $mail->SMTPAuth = true;                               // Enable SMTP authentication
-            $mail->Username = $settings->smtp_login;                 // SMTP username
-            $mail->Password = $settings->smtp_pasw;                           // SMTP password
-            $mail->SMTPSecure = 'ssl';                            // Enable TLS encryption, `ssl` also accepted
-            $mail->Port = $settings->smtp_port;                                    // TCP port to connect to
-            $mail->CharSet = 'UTF-8';
-            $mail->setFrom(\Auth::user()->email);
-            $mail->addAddress( $this->message['email']);     // Add a recipient
+            $text = str_replace(["[name]", "[surname]", "[link]"],
+                [ $participant->firstname,  $participant->lastname, $url],
+                $text_tmp);
 
-            $mail->Subject = $subject;
-            $mail->Body = $text;
+            try {
+                $mail = new PHPMailer;
+                // $mail->SMTPDebug = 3;                               // Enable verbose debug output
+                $mail->isSMTP();                                      // Set mailer to use SMTP
+                $mail->Host = $settings->smtp;  // Specify main and backup SMTP servers
+                $mail->SMTPAuth = true;                               // Enable SMTP authentication
+                $mail->Username = $settings->smtp_login;                 // SMTP username
+                $mail->Password = $settings->smtp_pasw;                           // SMTP password
+                $mail->SMTPSecure = 'ssl';                            // Enable TLS encryption, `ssl` also accepted
+                $mail->Port = $settings->smtp_port;                                    // TCP port to connect to
+                $mail->CharSet = 'UTF-8';
+                $mail->setFrom(\Auth::user()->email);
+                $mail->addAddress( $participant->email);     // Add a recipient
 
-            if (!$mail->send()) {
-                return false;
-            } else {
-                return true;
+                $mail->Subject = $subject;
+                $mail->Body = $text;
+
+                if (!$mail->send()) {
+                    continue;
+                } else {
+                    continue;
+                }
+            } catch (\Exception $ex) {
+                continue;
             }
-        } catch (\Exception $ex) {
-            return false;
         }
+        return true;
+
     }
 }

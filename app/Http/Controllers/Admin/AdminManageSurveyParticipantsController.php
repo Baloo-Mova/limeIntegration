@@ -153,19 +153,12 @@ class AdminManageSurveyParticipantsController extends Controller
             if (!isset($token)) {
                 continue;
             }
-            $url = "/gotosurvey/" . $survey_id . "/" . $token->token;
-            $message = [
-                'type' => "new_survey",
-                'name' => $user_for_notificate->name,
-                'surname' => $user_for_notificate->second_name,
-                'email' => $user_for_notificate->email,
-                'url' => url($url),
-                'button' => "Вы можете пройти его по <a href='" . url($url) . "'>этой ссылке</a>",
-            ];
-            dispatch(new SendJob($message));
-
-
         }
+
+        dispatch(new SendJob([
+            'type' => "new_survey",
+            'survey_id' => $survey_id
+        ], $participants));
 
         return true;
     }
