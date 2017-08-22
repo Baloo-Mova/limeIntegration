@@ -50,14 +50,8 @@
                     </li>
                 </ul>
             </li>
-            <li class="treeview {{ (Request::is('admin/messages') ? 'active' : (Request::is('admin/messages/*')? "active": "")) }}">
-                <a href="#"><i class='fa fa-link'></i> <span>Управление людьми</span> <i class="fa fa-angle-left pull-right"></i></a>
-                <ul class="treeview-menu">
-                    <li class=""><a href="{{ route('admin.manage.index') }}">Поиск по анкетам</a></li>
-                    <li><a href="{{ route('admin.manage.addParticipant') }}">Добавление к опросу</a></li>
-                </ul>
-            </li>
-            @if(\Auth::user()->role_id == 2)
+            <li class="{{ (Request::is('admin/manage') ? 'active' : '') }}"><a href="{{ route('admin.manage.index') }}"><i class='fa fa-link'></i> Поиск по анкетам</a></li>
+        @if(\Auth::user()->role_id == 2)
             <li><a href="{{ route('admin.pages.index') }}"><i class='fa fa-link'></i> <span>Страницы</span></a></li>
             @endif
             <li class="{{ (Request::is('admin/messages/message-create') ? 'active' : "") }}">

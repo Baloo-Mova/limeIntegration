@@ -57,7 +57,7 @@ class SendJob implements ShouldQueue
             $url = url("/gotosurvey/" . $this->message['survey_id'] . "/" . $participant->token);
             $button = "Вы можете пройти его по <a href='" . $url . "'>этой ссылке</a>";
 
-            $text = str_replace(["[name]", "[surname]", "[link]"],
+            $text = str_replace(["[name]", "[surname]", "[surveylink]"],
                 [ $participant->firstname,  $participant->lastname, $url],
                 $text_tmp);
 

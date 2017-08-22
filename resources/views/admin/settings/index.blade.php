@@ -27,7 +27,7 @@
                                     <ul class="admin_settings_ul">
                                         <li>[name]</li>
                                         <li>[surname]</li>
-                                        <li>[link]</li>
+                                        <li>[surveylink]</li>
                                     </ul>
                                 </div>
                             </div>
