@@ -16,7 +16,7 @@
         <tbody>
         @foreach($surveys as $item)
             <tr>
-                <td>{{$item->limesurvey->LimeSurveysLanguage->first()->surveyls_title}}</td>
+                <td>{{$item->limesurvey->LimeSurveysLanguage->surveyls_title}}</td>
                 <td class="reward-profiles">{{$item->limesurvey->reward}} ₽</td>
                 <td>
                 <?php
