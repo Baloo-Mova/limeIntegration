@@ -17,10 +17,12 @@ Route::get('/redirect', ['uses' => 'Auth\SocialController@redirectFaceBook', 'as
 Route::get('/callback', ['uses' => 'Auth\SocialController@callbackFaceBook', 'as' => 'facebook.socialite.callback']);
 
 Route::get('/', ['uses' => 'SiteController@welcome', 'as' => 'site.welcome']);
+Route::get('/need-verify-email', ['uses' => 'SiteController@needVerifyEmail', 'as' => 'need.verify.email']);
+Route::get('/verify-email/{user_id}/{token}', ['uses' => 'SiteController@verifyEmail', 'as' => 'verify.email']);
 
 Route::post('select-regions-ajax', ['as' => 'select-regions-ajax', 'uses' => 'AjaxController@selectRegionsAjax']);
 Route::get('error/{error}', ['uses' => 'SiteController@error', 'as' => 'error']);
-Route::group(['middleware' => ['auth', 'checkFull']], function () {
+Route::group(['middleware' => ['auth', 'checkFull', 'emailVerified']], function () {
     Route::get('/surveys', ['uses' => 'SiteController@index', 'as' => 'site.index']);
     Route::get('/change-locale/{locale}', ['uses' => 'SiteController@changeLocale', 'as' => 'site.change.locale']);
     Route::get('/gotosurvey/{id}/{token}', ['uses' => 'SiteController@gotoSurvey', 'as' => 'site.goto.survey']);

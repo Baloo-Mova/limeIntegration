@@ -72,7 +72,7 @@ class SendJob implements ShouldQueue
                 $mail->SMTPSecure = 'ssl';                            // Enable TLS encryption, `ssl` also accepted
                 $mail->Port = $settings->smtp_port;                                    // TCP port to connect to
                 $mail->CharSet = 'UTF-8';
-                $mail->setFrom(\Auth::user()->email);
+                $mail->setFrom($settings->smtp_login);
                 $mail->addAddress( $participant->email);     // Add a recipient
 
                 $mail->Subject = $subject;

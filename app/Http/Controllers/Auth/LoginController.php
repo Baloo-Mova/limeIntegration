@@ -46,11 +46,17 @@ class LoginController extends Controller
             return redirect('/');
         }
 
+
+        if($user->verified != 1){
+            return redirect(route('need.verify.email'));
+        }
+
         if($user->role_id != 1){
             $this->redirectTo = '/admin/surveys';
         }else{
             $this->redirectTo = '/surveys';
         }
+
 
         $this->validateLogin($request);
 

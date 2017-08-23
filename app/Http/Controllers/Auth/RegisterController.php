@@ -12,6 +12,8 @@ use App\Models\Lime\LimeParticipants;
 use App\Models\Lime\LimeSurveys;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use PHPMailer;
+use App\Models\Settings;
 
 class RegisterController extends Controller
 {
@@ -33,7 +35,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/';
+    protected $redirectTo = '/need-verify-email';
 
     /**
      * Create a new controller instance.
@@ -144,7 +146,8 @@ class RegisterController extends Controller
 
         }
 
-        return User::create([
+        $user_token = $this->gen_uuid();
+        $user = User::create([
             'name' => $data['name'],
             'second_name' => $data['second_name'],
             'gender' => $data['gender'],
@@ -156,7 +159,43 @@ class RegisterController extends Controller
             'city_id'=>($data['city']!='undefined') ? $data['city'] : null,
             'ls_password'=>($data['password']),
             'ls_participant_id'=>$guid,
+            'token' => $user_token
         ]);
+
+        $settings = Settings::find(1);
+        if(!isset($settings)){
+            return false;
+        }
+
+        try {
+            $mail = new PHPMailer;
+            // $mail->SMTPDebug = 3;                               // Enable verbose debug output
+            $mail->isSMTP();                                      // Set mailer to use SMTP
+            $mail->Host = $settings->smtp;  // Specify main and backup SMTP servers
+            $mail->SMTPAuth = true;                               // Enable SMTP authentication
+            $mail->Username = $settings->smtp_login;                 // SMTP username
+            $mail->Password = $settings->smtp_pasw;                           // SMTP password
+            $mail->SMTPSecure = 'ssl';                            // Enable TLS encryption, `ssl` also accepted
+            $mail->Port = $settings->smtp_port;                                    // TCP port to connect to
+            $mail->CharSet = 'UTF-8';
+            $mail->setFrom($settings->smtp_login);
+            $mail->addAddress( $user->email);     // Add a recipient
+
+            $mail->Subject = "Подтверждение регистрации";
+            $url = "<a href='".route('verify.email', ['user_id' => $user->id, 'token' => $user->token])."'>ссылке</a>";
+            $mail->Body = "Здравствуйте, ".$user->name." ".$user->second_name."! Спасибо за регистрацию на нашем сайте. Для потверждения регистрации, пройдите по ".$url;
+            $mail->isHTML(true);
+
+            if (!$mail->send()) {
+                return $user;
+            } else {
+                return $user;
+            }
+        } catch (\Exception $ex) {
+            return $user;
+        }
+
+        return $user;
     }
 
     protected function gen_uuid()

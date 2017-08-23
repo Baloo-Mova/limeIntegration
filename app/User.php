@@ -87,7 +87,9 @@ class User extends Authenticatable
         'interests_tags',
         'ls_participant_id',
         'rating',
-        'facebook'
+        'facebook',
+        'token',
+        'verified'
     ];
 
     /**
@@ -102,6 +104,11 @@ class User extends Authenticatable
     public function isAdmin()
     {
         return $this->role_id;
+    }
+
+    public function isVerified()
+    {
+        return $this->verified;
     }
 
     public function country()

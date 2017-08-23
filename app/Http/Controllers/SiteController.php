@@ -22,6 +22,7 @@ use org\jsonrpcphp\JsonRPCClient;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Session;
+use Brian2694\Toastr\Facades\Toastr;
 
 
 class SiteController extends Controller
@@ -106,5 +107,31 @@ class SiteController extends Controller
             Session::put('applocale', $locale);
         }
         return back();
+    }
+
+    public function needVerifyEmail()
+    {
+        return view('needVerify');
+    }
+
+    public function verifyEmail($user_id, $token)
+    {
+        $user = User::find($user_id);
+        if(!isset($user)){
+            Toastr::error("Данный пользователь не существует.", "Ошибка!");
+            return redirect(route('site.index'));
+        }
+
+        if($token != $user->token){
+            Toastr::error("Ключи регистрации не совпадают", "Ошибка!");
+            return redirect(route('site.index'));
+        }
+
+        $user->verified = 1;
+        $user->token = null;
+        $user->save();
+
+        Toastr::success("Вы успешно зарегистрировались в системе.", "Ошибка!");
+        return redirect(url('/surveys'));
     }
 }

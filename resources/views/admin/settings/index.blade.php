@@ -115,7 +115,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="form-group col-md-4">
+                                <div class="form-group col-md-12">
                                     <a href="#" class="btn btn-success test-button" data-toggle="modal" data-target="#testModal">Проверить SMTP</a>
                                     <button type="submit" class="btn btn-default">Сохранить</button>
                                 </div>
