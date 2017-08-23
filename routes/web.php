@@ -20,6 +20,7 @@ Route::get('/', ['uses' => 'SiteController@welcome', 'as' => 'site.welcome']);
 Route::get('/need-verify-email', ['uses' => 'SiteController@needVerifyEmail', 'as' => 'need.verify.email']);
 Route::get('/verify-email/{user_id}/{token}', ['uses' => 'SiteController@verifyEmail', 'as' => 'verify.email']);
 Route::get('/verify-email-success', ['uses' => 'SiteController@verifyEmailSuccess', 'as' => 'verify.email.success']);
+Route::get('/verify-repeat/{user_id}', ['uses' => 'SiteController@verifyEmailRepeat', 'as' => 'verify.email.repeat']);
 
 Route::post('select-regions-ajax', ['as' => 'select-regions-ajax', 'uses' => 'AjaxController@selectRegionsAjax']);
 Route::get('error/{error}', ['uses' => 'SiteController@error', 'as' => 'error']);
