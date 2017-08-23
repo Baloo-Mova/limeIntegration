@@ -131,7 +131,11 @@ class SiteController extends Controller
         $user->token = null;
         $user->save();
 
-        Toastr::success("Вы успешно зарегистрировались в системе.", "Ошибка!");
-        return redirect(url('/surveys'));
+        return redirect(route('verify.email.success'));
+    }
+
+    public function verifyEmailSuccess()
+    {
+        return view('verified');
     }
 }
