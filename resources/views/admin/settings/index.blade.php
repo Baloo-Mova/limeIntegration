@@ -18,12 +18,8 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="form-group col-md-7">
-                                    <label for="new_message_text">Текст письма о новом сообщении</label>
-                                    <textarea name="new_message_text" class="form-control" id="new_message_text">{{ isset($settings) ? $settings->new_message_text : '' }}</textarea>
-                                </div>
-                                <div class="form-group col-md-5">
-                                    <label for="new_message_text">Выражения, которые будут заменены</label>
+                                <div class="col-md-12">
+                                    <label for="new_message_text">Выражения в тексте письма, которые будут заменены</label>
                                     <ul class="admin_settings_ul">
                                         <li>[name]</li>
                                         <li>[surname]</li>
@@ -32,9 +28,15 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="form-group col-md-7">
+                                <div class="form-group col-md-12">
+                                    <label for="new_message_text">Текст письма о новом опросе</label>
+                                    <textarea name="new_message_text" class="form-control" rows="15" id="new_message_text">{{ isset($settings) ? $settings->new_message_text : '' }}</textarea>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-12">
                                     <label for="remind_message_text">Текст письма-напоминания</label>
-                                    <textarea name="remind_message_text" class="form-control" id="remind_message_text">{{ isset($settings) ? $settings->remind_message_text : '' }}</textarea>
+                                    <textarea name="remind_message_text" class="form-control" rows="15" id="remind_message_text">{{ isset($settings) ? $settings->remind_message_text : '' }}</textarea>
                                 </div>
                             </div>
                             <div class="row">
@@ -139,10 +141,9 @@
               $(".test-login").val(login);
               $(".test-pasw").val(pasw);
            });
-           $("textarea.tinymce").tinymce({
+            tinymce.init({ selector:'textarea',
                 plugins : ["advlist autolink lists link image charmap print preview anchor", "searchreplace visualblocks code fullscreen", "insertdatetime media table contextmenu paste"],
-                toolbar : "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
-            });
+                toolbar : "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"});
         });
     </script>
 @stop

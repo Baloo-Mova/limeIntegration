@@ -14,6 +14,7 @@
         "laravel/socialite": "^3.0",
         "laravel/tinker": "~1.0",
         "phpmailer/phpmailer": "^5.2",
+        "unisharp/laravel-filemanager": "^1.8",
         "weberhofer/jsonrpcphp": "^2.2"
     },
     "require-dev": {

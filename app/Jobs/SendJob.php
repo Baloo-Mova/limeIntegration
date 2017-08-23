@@ -77,6 +77,10 @@ class SendJob implements ShouldQueue
 
                 $mail->Subject = $subject;
                 $mail->Body = $text;
+                if(preg_match("/<[^<]+>/", $text, $m) != 0){
+                    $mail->IsHTML(true);
+                }
+
 
                 if (!$mail->send()) {
                     continue;
