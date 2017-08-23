@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Session;
 use Brian2694\Toastr\Facades\Toastr;
 use PHPMailer;
+use App\Models\Settings;
 
 
 class SiteController extends Controller
