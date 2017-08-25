@@ -33,11 +33,6 @@
                                             {{ $page->title }}
                                         </td>
                                         <td>
-                                            <a href="{{ route('admin.pages.show', ['id' => $page->id]) }}" title="View"
-                                               aria-label="View"
-                                               data-pjax="0">
-                                                <span class="fa fa-eye"></span>
-                                            </a>
 
                                             <a href="{{ route('admin.pages.edit', ['id' => $page->id]) }}" title="Update"
                                                aria-label="Update"

@@ -11,6 +11,30 @@
     <div class="container-fluid spark-screen">
 
         <div class="row">
+            <div class="modal fade" id="sendModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <form action="{{ route('admin.send.base.messages.list') }}" method="post">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title" id="myModalLabel">Написать пользователю</h4>
+                            </div>
+                            <div class="modal-body">
+                                    {{ csrf_field() }}
+                                    <input type="hidden" name="participant[0]" value="{{ $user->ls_participant_id }}">
+                                    <div class="form-group">
+                                        <label for="date_birth" class="col-form-label">Сообщение</label><br>
+                                        <textarea name="text" class="form-control" required></textarea>
+                                    </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+                                <button type="submit" class="btn btn-primary">Отправить сообщение</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
             <div class="box box-primary">
                 <div class="box-body">
                     <div class="card">
@@ -45,6 +69,9 @@
                                             <a href="{{ route('admin.users.delete', ['id'=>$user->id]) }}"
                                                onclick="return confirm('Вы точно хотите удалить этого пользователя')"
                                                class="btn-danger btn">Удалить</a>
+                                        </div>
+                                        <div class="btn-group">
+                                            <a href="" data-toggle="modal" data-target="#sendModal" class="btn btn-success">Написать пользователю</a>
                                         </div>
 
 

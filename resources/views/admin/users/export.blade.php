@@ -416,11 +416,16 @@
 
             $(".add_form_button").on("click", function () {
                 var current_id = $(this).data("currentId"),
-                    new_id = current_id + 1;
+                    new_id = current_id + 1,
+                    shift = "";
                 $(".count_parameters").val(new_id);
                 $(this).data("currentId", new_id);
                 $(this).attr("data-current-id", new_id);
 
+                if(new_id % 3 == 0){
+                    shift = "<div class='col-md-12'></div>";
+                }
+                
                 $(".root_wrap").append('<div class="col-xs-4" data-current-id="'+new_id+'">'+
                     '<!--<div class="text-center"><i class="fa fa-plus-circle" aria-hidden="true"></i></div>-->'+
                     '<div class="col-xs-12">'+
@@ -523,7 +528,7 @@
 
                     '</select>'+
                     '</div>'+
-                    '</div>');
+                    '</div></div>'+shift);
 
                 $(".questions_wrap_"+new_id).hide();
                 $(".answer_condition_"+new_id).hide();
