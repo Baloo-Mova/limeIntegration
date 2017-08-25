@@ -151,20 +151,24 @@ class AjaxController extends Controller
                     $userWhere[] = ['date_birth', '<', Carbon::now()->subYears($data["age_to_" . $i])->format("Y-m-d")];
                 }
 
-                $users = User::where($userWhere)
-                    ->get();
+                $users = User::where($userWhere)->whereNotNull('ls_participant_id')->select(DB::raw('name as firstname, second_name as lastname, ls_participant_id as participant_id'))
+                    ->get(["firstname", "lastname", "participant_id"])->toArray();
 
                 if (!isset($users)) {
-                    return json_encode("error");
+                    continue;
                 }
 
-                $users_array = [];
-                foreach ($users as $user) {
-                    $users_array[] = [
-                        "firstname" => $user->name,
-                        "lastname" => $user->second_name,
-                        "participant_id" => $user->ls_participant_id
-                    ];
+                if ($i == 1) {
+                    $result_arr = $users;
+                } else {
+                    $now = array_column($result_arr, 'participant_id');
+                    $delete = array_column($users, 'participant_id');
+
+                    $tmp = [];
+                    foreach (array_intersect($now, $delete) as $key => $item) {
+                        $tmp[] = $result_arr[$key];
+                    }
+                    $result_arr = $tmp;
                 }
 
             } else {
@@ -175,22 +179,32 @@ class AjaxController extends Controller
                 if (!isset($type) || !isset($questions) || !isset($answers) || !isset($gid)) {
                     return json_encode("error");
                 }
-                $tmp = $lime_base->table('survey_' . $type)->where($type . "X" . $gid . "X" . $questions, '=', $answers)->get();
-                $tmp_arr = [];
-                foreach ($tmp as $t) {
-                    $tmp_arr[] = [
-                        "survey_id" => $type,
-                        "token" => $t->token
-                    ];
+                $users = $lime_base->table('survey_' . $type)
+                    ->join('tokens_' . $type, 'tokens_' . $type . '.token', '=', 'survey_' . $type . '.token')
+                    ->where('survey_' . $type . '.' . $type . "X" . $gid . "X" . $questions, '=', $answers)->select(['tokens_' . $type . '.firstname', 'tokens_' . $type . '.lastname', 'tokens_' . $type . '.participant_id'])
+                    ->get();
+                $users = collect($users)->map(function ($x) {
+                    return (array)$x;
+                })->toArray();
+
+
+                if ($i == 1) {
+                    $result_arr = $users;
+                } else {
+                    $now = array_column($result_arr, 'participant_id');
+                    $delete = array_column($users, 'participant_id');
+
+                    $tmp = [];
+                    foreach (array_intersect($now, $delete) as $key => $item) {
+                        $tmp[] = $result_arr[$key];
+                    }
+                    $result_arr = $tmp;
                 }
-                $result_arr = $this->unique_multidim_array((array_merge($result_arr, $tmp_arr)), 'token');
+
             }
-
-
         }
 
-        $result = $this->findParticipantBySidTid($result_arr);
-        return json_encode($this->unique_multidim_array((array_merge($result, $users_array)), 'participant_id'));
+        return json_encode($result_arr);
     }
 
     protected function unique_multidim_array($array, $key)
@@ -242,7 +256,6 @@ class AjaxController extends Controller
             } catch (\Exception $ex) {
             }
         }
-
         return $res;
     }
 

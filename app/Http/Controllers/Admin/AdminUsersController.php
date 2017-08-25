@@ -41,7 +41,7 @@ class AdminUsersController extends Controller
 
         return view('admin.users.index')->with([
             'users' => $users,
-            'countries' =>$countries,
+            'countries' => isset($countries) ? $countries : [],
 
         ]);
     }

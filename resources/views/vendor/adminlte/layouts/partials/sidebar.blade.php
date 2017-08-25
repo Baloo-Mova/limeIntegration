@@ -44,6 +44,11 @@
                     <i class='fa fa-link'></i> <span>Поиск по анкетам</span>
                 </a>
             </li>
+            <li class="{{ (Request::is('admin/manage') ? 'active' : '') }}">
+                <a href="{{ route('admin.manage.index') }}">
+                    <i class='fa fa-link'></i> <span>Поиск пользователей</span>
+                </a>
+            </li>
             @if(\Auth::user()->role_id == 2)
                 <li><a href="{{ route('admin.pages.index') }}"><i class='fa fa-link'></i> <span>Страницы</span></a></li>
             @endif

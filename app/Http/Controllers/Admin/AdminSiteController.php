@@ -46,7 +46,10 @@ class AdminSiteController extends Controller
     }
     public function welcome(){
 
-        return view('admin.surveys.index');
+        $surveys = LimeSurveys::paginate(10);
+        return view('admin.surveys.index', with([
+            'surveys' => $surveys
+        ]));
 
     }
 
