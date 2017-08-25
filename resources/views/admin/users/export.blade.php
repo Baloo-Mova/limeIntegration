@@ -1,6 +1,6 @@
 @extends('adminlte::layouts.app')
 @section('contentheader_title')
-    Админ. Написать внутрисистемное сообщение
+    Админ. Экспорт пользователей
 @endsection
 
 @section('main-content')
@@ -8,7 +8,7 @@
     <div class="container-fluid spark-screen">
 
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-xs-8">
                 <div class="row">
                     <div class="col-xs-12">
                         <div class="box box-primary">
@@ -23,9 +23,8 @@
                                         @if(isset($forms))
                                             @foreach($forms as $key=>$form)
                                                 <?php $key++; ?>
-                                                <div class="col-md-6" data-current-id="{{ $key }}">
-                                                    <div class="row">
-                                                        <div class="col-md-12" >
+                                                <div class="col-xs-4" data-current-id="{{ $key }}">
+                                                        <div class="col-xs-12" >
                                                             <div class="form-group">
                                                                 <label for="exampleTextarea">Тип поиска</label>
                                                                 <select name="type_search_{{ $key }}" id="" class="form-control type_search_select type_search_select_{{ $key }}" data-current-id="1">
@@ -35,7 +34,7 @@
                                                                 </select>
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-12 country_wrap_{{ $key }}" {{ isset($form['country']) ? "data-hidden=0" : "data-hidden=1" }}>
+                                                        <div class="col-xs-12 country_wrap_{{ $key }}" {{ isset($form['country']) ? "data-hidden=0" : "data-hidden=1" }}>
                                                             <div class="form-group">
                                                                 <label for="exampleTextarea">Страна</label>
                                                                 <select name="country_{{ $key }}" id="" class="form-control country_select country_select_{{ $key }}" data-current-id="{{ $key }}">
@@ -48,7 +47,7 @@
                                                                 </select>
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-12 region_wrap_{{ $key }}" {{ isset($form['region']) ? "data-hidden=0" : "data-hidden=1" }}>
+                                                        <div class="col-xs-12 region_wrap_{{ $key }}" {{ isset($form['region']) ? "data-hidden=0" : "data-hidden=1" }}>
                                                             <div class="form-group">
                                                                 <label for="exampleTextarea">Регион</label>
                                                                 <select name="region_{{ $key }}" id="" class="form-control region_select region_select_{{ $key }}" data-current-id="{{ $key }}">
@@ -63,7 +62,7 @@
                                                                 </select>
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-12 city_wrap_{{ $key }}" {{ isset($form['city']) ? "data-hidden=0" : "data-hidden=1" }}>
+                                                        <div class="col-xs-12 city_wrap_{{ $key }}" {{ isset($form['city']) ? "data-hidden=0" : "data-hidden=1" }}>
                                                             <div class="form-group">
                                                                 <label for="exampleTextarea">Город</label>
                                                                 <select name="city_{{ $key }}" id="" class="form-control city_select city_select_{{ $key }}" data-current-id="{{ $key }}">
@@ -78,7 +77,7 @@
                                                                 </select>
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-12 gender_wrap_{{ $key }}" {{ isset($form['gender']) ? "data-hidden=0" : "data-hidden=1" }}>
+                                                        <div class="col-xs-12 gender_wrap_{{ $key }}" {{ isset($form['gender']) ? "data-hidden=0" : "data-hidden=1" }}>
                                                             <div class="form-group">
                                                                 <label for="exampleTextarea">Пол</label>
                                                                 <select name="gender_{{ $key }}" id="" class="form-control gender_select gender_select_{{ $key }}" data-current-id="{{ $key }}">
@@ -88,19 +87,19 @@
                                                                 </select>
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-12 age_wrap_{{ $key }}" {{ isset($form['age_from']) ? "data-hidden=0" : "data-hidden=1" }}>
+                                                        <div class="col-xs-12 age_wrap_{{ $key }}" {{ isset($form['age_from']) ? "data-hidden=0" : "data-hidden=1" }}>
                                                             <div class="row">
-                                                                <div class="col-md-12">
+                                                                <div class="col-xs-12">
                                                                     <label for="exampleTextarea">Возраст</label>
                                                                 </div>
-                                                                <div class="col-md-6">
+                                                                <div class="col-xs-6">
                                                                     <div class="form-group">
                                                                         <label for="exampleTextarea">от
                                                                         </label>
                                                                         <input type="number" value="{{ isset($form['age_from']) ? $form['age_from'] : "" }}" name="age_from_{{ $key }}" class="form-control age_from age_from_{{ $key }}" data-current-id="{{ $key }}">
                                                                     </div>
                                                                 </div>
-                                                                <div class="col-md-6">
+                                                                <div class="col-xs-6">
                                                                     <div class="form-group">
                                                                         <label for="exampleTextarea">до</label>
                                                                         <input type="number" value="{{ isset($form['age_to']) ? $form['age_to'] : "" }}" name="age_to_{{ $key }}" class="form-control age_to age_to_{{ $key }}" data-current-id="{{ $key }}">
@@ -108,7 +107,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-12 type_wrap_{{ $key }}" {{ isset($form['type']) ? "data-hidden=0" : "data-hidden=1" }}>
+                                                        <div class="col-xs-12 type_wrap_{{ $key }}" {{ isset($form['type']) ? "data-hidden=0" : "data-hidden=1" }}>
                                                             <div class="form-group">
                                                                 <label for="exampleTextarea">Анкеты</label>
                                                                 <select name="type_{{ $key }}" id="" class="form-control type_select type_select_{{ $key }}" data-current-id="{{ $key }}">
@@ -126,7 +125,7 @@
                                                                 </select>
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-12 questions_wrap_{{ $key }}" {{ isset($form['questions']) ? "data-hidden=0" : "data-hidden=1" }}>
+                                                        <div class="col-xs-12 questions_wrap_{{ $key }}" {{ isset($form['questions']) ? "data-hidden=0" : "data-hidden=1" }}>
                                                             <div class="form-group">
                                                                 <label for="exampleTextarea">Вопросы</label>
                                                                 <select name="questions_{{ $key }}" id="" class="form-control questions_select questions_select_{{ $key }}" data-sid="" data-current-id="{{ $key }}">
@@ -142,7 +141,7 @@
                                                             </div>
                                                         </div>
                                                         <input type="hidden" name="gid_{{ $key }}" class="gid_{{ $key }}" value="{{ isset($form['gid']) ? $form['gid'] : "" }}">
-                                                        <div class="col-md-12 answer_condition_{{ $key }}" {{ isset($form['answers']) ? "data-hidden=0" : "data-hidden=1" }}>
+                                                        <div class="col-xs-12 answer_condition_{{ $key }}" {{ isset($form['answers']) ? "data-hidden=0" : "data-hidden=1" }}>
                                                             <div class="form-group">
                                                                 <label for="exampleTextarea">Ответы</label>
                                                                 <select name="answers_{{ $key }}" id="" class="form-control answers_select answers_select_{{ $key }}" data-sid="" data-gid="" data-qid="" data-current-id="{{ $key }}">
@@ -157,13 +156,11 @@
                                                                 </select>
                                                             </div>
                                                         </div>
-                                                    </div>
                                                 </div>
                                             @endforeach
                                         @else
-                                            <div class="col-md-6" data-current-id="1">
-                                                <div class="row">
-                                                    <div class="col-md-12">
+                                            <div class="col-xs-4" data-current-id="1">
+                                                    <div class="col-xs-12">
                                                         <div class="form-group">
                                                             <label for="exampleTextarea">Тип поиска</label>
                                                             <select name="type_search_1" id="" class="form-control type_search_select type_search_select_1" data-current-id="1">
@@ -173,7 +170,7 @@
                                                             </select>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-12 country_wrap_1">
+                                                    <div class="col-xs-12 country_wrap_1">
                                                         <div class="form-group">
                                                             <label for="exampleTextarea">Страна</label>
                                                             <select name="country_1" id="" class="form-control country_select country_select_1" data-current-id="1">
@@ -186,21 +183,21 @@
                                                             </select>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-12 region_wrap_1">
+                                                    <div class="col-xs-12 region_wrap_1">
                                                         <div class="form-group">
                                                             <label for="exampleTextarea">Регион</label>
                                                             <select name="region_1" id="" class="form-control region_select region_select_1" data-current-id="1">
                                                             </select>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-12 city_wrap_1">
+                                                    <div class="col-xs-12 city_wrap_1">
                                                         <div class="form-group">
                                                             <label for="exampleTextarea">Город</label>
                                                             <select name="city_1" id="" class="form-control city_select city_select_1" data-current-id="1">
                                                             </select>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-12 gender_wrap_1">
+                                                    <div class="col-xs-12 gender_wrap_1">
                                                         <div class="form-group">
                                                             <label for="exampleTextarea">Пол</label>
                                                             <select name="gender_1" id="" class="form-control gender_select gender_select_1" data-current-id="1">
@@ -210,19 +207,19 @@
                                                             </select>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-12 age_wrap_1">
+                                                    <div class="col-xs-12 age_wrap_1">
                                                         <div class="row">
-                                                            <div class="col-md-12">
+                                                            <div class="col-xs-12">
                                                                 <label for="exampleTextarea">Возраст</label>
                                                             </div>
-                                                            <div class="col-md-6">
+                                                            <div class="col-xs-6">
                                                                 <div class="form-group">
                                                                     <label for="exampleTextarea">от
                                                                     </label>
                                                                     <input type="number" name="age_from_1" class="form-control age_from age_from_1" data-current-id="1">
                                                                 </div>
                                                             </div>
-                                                            <div class="col-md-6">
+                                                            <div class="col-xs-6">
                                                                 <div class="form-group">
                                                                     <label for="exampleTextarea">до</label>
                                                                     <input type="number" name="age_to_1" class="form-control age_to age_to_1" data-current-id="1">
@@ -230,7 +227,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-12 type_wrap_1">
+                                                    <div class="col-xs-12 type_wrap_1">
                                                         <div class="form-group">
                                                             <label for="exampleTextarea">Анкеты</label>
                                                             <select name="type_1" id="" class="form-control type_select type_select_1" data-current-id="1">
@@ -248,7 +245,7 @@
                                                             </select>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-12 questions_wrap_1">
+                                                    <div class="col-xs-12 questions_wrap_1">
                                                         <div class="form-group">
                                                             <label for="exampleTextarea">Вопросы</label>
                                                             <select name="questions_1" id="" class="form-control questions_select questions_select_1" data-sid="" data-current-id="1">
@@ -257,59 +254,48 @@
                                                         </div>
                                                     </div>
                                                     <input type="hidden" name="gid_1" class="gid_1">
-                                                    <div class="col-md-12 answer_condition_1">
+                                                    <div class="col-xs-12 answer_condition_1">
                                                         <div class="form-group">
                                                             <label for="exampleTextarea">Ответы</label>
                                                             <select name="answers_1" id="" class="form-control answers_select answers_select_1" data-sid="" data-gid="" data-qid="" data-current-id="1">
                                                             </select>
                                                         </div>
                                                     </div>
-                                                </div>
                                             </div>
                                         @endif
                                     </div>
-                                    <div>
-                                        <div class="col-md-12">
+                                    <div class="clearfix"></div>
+                                    <div class="col-xs-12">
+                                        <div class="col-xs-12">
                                             <div class="form-group">
                                                 <button type="submit" class="btn btn-primary count_button">Найти</button>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>
-                                </form>
                             </div>
                         </div>
                     </div>
                     <div class="clearfix"></div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="box box-primary">
-                    <div class="box-body">
-                        <form action="{{ route('admin.messages.pids') }}" method="post">
-                            {{ csrf_field() }}
-                            <div class="form-group">
-                                <div class="col-xs-12">
-                                    <label for="send_all" class="col-form-label">Отправить всем пользователям системы</label><br>
-                                    <input type="checkbox" name="send_all" class="send_all" id="send_all">
-                                </div>
-                                <input type="hidden" name="guid" value="{{ isset($guid) ? $guid : '' }}">
-                                <div class="col-xs-12">
-                                    <label for="date_birth" class="col-form-label">Сообщение</label><br>
-                                    <textarea name="text" class="form-control" required></textarea>
-                                </div>
-                                <div class="col-xs-12 mt10">
-                                    <button type="submit" class="btn btn-primary">Отправить</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+    <div class="col-md-4">
+        <div class="box box-primary">
+            <div class="box-body">
+                <form action="{{ route('admin.users.export.csv') }}" method="post">
+                    {{ csrf_field() }}
+                    <input type="hidden" name="guid" value="{{ isset($guid) ? $guid : '' }}">
+                    <button type="submit" class="btn btn-default count_button">Экспортировать выбранных пользователей</button>
+                </form>
+                <a href="{{ route('admin.users.export.all') }}" class="btn btn-default">Экспортировать всех пользователей</a>
             </div>
+        </div>
+    </div>
         </div>
 
         @if(isset($users))
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-xs-12">
                     <div class="box box-primary">
                         <div class="box-body">
                             <p>
@@ -348,20 +334,7 @@
 @section('js')
     <script>
         $(document).ready(function () {
-            $(".send_all").bootstrapSwitch();
-            $('.send_all').on('switchChange.bootstrapSwitch', function(event, state) {
-                if(state){
-                    $("input[type=number]").attr("disabled", true);
-                    $("select").attr("disabled", true);
-                    $(".count_button").attr("disabled", true);
-                    $(".add_form_button").css("pointer-events", "none");
-                }else{
-                    $("input[type=number]").attr("disabled", false);
-                    $("select").attr("disabled", false);
-                    $(".count_button").attr("disabled", false);
-                    $(".add_form_button").css("pointer-events", "auto");
-                }
-            });
+
             var cid = $(".add_form_button").data("currentId");
 
             for(i = 1; i <= cid; i++){
@@ -448,9 +421,9 @@
                 $(this).data("currentId", new_id);
                 $(this).attr("data-current-id", new_id);
 
-                $(".root_wrap").append('<div class="col-md-6" data-current-id="'+new_id+'">'+
+                $(".root_wrap").append('<div class="col-xs-4" data-current-id="'+new_id+'">'+
                     '<!--<div class="text-center"><i class="fa fa-plus-circle" aria-hidden="true"></i></div>-->'+
-                    '<div class="col-md-12">'+
+                    '<div class="col-xs-12">'+
                     '<div class="form-group">'+
                     '<label for="exampleTextarea">Тип поиска</label>'+
                     '<select name="type_search_'+new_id+'" id="" class="form-control type_search_select type_search_select_'+new_id+'" data-current-id="'+new_id+'">'+
@@ -460,7 +433,7 @@
                     '</select>'+
                     '</div>'+
                     '</div>'+
-                    '<div class="col-md-12 country_wrap_'+new_id+'">'+
+                    '<div class="col-xs-12 country_wrap_'+new_id+'">'+
                     '<div class="form-group">'+
                     '<label for="exampleTextarea">Страна</label>'+
                     '<select name="country_'+new_id+'" id="" class="form-control country_select country_select_'+new_id+'" data-current-id="'+new_id+'">'+
@@ -473,7 +446,7 @@
                     '</select>'+
                     '</div>'+
                     '</div>'+
-                    '<div class="col-md-12 region_wrap_'+new_id+'">'+
+                    '<div class="col-xs-12 region_wrap_'+new_id+'">'+
                     '<div class="form-group">'+
                     '<label for="exampleTextarea">Регион</label>'+
                     '<select name="region_'+new_id+'" id="" class="form-control region_select region_select_'+new_id+'" data-current-id="'+new_id+'">'+
@@ -481,7 +454,7 @@
                     '</select>'+
                     '</div>'+
                     '</div>'+
-                    '<div class="col-md-12 city_wrap_'+new_id+'">'+
+                    '<div class="col-xs-12 city_wrap_'+new_id+'">'+
                     '<div class="form-group">'+
                     '<label for="exampleTextarea">Город</label>'+
                     '<select name="city_'+new_id+'" id="" class="form-control city_select city_select_'+new_id+'" data-current-id="'+new_id+'">'+
@@ -489,7 +462,7 @@
                     '</select>'+
                     '</div>'+
                     '</div>'+
-                    '<div class="col-md-12 gender_wrap_'+new_id+'">'+
+                    '<div class="col-xs-12 gender_wrap_'+new_id+'">'+
                     '<div class="form-group">'+
                     '<label for="exampleTextarea">Пол</label>'+
                     '<select name="gender_'+new_id+'" id="" class="form-control gender_select gender_select_'+new_id+'" data-current-id="'+new_id+'">'+
@@ -499,19 +472,19 @@
                     '</select>'+
                     '</div>'+
                     '</div>'+
-                    '<div class="col-md-12 age_wrap_'+new_id+'">'+
+                    '<div class="col-xs-12 age_wrap_'+new_id+'">'+
                     '<div class="row">'+
-                    '<div class="col-md-12">'+
+                    '<div class="col-xs-12">'+
                     '<label for="exampleTextarea">Возраст</label>'+
                     '</div>'+
-                    '<div class="col-md-6">'+
+                    '<div class="col-xs-6">'+
                     '<div class="form-group">'+
                     '<label for="exampleTextarea">от'+
                     '</label>'+
                     '<input type="number" name="age_from_'+new_id+'" class="form-control age_from age_from_'+new_id+'" data-current-id="'+new_id+'">'+
                     '</div>'+
                     '</div>'+
-                    '<div class="col-md-6">'+
+                    '<div class="col-xs-6">'+
                     '<div class="form-group">'+
                     '<label for="exampleTextarea">до</label>'+
                     '<input type="number" name="age_to_'+new_id+'" class="form-control age_to age_to_'+new_id+'" data-current-id="'+new_id+'">'+
@@ -519,7 +492,7 @@
                     '</div>'+
                     '</div>'+
                     '</div>'+
-                    '<div class="col-md-12 type_wrap_'+new_id+'">'+
+                    '<div class="col-xs-12 type_wrap_'+new_id+'">'+
                     '<div class="form-group">'+
                     '<label for="exampleTextarea">Анкеты</label>'+
                     '<select name="type_'+new_id+'" id="" class="form-control type_select type_select_'+new_id+'" data-current-id="'+new_id+'">'+
@@ -534,7 +507,7 @@
                     '</select>'+
                     '</div>'+
                     '</div>'+
-                    '<div class="col-md-12 questions_wrap_'+new_id+'">'+
+                    '<div class="col-xs-12 questions_wrap_'+new_id+'">'+
                     '<div class="form-group">'+
                     '<label for="exampleTextarea">Вопросы</label>'+
                     '<select name="questions_'+new_id+'" id="" class="form-control questions_select questions_select_'+new_id+'" data-sid="" data-current-id="'+new_id+'">'+
@@ -543,7 +516,7 @@
                     '</div>'+
                     '</div>'+
                     '<input type="hidden" name="gid_'+new_id+'" class="gid_'+new_id+'">'+
-                    '<div class="col-md-12 answer_condition_'+new_id+'">'+
+                    '<div class="col-xs-12 answer_condition_'+new_id+'">'+
                     '<div class="form-group">'+
                     '<label for="exampleTextarea">Ответы</label>'+
                     '<select name="answers_'+new_id+'" id="" class="form-control answers_select answers_select_'+new_id+'" data-sid="" data-gid="" data-qid="" data-current-id="'+new_id+'">'+

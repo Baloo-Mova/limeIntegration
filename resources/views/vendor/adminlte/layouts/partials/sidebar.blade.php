@@ -47,8 +47,8 @@
             @if(\Auth::user()->role_id == 2)
                 <li><a href="{{ route('admin.pages.index') }}"><i class='fa fa-link'></i> <span>Страницы</span></a></li>
             @endif
-            <li class="{{ (Request::is('admin/messages/message-create') ? 'active' : "") }}">
-                <a href="{{ route('admin.messages.create') }}">
+            <li class="{{ (Request::is('admin/messages') ? 'active' : "") }}">
+                <a href="{{ route('admin.messages.index') }}">
                     <i class='fa fa-link'></i>
                     <span>Сообщения</span>
                 </a>

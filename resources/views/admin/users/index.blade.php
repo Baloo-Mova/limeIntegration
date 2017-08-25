@@ -11,7 +11,8 @@
                 <div class="box-body">
 
                     <div>
-                        <a href="{{ route('admin.users.create') }}" class="btn btn-danger center">Создать</a>
+                        <a href="{{ route('admin.users.create') }}" class="btn btn-success center">Создать</a>
+                        <a href="{{ route('admin.users.export') }}" class="btn btn-primary center">Экспортировать</a>
                     </div>
 
                     <hr/>

@@ -103,6 +103,10 @@ Route::group(['namespace' => 'Admin', 'middleware' => ['checkadmin']], function 
             Route::get('/show/{user}', ['uses' => 'AdminUsersController@show', 'as' => 'admin.users.show']);
             Route::get('/show-by-pid/{pid}', ['uses' => 'AdminUsersController@showByPid', 'as' => 'admin.users.show.pid']);
             Route::get('/delete/{user}', ['uses' => 'AdminUsersController@delete', 'as' => 'admin.users.delete']);
+            Route::get('/export', ['uses' => 'AdminUsersController@export', 'as' => 'admin.users.export']);
+            Route::post('/export', ['uses' => 'AdminUsersController@findIndex', 'as' => 'admin.users.find.index']);
+            Route::post('/export-users', ['uses' => 'AdminUsersController@exportUsers', 'as' => 'admin.users.export.csv']);
+            Route::get('/export-users-all', ['uses' => 'AdminUsersController@exportUsersAll', 'as' => 'admin.users.export.all']);
         });
 
         Route::group(['prefix' => 'surveys'], function () {
@@ -116,6 +120,12 @@ Route::group(['namespace' => 'Admin', 'middleware' => ['checkadmin']], function 
 
         Route::group(['prefix' => 'messages', 'middleware' => ['admin']], function () {
             Route::get('/', ['uses' => 'AdminMessagesController@index', 'as' => 'admin.messages.index']);
+            Route::post('/', ['uses' => 'AdminMessagesController@findIndex', 'as' => 'admin.messages.find.index']);
+            Route::post('/send-message-by-pids', ['uses' => 'AdminMessagesController@sendMessageByPids', 'as' => 'admin.messages.pids']);
+
+
+
+
             Route::get('/message-create', ['uses' => 'AdminMessagesController@createMessage', 'as' => 'admin.messages.create']);
             Route::post('/message-create', ['uses' => 'AdminMessagesController@sendBaseMessage', 'as' => 'admin.send.base.messages']);
             Route::post('/message-to-list', ['uses' => 'AdminMessagesController@sendBaseMessageToList', 'as' => 'admin.send.base.messages.list']);
