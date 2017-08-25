@@ -62,6 +62,7 @@ Route::group(['namespace' => 'Admin', 'middleware' => ['checkadmin']], function 
 
 
         Route::get('/getUsers', ['uses' => 'AdminSurveysProcessingController@getUsers', 'as' => 'admin.get.users']);
+        Route::get('/getUsersByName', ['uses' => 'AdminWithdrawsController@getUsers', 'as' => 'admin.get.users.by.name']);
 
         Route::get('/', ['uses' => 'AdminSiteController@welcome', 'as' => 'admin.welcome']);
 
@@ -91,7 +92,8 @@ Route::group(['namespace' => 'Admin', 'middleware' => ['checkadmin']], function 
                 Route::post('/status/edit', ['uses' => 'AdminWithdrawsController@updateStatus', 'as' => 'admin.withdraws.status.update']);
                 Route::get('/show/{withdraw}', ['uses' => 'AdminWithdrawsController@show', 'as' => 'admin.withdraws.show']);
                 Route::get('/delete/{withdraw}', ['uses' => 'AdminWithdrawsController@delete', 'as' => 'admin.withdraws.delete']);
-                Route::get('/export/{column}/{direction}', ['uses' => 'AdminWithdrawsController@export', 'as' => 'admin.withdraws.export']);
+                Route::get('/export', ['uses' => 'AdminWithdrawsController@export', 'as' => 'admin.withdraws.export']);
+                Route::post('/export', ['uses' => 'AdminWithdrawsController@exportCsv', 'as' => 'admin.withdraws.export.csv']);
             });
         });
         Route::group(['prefix' => 'users'], function () {

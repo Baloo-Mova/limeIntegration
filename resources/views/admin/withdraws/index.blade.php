@@ -10,7 +10,7 @@
         <div class="row">
             <div class="box box-primary">
                 <div class="box-body">
-                    <a href="{{ route('admin.withdraws.export', ['column' => $column, 'direction' => $direction]) }}" class="btn btn-success">Экспорт</a>
+                    <a href="{{ route('admin.withdraws.export') }}" class="btn btn-success">Экспорт</a>
                     <div class="h10" style="height: 10px;"></div>
                         <table class="table table-bordered text-center">
                             <thead>

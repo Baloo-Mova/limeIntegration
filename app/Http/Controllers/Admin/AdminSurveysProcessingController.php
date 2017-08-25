@@ -30,6 +30,8 @@ class AdminSurveysProcessingController extends Controller
     {
         $users = LimeParticipants::select(['participant_id', 'email'])
             ->where('email', 'like', '%' . $request->email['term'] . '%')
+            ->orWhere('name', 'like', '%' . $request->email['term'] . '%')
+            ->orWhere('second_name', 'like', '%' . $request->email['term'] . '%')
             ->offset($request->page == null ? 0 : $request->page * 10)
             ->limit(10)
             ->get();
