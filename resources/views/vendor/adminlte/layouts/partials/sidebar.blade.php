@@ -40,13 +40,8 @@
                 </ul>
             </li>
             <li class="{{ (Request::is('admin/manage') ? 'active' : '') }}">
-                <a href="{{ route('admin.manage.index') }}">
-                    <i class='fa fa-link'></i> <span>Поиск по анкетам</span>
-                </a>
-            </li>
-            <li class="{{ (Request::is('admin/manage') ? 'active' : '') }}">
-                <a href="{{ route('admin.manage.index') }}">
-                    <i class='fa fa-link'></i> <span>Поиск пользователей</span>
+                <a href="{{ route('admin.manage.index') }}" title="Добавление пользователей к опросу">
+                    <i class='fa fa-link'></i> <span>Добавление к опросу</span>
                 </a>
             </li>
             @if(\Auth::user()->role_id == 2)

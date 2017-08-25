@@ -53,7 +53,9 @@ class SendJob implements ShouldQueue
         }
         foreach ($this->users as $user){
             $participant = DB::connection('mysql_lime')->table('tokens_' . $this->message['survey_id'])->where(['participant_id' => $user])->first();
-
+            if(!isset($participant)){
+                continue;
+            }
             $url = url("/gotosurvey/" . $this->message['survey_id'] . "/" . $participant->token);
             $button = "Вы можете пройти его по <a href='" . $url . "'>этой ссылке</a>";
 

@@ -135,6 +135,10 @@ Route::group(['namespace' => 'Admin', 'middleware' => ['checkadmin']], function 
 
         Route::group(['prefix' => 'manage'], function () {
             Route::get('/', ['uses' => 'AdminManageSurveyParticipantsController@index', 'as' => 'admin.manage.index']);
+            Route::post('/', ['uses' => 'AdminManageSurveyParticipantsController@findIndex', 'as' => 'admin.manage.find.index']);
+
+
+
             Route::get('/add-participant-to-survey', ['uses' => 'AdminManageSurveyParticipantsController@addParticipant', 'as' => 'admin.manage.addParticipant']);
             Route::post('/add-participant-to-survey', ['uses' => 'AdminManageSurveyParticipantsController@saveParticipant', 'as' => 'admin.manage.saveParticipant']);
             Route::post('/add-participant-to-survey-list', ['uses' => 'AdminManageSurveyParticipantsController@addListParticipants', 'as' => 'admin.manage.addListParticipant']);
