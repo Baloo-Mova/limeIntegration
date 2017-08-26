@@ -117,6 +117,9 @@ class AdminSettings extends Controller
 
             $mail->Subject = "Проверка SMTP";
             $mail->Body = $text;
+            if(preg_match("/<[^<]+>/", $text, $m) != 0){
+                $mail->IsHTML(true);
+            }
 
             if (!$mail->send()) {
                 Toastr::error('Сообщение не отправлено!', 'Ошибка');
