@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Region;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use App\Models\Country;
@@ -43,9 +44,24 @@ class Test extends Command
      */
     public function handle()
     {
-        dd((new MailMessage)
-            ->subject("subj")
-            ->greeting("gr")
-            ->line("line"));
+        $countries = Country::where('lang_id', '<>', 'ru')->get();
+
+        $res = [];
+        foreach ($countries as $c){
+            $co = Country::where(['title' => $c->title, 'lang_id' => 'ru'])->first();
+            $region = Region::where([
+                ['country_id', '=', $co->country_id],
+                ['lang_id', '=', 'ru']
+            ])->get();
+
+            foreach ($region as $r){
+                $res[] = [
+                    'country_id' => $c->country_id,
+                    'title' => $r->title,
+                    'lang_id' => $c->lang_id
+                ];
+            }
+        }
+        Region::insert($res);
     }
 }
