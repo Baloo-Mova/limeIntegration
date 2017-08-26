@@ -25,7 +25,7 @@ class AdminSettings extends Controller
         $new_message_text = $request->get('new_message_text');
         $remind_message_text = $request->get('remind_message_text');
 
-        if(!isset($sum) || !isset($new_message_text) || !isset($remind_message_text)){
+        if(!isset($sum) && !isset($new_message_text) && !isset($remind_message_text)){
             Toastr::error("Не указан обязательный параметр", "Ошибка");
             return back();
         }

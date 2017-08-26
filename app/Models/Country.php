@@ -25,7 +25,7 @@ use Illuminate\Database\Eloquent\Model;
 class Country extends Model
 {
     protected $table = 'countries';
-    public $timestamps = true;
+    public $timestamps = false;
 
     /**
      * The attributes that are mass assignable.
@@ -35,9 +35,7 @@ class Country extends Model
     protected $fillable = [
         'country_id',
         'title',
-        'lang_id',
-        'created_at',
-        'updated_at',
+        'lang_id'
     ];
 
 

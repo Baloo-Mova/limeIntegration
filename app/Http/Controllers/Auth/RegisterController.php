@@ -211,11 +211,11 @@ class RegisterController extends Controller
 
     public function showRegistrationForm(){
         if(config('app.locale')=='ru'){
-            $countries_list = Country::where(['lang_id'=>2])->orderBy('title', 'asc')->limit(300)->get();
+            $countries_list = Country::where(['lang_id'=>'ru'])->orderBy('title', 'asc')->limit(300)->get();
 
         }
-        if(config('app.locale')=='ua'){
-            $countries_list = Country::where(['lang_id'=>1])->orderBy('title', 'asc')->limit(300)->get();
+        if(config('app.locale')=='uk'){
+            $countries_list = Country::where(['lang_id'=>'uk'])->orderBy('title', 'asc')->limit(300)->get();
 
         }
     return view('auth.register')->with([

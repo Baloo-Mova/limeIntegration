@@ -31,7 +31,7 @@ use Illuminate\Database\Eloquent\Model;
 class City extends Model
 {
     protected $table = 'cities';
-    public $timestamps = true;
+    public $timestamps = false;
 
     /**
      * The attributes that are mass assignable.
@@ -39,14 +39,12 @@ class City extends Model
      * @var array
      */
     protected $fillable = [
+        'city_id',
         'country_id',
         'region_id',
-        'city_id',
         'title',
         'area',
         'lang_id',
-        'created_at',
-        'updated_at',
     ];
 
 

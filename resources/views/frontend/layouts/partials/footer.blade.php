@@ -65,15 +65,9 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('site.change.locale', ['locale' => 'by']) }}"
+                    <a href="{{ route('site.change.locale', ['locale' => 'be']) }}"
                        class="external-link flags-list__item  ">
                         <span class="flag-icon flag-icon-by"></span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('site.change.locale', ['locale' => 'kz']) }}"
-                       class="external-link  flags-list__item  ">
-                        <span class="flag-icon flag-icon-kz"></span>
                     </a>
                 </li>
             </ul>
