@@ -71,7 +71,7 @@
                     </div>
                 </div>
             @endif
-
+            <div class="col-xs-12">
                 @if($balancelogs->count()!=0)
                     <table class="table table-hover table-striped space charges-list table-condensed">
                         <thead>
@@ -102,6 +102,7 @@
                 @else
                     <h3>{{\Illuminate\Support\Facades\Lang::get('messages.historyPaidClear')}}</h3>
                 @endif
+            </div>
         </div>
     </div>
 @stop
