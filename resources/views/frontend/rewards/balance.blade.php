@@ -22,15 +22,15 @@
                 </div>
             @else
                 <div class="col-xs-12">
-                    <h3>Создать заявку на вывод средств</h3>
+                    <h3>@lang('messages.create_withdraw')</h3>
                     <div class="col-xs-6">
                         <form method="POST" enctype="multipart/form-data" class="form-horizontal"
                               action="{{ route('withdraws.store') }}">
                             {{ csrf_field() }}
                             <div class="form-group {{ $errors->has('destination')?'has-error':'' }}">
-                                <label class="control-label" for="destination">Назначение (номер карты,
-                                    телефона или
-                                    другие реквизиты):<span class="form-required">*</span></label>
+                                <label class="control-label" for="destination">
+                                    @lang('messages.withdraw_destination')
+                                    :<span class="form-required">*</span></label>
                                 <input type="text" value="{{ old('destination') }}" name="destination"
                                        class="form-control"
                                        id="destination">
@@ -40,12 +40,12 @@
                                 @endif
                             </div>
                             <div class="form-group{{ $errors->has('paymentstype') ? ' has-error' : '' }}">
-                                <label for="paymentstype" class="col-form-label">Способ вывода</label>
+                                <label for="paymentstype" class="col-form-label">@lang('messages.withdraw_type_out')</label>
                                 <select class="form-control" id="paymentstype" name="paymentstype">
                                     @forelse($paymentstypes as $item)
                                         <option value="{{$item->id}}">{{$item->title}}</option>
                                     @empty
-                                        <option selected>Нет</option>
+                                        <option selected>@lang('messages.no')</option>
                                     @endforelse
                                 </select>
                                 @if ($errors->has('paymentstype'))
@@ -56,7 +56,7 @@
 
                             </div>
                             <div class="form-group {{ $errors->has('amount')?'has-error':'' }}">
-                                <label class="control-label" for="amount">Сумма:</label>
+                                <label class="control-label" for="amount">@lang('messages.sum'):</label>
                                 <input type="number" value="{{ old('amount') }}" name="amount"
                                        class="form-control"
                                        id="weight_global">

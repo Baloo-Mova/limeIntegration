@@ -62,9 +62,9 @@ class BalanceController extends Controller
             'paymentstype' => 'required|integer'
         ],
             [
-                'required' => 'Обязательно к заполнению',
-                'amount.min' => 'Сумма не должна быть меньше :min',
-                'amount.max' => 'Сумма не должна быть больше :max'
+                'required' => __('messages.form_required'),
+                'amount.min' => __('messages.form_amount_min').' :min',
+                'amount.max' => __('messages.form_amount_max').' :max'
             ]);
 
         WithdrawBalance::create([

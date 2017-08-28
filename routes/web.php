@@ -109,6 +109,7 @@ Route::group(['namespace' => 'Admin', 'middleware' => ['checkAdmin']], function 
 
         Route::group(['prefix' => 'users'], function () {
             Route::get('/', ['uses' => 'AdminUsersController@index', 'as' => 'admin.users.index']);
+            Route::post('/find', ['uses' => 'AdminUsersController@find', 'as' => 'admin.users.find']);
             Route::get('/create', ['uses' => 'AdminUsersTypesController@create', 'as' => 'admin.users.create']);
             Route::post('/create', ['uses' => 'AdminUsersTypesController@store', 'as' => 'admin.users.store']);
             Route::get('/edit/{user}', ['uses' => 'AdminUsersController@edit', 'as' => 'admin.users.edit']);

@@ -50,6 +50,62 @@ class AdminUsersController extends Controller
         ]);
     }
 
+    public function find(Request $request)
+    {
+        $where = [];
+        $name = $request->get('name');
+        if(isset($name)){
+            $where["name"] = $name;
+        }
+        $second_name = $request->get('second_name');
+        if(isset($second_name)){
+            $where["second_name"] = $second_name;
+        }
+        $role_id = $request->get('role_id');
+        if(isset($role_id)){
+            $where["role_id"] = $role_id;
+        }
+        $email = $request->get('email');
+        if(isset($email)){
+            $where["email"] = $email;
+        }
+        $balance = $request->get('balance');
+        if(isset($balance)){
+            $where["balance"] = $balance;
+        }
+        $country_id = $request->get('country_id');
+        if(isset($country_id)){
+            $where["country_id"] = $country_id;
+        }
+        $created_at = $request->get('created_at');
+
+        if(isset($created_at)){
+            if (isset($created_at)) {
+                $find = stripos($created_at, ' -');
+                $date_from = substr($created_at, 0, $find);
+                $date_from = Carbon::createFromFormat('m.d.Y', $date_from)->toDateTimeString();
+                $date_to = substr($created_at, $find + 3);
+                $date_to = Carbon::createFromFormat('m.d.Y', $date_to)->toDateTimeString();
+            }
+        }
+
+        if(isset($date_from) && isset($date_to)){
+            $users = User::where($where)->whereBetween('created_at', [$date_from, $date_to])->orderBy('id')->paginate(20);
+        }else{
+            $users = User::where($where)->orderBy('id')->paginate(20);
+        }
+        $countries = Country::all();
+
+        $where["created_at"] = $created_at;
+
+        return view('admin.users.index')->with([
+            'users' => $users,
+            'search' => $where,
+            'countries' => isset($countries) ? $countries : [],
+        ]);
+
+    }
+
     public function exportUsers(Request $request)
     {
         $guid = $request->get('guid');

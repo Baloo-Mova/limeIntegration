@@ -10,9 +10,9 @@
         <div class="row">
             <div class="box box-primary">
                 <div class="box-body">
-                <!--<div>
-                        <a href="{{ route('admin.paymentstypes.create') }}" class="btn btn-success center">Создать</a>
-                    </div>-->
+                    <div style="margin-bottom: 20px;">
+                        <a href="{{ env('LIME_BASE_URL')."admin/survey/sa/newsurvey" }}" class="btn btn-success center" target="_blank">Создать</a>
+                    </div>
 
                     <div class="grid-view">
                         <table class="table table-striped table-bordered text-center">
