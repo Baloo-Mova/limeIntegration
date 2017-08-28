@@ -40,7 +40,7 @@ class AdminSurveysProcessingController extends Controller
         foreach ($users as $item) {
             $response[] = [
                 'id' => $item->participant_id,
-                'text' => $item->email . " ( $item->firstname $item->lastname )"
+                'text' => $item->email . " ( ".$item->firstname." ".$item->lastname." )"
             ];
         }
 
