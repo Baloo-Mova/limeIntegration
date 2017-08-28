@@ -43,7 +43,7 @@
                                     <td>{{$item->role->title}}</td>
                                     <td>{{$item->email}}</td>
                                     <td>{{$item->balance}}</td>
-                                    <td>{{$item->country->first()->title}}</td>
+                                    <td>{{$item->country->title}}</td>
 
 
                                     <td>{{$item->created_at}}</td>
