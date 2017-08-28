@@ -103,7 +103,7 @@ class User extends Authenticatable
 
     public function isAdmin()
     {
-        return $this->role_id;
+        return $this->role_id == 2;
     }
 
     public function isVerified()

@@ -18,12 +18,8 @@ class RedirectIfNotAdmin
     public function handle($request, Closure $next, $guard = null)
     {
 
-        if (!(Auth::guard($guard)->check()) || Auth::user()->isAdmin()==1) {
-            
-            
-            return redirect(route('site.index'));
-            
-            
+        if (!(Auth::guard($guard)->check()) || Auth::user()->isAdmin()) {
+            return redirect(route('site.index'));  
         }
 
         return $next($request);
