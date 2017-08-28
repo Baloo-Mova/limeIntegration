@@ -40,7 +40,7 @@ class AdminSurveysProcessingController extends Controller
         foreach ($users as $item) {
             $response[] = [
                 'id' => $item->participant_id,
-                'text' => $item->email
+                'text' => $item->email . " ( $item->firstname $item->lastname )"
             ];
         }
 
@@ -105,7 +105,7 @@ class AdminSurveysProcessingController extends Controller
             $str = $key . "\n";
             $i = 1;
             foreach ($item as $question => $answer) {
-                $str .= $i . '. ' . $question . "  " . $answer.PHP_EOL;
+                $str .= $i . '. ' . $question . "  " . $answer . PHP_EOL;
                 $i++;
             }
             file_put_contents($filePath, $str . PHP_EOL, 8);
