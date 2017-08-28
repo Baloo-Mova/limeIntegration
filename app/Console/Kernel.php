@@ -5,6 +5,7 @@ namespace App\Console;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use App\Console\Commands\Test;
+use App\Console\Commands\ClearSearchCache;
 class Kernel extends ConsoleKernel
 {
     /**
@@ -15,6 +16,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         //
         Test::class,
+        ClearSearchCache::class
     ];
 
     /**

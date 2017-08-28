@@ -30,12 +30,7 @@ class AdminManageSurveyParticipantsController extends Controller
 
         $surveys = LimeSurveys::all();
 
-        if(config('app.locale')=='ru'){
-            $countries_list = Country::where(['lang_id'=>2])->orderBy('title', 'asc')->limit(300)->get();
-        }
-        if(config('app.locale')=='ua'){
-            $countries_list = Country::where(['lang_id'=>1])->orderBy('title', 'asc')->limit(300)->get();
-        }
+        $countries_list = Country::orderBy('title', 'asc')->limit(300)->get();
 
         if(isset($guid)){
 
@@ -68,7 +63,7 @@ class AdminManageSurveyParticipantsController extends Controller
                 if (isset($data['city_' . $i])) {
                     $tmp["city"] = $data["city_" . $i];
                     $tmp["city_select"] = DB::table('cities')->select('city_id', 'title', 'area')
-                        ->where($data["region_" . $i])
+                        ->where('region_id', '=', $data["region_" . $i])
                         ->groupBy('title')
                         ->orderBy('title', 'asc')
                         ->get();
@@ -280,12 +275,7 @@ class AdminManageSurveyParticipantsController extends Controller
 
         $surveys = LimeSurveys::all();
 
-        if(config('app.locale')=='ru'){
-            $countries_list = Country::where(['lang_id'=>2])->orderBy('title', 'asc')->limit(300)->get();
-        }
-        if(config('app.locale')=='ua'){
-            $countries_list = Country::where(['lang_id'=>1])->orderBy('title', 'asc')->limit(300)->get();
-        }
+        $countries_list = Country::orderBy('title', 'asc')->limit(300)->get();
 
         array_shift($data);
         $count = array_shift($data);
@@ -335,7 +325,7 @@ class AdminManageSurveyParticipantsController extends Controller
             if (isset($data['city_' . $i])) {
                 $tmp["city"] = $data["city_" . $i];
                 $tmp["city_select"] = DB::table('cities')->select('city_id', 'title', 'area')
-                                                                ->where($data["region_" . $i])
+                                                                ->where('region_id', '=', $data["region_" . $i])
                                                                 ->groupBy('title')
                                                                 ->orderBy('title', 'asc')
                                                                 ->get();

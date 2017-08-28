@@ -24,6 +24,7 @@ use App\Models\SearchCache;
 use App\Models\Lime\LimeSurveysQuestionsAnswers;
 use App\Models\Lime\LimeSurveysQuestions;
 use Brian2694\Toastr\Facades\Toastr;
+use Illuminate\Support\Facades\Schema;
 
 class AdminUsersController extends Controller
 {
@@ -39,13 +40,8 @@ class AdminUsersController extends Controller
 
         $users = User::where(['role_id'=>1])->orWhere(['role_id'=>3])->orderBy('id')->paginate(20);
 
-        if(Lang::getLocale()=="ru"){
-            $countries = Country::where(['lang_id'=> 'ru'])->get();
-        }
+        $countries = Country::all();
 
-        if(Lang::getLocale()=="uk"){
-            $countries = Country::where(['lang_id'=> 'uk'])->get();
-        }
 
         return view('admin.users.index')->with([
             'users' => $users,
@@ -203,7 +199,7 @@ class AdminUsersController extends Controller
 
             return redirect(rounte('admin.users.index'));
         }
-        $countries = Country::where(['lang_id'=> $lang_id])->orderBy('country_id')->limit(300)->get();
+        $countries = Country::orderBy('country_id')->limit(300)->get();
         $regions = Region::where(['country_id'=>$user->country_id])->get();
         $cities = City::where(['country_id'=>$user->country_id, 'region_id'=>$user->region_id ])->get();
         $roles= Role::get();
@@ -290,12 +286,7 @@ class AdminUsersController extends Controller
 
         $surveys = LimeSurveys::all();
 
-        if(config('app.locale')=='ru'){
-            $countries_list = Country::where(['lang_id'=>2])->orderBy('title', 'asc')->limit(300)->get();
-        }
-        if(config('app.locale')=='ua'){
-            $countries_list = Country::where(['lang_id'=>1])->orderBy('title', 'asc')->limit(300)->get();
-        }
+        $countries_list = Country::orderBy('title', 'asc')->limit(300)->get();
 
         if(isset($guid)){
 
@@ -328,7 +319,7 @@ class AdminUsersController extends Controller
                 if (isset($data['city_' . $i])) {
                     $tmp["city"] = $data["city_" . $i];
                     $tmp["city_select"] = DB::table('cities')->select('city_id', 'title', 'area')
-                        ->where($data["region_" . $i])
+                        ->where('region_id', '=', $data["region_" . $i])
                         ->groupBy('title')
                         ->orderBy('title', 'asc')
                         ->get();
@@ -399,12 +390,7 @@ class AdminUsersController extends Controller
 
         $surveys = LimeSurveys::all();
 
-        if(config('app.locale')=='ru'){
-            $countries_list = Country::where(['lang_id'=>2])->orderBy('title', 'asc')->limit(300)->get();
-        }
-        if(config('app.locale')=='ua'){
-            $countries_list = Country::where(['lang_id'=>1])->orderBy('title', 'asc')->limit(300)->get();
-        }
+        $countries_list = Country::orderBy('title', 'asc')->limit(300)->get();
 
         array_shift($data);
         $count = array_shift($data);
@@ -454,7 +440,7 @@ class AdminUsersController extends Controller
             if (isset($data['city_' . $i])) {
                 $tmp["city"] = $data["city_" . $i];
                 $tmp["city_select"] = DB::table('cities')->select('city_id', 'title', 'area')
-                    ->where($data["region_" . $i])
+                    ->where('region_id', '=', $data["region_" . $i])
                     ->groupBy('title')
                     ->orderBy('title', 'asc')
                     ->get();
