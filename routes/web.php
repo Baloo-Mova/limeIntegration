@@ -54,7 +54,7 @@ Route::group(['middleware' => ['auth', 'checkFull', 'emailVerified']], function 
     Route::get('/pages/{pageName}', ['uses' => 'PagesController@pageView', 'as' => 'pages.view']);
 });
 
-Route::group(['namespace' => 'Admin', 'middleware' => ['checkadmin']], function () {
+Route::group(['namespace' => 'Admin', 'middleware' => ['checkAdmin']], function () {
     Route::group(['prefix' => 'admin'], function () {
 
 
@@ -63,36 +63,50 @@ Route::group(['namespace' => 'Admin', 'middleware' => ['checkadmin']], function 
 
         Route::get('/', ['uses' => 'AdminSiteController@welcome', 'as' => 'admin.welcome']);
 
-        Route::group(['prefix'=>'settings'],function(){
-            Route::get('/',['uses'=>'AdminSettings@index','as'=>'admin.settings']);
-            Route::post('/',['uses'=>'AdminSettings@store','as'=>'admin.settings.store']);
-            Route::post('/save-smtp',['uses'=>'AdminSettings@saveSmtp','as'=>'admin.settings.save.smtp']);
-            Route::post('/check-smtp',['uses'=>'AdminSettings@checkSmtp','as'=>'admin.settings.check.smtp']);
+        Route::group(['prefix' => 'settings'], function () {
+            Route::get('/', ['uses' => 'AdminSettings@index', 'as' => 'admin.settings']);
+            Route::post('/', ['uses' => 'AdminSettings@store', 'as' => 'admin.settings.store']);
+            Route::post('/save-smtp', ['uses' => 'AdminSettings@saveSmtp', 'as' => 'admin.settings.save.smtp']);
+            Route::post('/check-smtp', ['uses' => 'AdminSettings@checkSmtp', 'as' => 'admin.settings.check.smtp']);
         });
 
-        Route::group(['prefix' => 'payments'], function () {
-            Route::group(['prefix' => 'payments_types'], function () {
-                Route::get('/', ['uses' => 'AdminPaymentsTypesController@index', 'as' => 'admin.paymentstypes.index']);
-                Route::get('/create', ['uses' => 'AdminPaymentsTypesController@create', 'as' => 'admin.paymentstypes.create']);
-                Route::post('/create', ['uses' => 'AdminPaymentsTypesController@store', 'as' => 'admin.paymentstypes.store']);
-                Route::get('/edit/{paymentstype}', ['uses' => 'AdminPaymentsTypesController@edit', 'as' => 'admin.paymentstypes.edit']);
-                Route::post('/edit/{paymentstype}', ['uses' => 'AdminPaymentsTypesController@update', 'as' => 'admin.paymentstypes.update']);
-                Route::get('/show/{paymentstype}', ['uses' => 'AdminPaymentsTypesController@show', 'as' => 'admin.paymentstypes.show']);
-                Route::get('/delete/{paymentstype}', ['uses' => 'AdminPaymentsTypesController@delete', 'as' => 'admin.paymentstypes.delete']);
+        Route::group(['middleware' => 'admin'], function () {
+            Route::group(['prefix' => 'payments'], function () {
+                Route::group(['prefix' => 'payments_types'], function () {
+                    Route::get('/', ['uses' => 'AdminPaymentsTypesController@index', 'as' => 'admin.paymentstypes.index']);
+                    Route::get('/create', ['uses' => 'AdminPaymentsTypesController@create', 'as' => 'admin.paymentstypes.create']);
+                    Route::post('/create', ['uses' => 'AdminPaymentsTypesController@store', 'as' => 'admin.paymentstypes.store']);
+                    Route::get('/edit/{paymentstype}', ['uses' => 'AdminPaymentsTypesController@edit', 'as' => 'admin.paymentstypes.edit']);
+                    Route::post('/edit/{paymentstype}', ['uses' => 'AdminPaymentsTypesController@update', 'as' => 'admin.paymentstypes.update']);
+                    Route::get('/show/{paymentstype}', ['uses' => 'AdminPaymentsTypesController@show', 'as' => 'admin.paymentstypes.show']);
+                    Route::get('/delete/{paymentstype}', ['uses' => 'AdminPaymentsTypesController@delete', 'as' => 'admin.paymentstypes.delete']);
+                });
+                Route::group(['prefix' => 'withdraws', 'middleware' => ['admin']], function () {
+                    Route::get('/{column}/{direction}', ['uses' => 'AdminWithdrawsController@index', 'as' => 'admin.withdraws.index']);
+                    Route::get('/create', ['uses' => 'AdminWithdrawsController@create', 'as' => 'admin.withdraws.create']);
+                    Route::post('/create', ['uses' => 'AdminWithdrawsController@store', 'as' => 'admin.withdraws.store']);
+                    Route::get('/edit/{withdraw}', ['uses' => 'AdminWithdrawsController@edit', 'as' => 'admin.withdraws.edit']);
+                    Route::post('/edit/{withdraw}', ['uses' => 'AdminWithdrawsController@update', 'as' => 'admin.withdraws.update']);
+                    Route::post('/status/edit', ['uses' => 'AdminWithdrawsController@updateStatus', 'as' => 'admin.withdraws.status.update']);
+                    Route::get('/show/{withdraw}', ['uses' => 'AdminWithdrawsController@show', 'as' => 'admin.withdraws.show']);
+                    Route::get('/delete/{withdraw}', ['uses' => 'AdminWithdrawsController@delete', 'as' => 'admin.withdraws.delete']);
+                    Route::get('/export', ['uses' => 'AdminWithdrawsController@export', 'as' => 'admin.withdraws.export']);
+                    Route::post('/export', ['uses' => 'AdminWithdrawsController@exportCsv', 'as' => 'admin.withdraws.export.csv']);
+                });
             });
-            Route::group(['prefix' => 'withdraws', 'middleware' => ['admin']], function () {
-                Route::get('/{column}/{direction}', ['uses' => 'AdminWithdrawsController@index', 'as' => 'admin.withdraws.index']);
-                Route::get('/create', ['uses' => 'AdminWithdrawsController@create', 'as' => 'admin.withdraws.create']);
-                Route::post('/create', ['uses' => 'AdminWithdrawsController@store', 'as' => 'admin.withdraws.store']);
-                Route::get('/edit/{withdraw}', ['uses' => 'AdminWithdrawsController@edit', 'as' => 'admin.withdraws.edit']);
-                Route::post('/edit/{withdraw}', ['uses' => 'AdminWithdrawsController@update', 'as' => 'admin.withdraws.update']);
-                Route::post('/status/edit', ['uses' => 'AdminWithdrawsController@updateStatus', 'as' => 'admin.withdraws.status.update']);
-                Route::get('/show/{withdraw}', ['uses' => 'AdminWithdrawsController@show', 'as' => 'admin.withdraws.show']);
-                Route::get('/delete/{withdraw}', ['uses' => 'AdminWithdrawsController@delete', 'as' => 'admin.withdraws.delete']);
-                Route::get('/export', ['uses' => 'AdminWithdrawsController@export', 'as' => 'admin.withdraws.export']);
-                Route::post('/export', ['uses' => 'AdminWithdrawsController@exportCsv', 'as' => 'admin.withdraws.export.csv']);
+
+
+            Route::group(['prefix' => 'pages'], function () {
+                Route::get('/', ['uses' => 'AdminPagesController@index', 'as' => 'admin.pages.index']);
+                Route::get('/create', ['uses' => 'AdminPagesController@create', 'as' => 'admin.pages.create']);
+                Route::post('/create', ['uses' => 'AdminPagesController@store', 'as' => 'admin.pages.store']);
+                Route::get('/delete/{id}', ['uses' => 'AdminPagesController@delete', 'as' => 'admin.pages.delete']);
+                Route::get('/show/{id}', ['uses' => 'AdminPagesController@show', 'as' => 'admin.pages.show']);
+                Route::get('/edit/{id}', ['uses' => 'AdminPagesController@edit', 'as' => 'admin.pages.edit']);
+                Route::post('/edit/{id}', ['uses' => 'AdminPagesController@update', 'as' => 'admin.pages.update']);
             });
         });
+
         Route::group(['prefix' => 'users'], function () {
             Route::get('/', ['uses' => 'AdminUsersController@index', 'as' => 'admin.users.index']);
             Route::get('/create', ['uses' => 'AdminUsersTypesController@create', 'as' => 'admin.users.create']);
@@ -123,8 +137,6 @@ Route::group(['namespace' => 'Admin', 'middleware' => ['checkadmin']], function 
             Route::post('/send-message-by-pids', ['uses' => 'AdminMessagesController@sendMessageByPids', 'as' => 'admin.messages.pids']);
 
 
-
-
             Route::get('/message-create', ['uses' => 'AdminMessagesController@createMessage', 'as' => 'admin.messages.create']);
             Route::post('/message-create', ['uses' => 'AdminMessagesController@sendBaseMessage', 'as' => 'admin.send.base.messages']);
             Route::post('/message-to-list', ['uses' => 'AdminMessagesController@sendBaseMessageToList', 'as' => 'admin.send.base.messages.list']);
@@ -132,20 +144,10 @@ Route::group(['namespace' => 'Admin', 'middleware' => ['checkadmin']], function 
             Route::post('/email-message-create', ['uses' => 'AdminMessagesController@sendEmailMessage', 'as' => 'admin.messages.send.email']);
         });
 
-        Route::group(['prefix' => 'pages'], function () {
-            Route::get('/', ['uses' => 'AdminPagesController@index', 'as' => 'admin.pages.index']);
-            Route::get('/create', ['uses' => 'AdminPagesController@create', 'as' => 'admin.pages.create']);
-            Route::post('/create', ['uses' => 'AdminPagesController@store', 'as' => 'admin.pages.store']);
-            Route::get('/delete/{id}', ['uses' => 'AdminPagesController@delete', 'as' => 'admin.pages.delete']);
-            Route::get('/show/{id}', ['uses' => 'AdminPagesController@show', 'as' => 'admin.pages.show']);
-            Route::get('/edit/{id}', ['uses' => 'AdminPagesController@edit', 'as' => 'admin.pages.edit']);
-            Route::post('/edit/{id}', ['uses' => 'AdminPagesController@update', 'as' => 'admin.pages.update']);
-        });
 
         Route::group(['prefix' => 'manage'], function () {
             Route::get('/', ['uses' => 'AdminManageSurveyParticipantsController@index', 'as' => 'admin.manage.index']);
             Route::post('/', ['uses' => 'AdminManageSurveyParticipantsController@findIndex', 'as' => 'admin.manage.find.index']);
-
 
 
             Route::get('/add-participant-to-survey', ['uses' => 'AdminManageSurveyParticipantsController@addParticipant', 'as' => 'admin.manage.addParticipant']);
