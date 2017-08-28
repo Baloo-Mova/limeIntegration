@@ -27,7 +27,7 @@ use Illuminate\Database\Eloquent\Model;
 class Region extends Model
 {
     protected $table = 'regions';
-    public $timestamps = true;
+    public $timestamps = false;
 
     /**
      * The attributes that are mass assignable.

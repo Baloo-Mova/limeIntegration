@@ -549,9 +549,11 @@
 
                 if(type == 1){
                     $(".country_wrap_"+current_id).show();
-
                     $(".age_wrap_"+current_id).show();
                     $(".gender_wrap_"+current_id).show();
+                    $(".type_wrap_"+current_id).hide();
+                    $(".questions_wrap_"+current_id).hide();
+                    $(".answer_condition_"+current_id).hide();
                 }else{
                     $(".type_wrap_"+current_id).show();
                     $(".country_wrap_"+current_id).hide();
