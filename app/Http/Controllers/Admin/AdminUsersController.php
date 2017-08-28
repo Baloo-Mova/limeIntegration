@@ -129,9 +129,9 @@ class AdminUsersController extends Controller
                 $this->icv($user->role->title),
                 $this->icv($user->email),
                 $this->icv($user->balance),
-                $this->icv($user->country->first()->title),
-                $this->icv($user->region->first()->title),
-                $this->icv($user->city->first()->title),
+                $this->icv($user->country->title),
+                $this->icv($user->region->title),
+                $this->icv($user->city->title),
                 $this->icv($user->created_at),
                 $this->icv($user->date_birth),
             ], ";");

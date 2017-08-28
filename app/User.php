@@ -120,12 +120,12 @@ class User extends Authenticatable
 
     public function region()
     {
-        return $this->belongsTo(Region::class, 'region_id', 'region_id')->where(['country_id' => $this->country_id]);
+        return $this->hasOne(Region::class, 'region_id', 'region_id');
     }
 
     public function city()
     {
-        return $this->belongsTo(City::class, 'city_id', 'city_id')->where(['country_id' => $this->country_id]);
+        return $this->hasOne(City::class, 'city_id', 'city_id');
     }
 
     public function participant()
