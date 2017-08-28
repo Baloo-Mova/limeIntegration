@@ -6,7 +6,6 @@
     <table class="table table-hover table-striped space charges-list table-condensed">
         <thead>
         <tr>
-
             <th class="table-header no-on-mobile">@lang('messages.rewards_page_table_sum')</th>
             <th class="table-header">@lang('messages.rewards_page_table_operation')</th>
             <th class="table-header">@lang('messages.rewards_page_table_type')</th>
@@ -17,7 +16,7 @@
         <tbody>
         @foreach($balancelogs as $item)
             <tr>
-                <td>{{$item->balance_operation}} ₽</td>
+                <td>{{$item->balance_operation}}</td>
                 <td>{{$item->description}} </td>
                 <td>{{$item->payment_type_id==0 ? \Illuminate\Support\Facades\Lang::get('messages.paymentstypeLocal') : $item->paymentstype->title}} </td>
                 <td>{{$item->getStatusMessage() }} </td>

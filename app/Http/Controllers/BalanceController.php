@@ -32,7 +32,7 @@ class BalanceController extends Controller
     //
     public function index()
     {
-
+        return view('frontend.rewards.index', ['balancelogs' => Auth::user()->balancetransactionlog()->paginate(20)]);
     }
 
     public function balance()
@@ -43,7 +43,7 @@ class BalanceController extends Controller
         }
         $paymentstypes = PaymentsType::all();
         $min_sum = $settings->min_sum;
-        $balanceLogs = WithdrawBalance::where(['user_id'=>Auth::user()->id])->paginate(20);
+        $balanceLogs = WithdrawBalance::where(['user_id' => Auth::user()->id])->paginate(20);
         return view('frontend.rewards.balance', ['min_sum' => $min_sum, 'paymentstypes' => $paymentstypes, 'balancelogs' => $balanceLogs]);
     }
 
@@ -58,7 +58,7 @@ class BalanceController extends Controller
 
         $this->validate($request, [
             'destination' => 'required',
-            'amount' => 'required|integer|min:'.$settings->min_sum.'|max:' . Auth::user()->balance,
+            'amount' => 'required|integer|min:' . $settings->min_sum . '|max:' . Auth::user()->balance,
             'paymentstype' => 'required|integer'
         ],
             [
