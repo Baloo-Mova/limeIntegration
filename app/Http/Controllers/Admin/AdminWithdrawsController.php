@@ -36,31 +36,37 @@ class AdminWithdrawsController extends Controller
     }
 
 
-
     public function updateStatus(Request $request)
     {
         $description = ($request->input('description'));
-//dd($request->input('withdraw_id'));
+
+
         $withdrawbalance = WithdrawBalance::whereId($request["withdraw_id"])->first();
 
+        if($withdrawbalance->user->balance < $withdrawbalance->amount && $request["status"] == 1){
+            Toastr::error('У пользователя не достаточно средств к списанию');
+            return back();
+        }
+
         $withdrawbalance->status = $request["status"];
-        $withdrawbalance->description  = isset($description) ? $description : null;
+        $withdrawbalance->description = isset($description) ? $description : null;
         $withdrawbalance->save();
+
 
 
         switch ($request["status"]) {
             case '1':
                 BalanceTransactionLog::create([
-                        'to_user_id' =>$withdrawbalance->user->id,
-                        'from_user_id'=> Auth::user()->id,
-                        'description' => "Вывод средств",
-                        'balance_operation'=>-1*($withdrawbalance->amount),
-                        'status'=> 1,
-                        'payment_type_id'=>$withdrawbalance->payment_type_id,
-                        'ls_surveys_id'=>0,
+                    'to_user_id' => $withdrawbalance->user->id,
+                    'from_user_id' => Auth::user()->id,
+                    'description' => "Вывод средств",
+                    'balance_operation' => -1 * ($withdrawbalance->amount),
+                    'status' => 1,
+                    'payment_type_id' => $withdrawbalance->payment_type_id,
+                    'ls_surveys_id' => 0,
 
-                    ]);
-                $withdrawbalance->user->decrement('balance',$withdrawbalance->amount);
+                ]);
+                $withdrawbalance->user->decrement('balance', $withdrawbalance->amount);
                 break;
             case '2':
 
@@ -68,14 +74,14 @@ class AdminWithdrawsController extends Controller
 
         }
 
-        return redirect(route('admin.withdraws.index'));
+        return back();
     }
 
     public function delete($id)
     {
         try {
             WithdrawBalance::whereId($id)->delete();
-        }catch(\Exception $ex){
+        } catch (\Exception $ex) {
             return redirect('admin.withdraws.index');
         }
 
@@ -100,7 +106,7 @@ class AdminWithdrawsController extends Controller
         foreach ($users as $item) {
             $response[] = [
                 'id' => $item->id,
-                'text' => $item->name." ".$item->second_name
+                'text' => $item->name . " " . $item->second_name
             ];
         }
 
@@ -113,7 +119,7 @@ class AdminWithdrawsController extends Controller
         $date = $request->get('date');
         $send_all = $request->get('send_all');
 
-        if(!isset($user) && !isset($date) && !isset($send_all)){
+        if (!isset($user) && !isset($date) && !isset($send_all)) {
             Toastr::error("Не указаны обязательные параметры", "Ошибка");
             return back();
         }
@@ -126,26 +132,26 @@ class AdminWithdrawsController extends Controller
             $date_to = Carbon::createFromFormat('m-d-Y', $date_to)->toDateTimeString();
         }
 
-        if(isset($send_all) && $send_all == "on"){
+        if (isset($send_all) && $send_all == "on") {
             $withdraws = DB::table('withdraw_balances')
                 ->join('users', 'withdraw_balances.user_id', '=', 'users.id')
                 ->join('payments_types', 'withdraw_balances.payment_type_id', '=', 'payments_types.id')
                 ->select('users.name', 'users.second_name', 'users.email', 'withdraw_balances.*', 'payments_types.title')
                 ->get();
-        }elseif(isset($date) && !isset($user)){
+        } elseif (isset($date) && !isset($user)) {
             $withdraws = DB::table('withdraw_balances')
                 ->join('users', 'withdraw_balances.user_id', '=', 'users.id')
                 ->join('payments_types', 'withdraw_balances.payment_type_id', '=', 'payments_types.id')
                 ->select('users.name', 'users.second_name', 'users.email', 'withdraw_balances.*', 'payments_types.title')
                 ->whereBetween('withdraw_balances.created_at', [$date_from, $date_to])
                 ->get();
-        }elseif(!isset($date) && isset($user)){
+        } elseif (!isset($date) && isset($user)) {
             $withdraws = DB::table('withdraw_balances')
                 ->join('users', 'withdraw_balances.user_id', '=', 'users.id')
                 ->join('payments_types', 'withdraw_balances.payment_type_id', '=', 'payments_types.id')
                 ->select('users.name', 'users.second_name', 'users.email', 'withdraw_balances.*', 'payments_types.title')
                 ->get();
-        }elseif(isset($date) && isset($user)){
+        } elseif (isset($date) && isset($user)) {
             $withdraws = DB::table('withdraw_balances')
                 ->join('users', 'withdraw_balances.user_id', '=', 'users.id')
                 ->join('payments_types', 'withdraw_balances.payment_type_id', '=', 'payments_types.id')
@@ -158,10 +164,10 @@ class AdminWithdrawsController extends Controller
         $result = [];
         $dt = microtime();
 
-        if(!file_exists(storage_path('app/csv/'))){
+        if (!file_exists(storage_path('app/csv/'))) {
             mkdir(storage_path('app/csv/'));
         }
-        $file = fopen(storage_path('app/csv/')."export_withdraw" . $dt . ".csv", 'w');
+        $file = fopen(storage_path('app/csv/') . "export_withdraw" . $dt . ".csv", 'w');
         fputcsv($file, [
             'user_id',
             'user_email',
@@ -170,7 +176,7 @@ class AdminWithdrawsController extends Controller
             'status',
             'date'
         ], ";");
-        foreach ($withdraws as $w){
+        foreach ($withdraws as $w) {
             fputcsv($file, [
                 $w->user_id,
                 $this->icv($w->email),
@@ -182,7 +188,7 @@ class AdminWithdrawsController extends Controller
         }
         fclose($file);
 
-        return response()->download(storage_path('app/csv/').'export_withdraw' . $dt . '.csv');
+        return response()->download(storage_path('app/csv/') . 'export_withdraw' . $dt . '.csv');
     }
 
     public function exportFunction($column, $direction)
@@ -192,15 +198,15 @@ class AdminWithdrawsController extends Controller
             ->join('payments_types', 'withdraw_balances.payment_type_id', '=', 'payments_types.id')
             ->select('users.name', 'users.second_name', 'users.email', 'withdraw_balances.*', 'payments_types.title')
             ->orderBy($column, $direction)
-        ->get();
+            ->get();
 
         $result = [];
         $dt = microtime();
 
-        if(!file_exists(storage_path('app/csv/'))){
+        if (!file_exists(storage_path('app/csv/'))) {
             mkdir(storage_path('app/csv/'));
         }
-        $file = fopen(storage_path('app/csv/')."export" . $dt . ".csv", 'w');
+        $file = fopen(storage_path('app/csv/') . "export" . $dt . ".csv", 'w');
         fputcsv($file, [
             'user_id',
             'user_email',
@@ -209,7 +215,7 @@ class AdminWithdrawsController extends Controller
             'status',
             'date'
         ], ";");
-        foreach ($withdraws as $w){
+        foreach ($withdraws as $w) {
             fputcsv($file, [
                 $w->user_id,
                 $this->icv($w->email),
@@ -221,7 +227,7 @@ class AdminWithdrawsController extends Controller
         }
         fclose($file);
 
-        return response()->download(storage_path('app/csv/').'export' . $dt . '.csv');
+        return response()->download(storage_path('app/csv/') . 'export' . $dt . '.csv');
     }
 
     private function icv($str)

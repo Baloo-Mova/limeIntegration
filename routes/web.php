@@ -35,11 +35,8 @@ Route::group(['middleware' => ['auth', 'checkFull', 'emailVerified']], function 
     Route::group(['prefix' => 'rewards'], function () {
         Route::get('/', ['uses' => 'BalanceController@index', 'as' => 'rewards.index']);
         Route::get('/balance', ['uses' => 'BalanceController@balance', 'as' => 'rewards.balance']);
-
-    });
-    Route::group(['prefix' => 'withdraws'], function () {
-        Route::get('/', ['uses' => 'BalanceController@indexwithdraw', 'as' => 'withdraws.index']);
         Route::post('/create', ['uses' => 'BalanceController@storeWithdraw', 'as' => 'withdraws.store']);
+
     });
 
     Route::get('/updatebalance/{id}', ['uses' => 'AjaxController@updatebalance', 'as' => 'update.balance']);

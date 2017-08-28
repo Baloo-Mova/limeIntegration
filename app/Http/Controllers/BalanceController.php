@@ -32,53 +32,52 @@ class BalanceController extends Controller
     //
     public function index()
     {
-        $balanceLogs = Auth::user()->balancetransactionlog()->paginate(20);
-        return view('frontend.rewards.index')->with(
-            [
-                'balancelogs' => $balanceLogs
-            ]
-        );
+
     }
 
     public function balance()
     {
         $settings = Settings::find(1);
-        if(!isset($settings)){
+        if (!isset($settings)) {
             $min_sum = 500;
         }
+        $paymentstypes = PaymentsType::all();
         $min_sum = $settings->min_sum;
-        return view('frontend.rewards.balance', ['min_sum' => $min_sum]);
+        $balanceLogs = WithdrawBalance::where(['user_id'=>Auth::user()->id])->paginate(20);
+        return view('frontend.rewards.balance', ['min_sum' => $min_sum, 'paymentstypes' => $paymentstypes, 'balancelogs' => $balanceLogs]);
     }
 
-    public function indexwithdraw()
-    {
-        $withdraws = Auth::user()->withdrawbalance()->paginate(20);
-        $paymentstypes = PaymentsType::get();
-        return view('frontend.withdraws.index')->with(
-            [
-                'withdraws' => $withdraws,
-                'paymentstypes' => $paymentstypes,
-
-            ]
-        );
-    }
 
     public function storeWithdraw(Request $request)
     {
 
-        if (isset($request["destination"]) && isset($request["amount"])) {
+        $settings = Settings::find(1);
+        if (!isset($settings)) {
+            $min_sum = 500;
+        }
+
+        $this->validate($request, [
+            'destination' => 'required',
+            'amount' => 'required|integer|min:'.$settings->min_sum.'|max:' . Auth::user()->balance,
+            'paymentstype' => 'required|integer'
+        ],
+            [
+                'required' => 'Обязательно к заполнению',
+                'amount.min' => 'Сумма не должна быть меньше :min',
+                'amount.max' => 'Сумма не должна быть больше :max'
+            ]);
+
         WithdrawBalance::create([
-            'user_id' =>Auth::user()->id,
-            'decription' =>null,
-            'amount' =>$request["amount"],
-            'payment_type_id' =>$request["paymentstype"],
-            'destination' =>$request["destination"],
-            'currency_id' =>0,
+            'user_id' => Auth::user()->id,
+            'decription' => null,
+            'amount' => $request["amount"],
+            'payment_type_id' => $request["paymentstype"],
+            'destination' => $request["destination"],
+            'currency_id' => 0,
 
         ]);
 
-        }
-        return redirect(route('withdraws.index'));
+        return back();
 
     }
 
