@@ -40,11 +40,11 @@ class AdminUsersController extends Controller
         $users = User::where(['role_id'=>1])->orWhere(['role_id'=>3])->orderBy('id')->paginate(20);
 
         if(Lang::getLocale()=="ru"){
-            $countries = Country::where(['lang_id'=>2])->get();
+            $countries = Country::where(['lang_id'=> 'ru'])->get();
         }
 
         if(Lang::getLocale()=="uk"){
-            $countries = Country::where(['lang_id'=>1])->get();
+            $countries = Country::where(['lang_id'=> 'uk'])->get();
         }
 
         return view('admin.users.index')->with([
