@@ -28,7 +28,7 @@ class AdminSurveysProcessingController extends Controller
 
     public function getUsers(Request $request)
     {
-        $users = LimeParticipants::select(['participant_id', 'email','firstname','secondname'])
+        $users = LimeParticipants::select(['participant_id', 'email','firstname','lastname'])
             ->where('email', 'like', '%' . $request->email['term'] . '%')
             ->orWhere('firstname', 'like', '%' . $request->email['term'] . '%')
             ->orWhere('lastname', 'like', '%' . $request->email['term'] . '%')
