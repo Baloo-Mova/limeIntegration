@@ -10,16 +10,20 @@ class RedirectIfNotAdmin
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @param  string|null  $guard
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Closure $next
+     * @param  string|null $guard
      * @return mixed
      */
     public function handle($request, Closure $next, $guard = null)
     {
 
-        if (!(Auth::guard($guard)->check()) || Auth::user()->isAdmin()) {
-            return redirect(route('site.index'));  
+        $canUse = [
+            2, 3
+        ];
+
+        if (!(Auth::guard($guard)->check()) || !in_array(Auth::user()->isAdmin(), $canUse)) {
+            return redirect(route('site.index'));
         }
 
         return $next($request);
