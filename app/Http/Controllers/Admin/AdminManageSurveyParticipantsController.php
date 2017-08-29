@@ -20,6 +20,7 @@ use App\Models\Settings;
 use App\Jobs\SendJob;
 use App\Models\Lime\LimeSurveysQuestions;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Database\Schema\Blueprint;
 
 class AdminManageSurveyParticipantsController extends Controller
 {

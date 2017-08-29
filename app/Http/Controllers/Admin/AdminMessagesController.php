@@ -19,6 +19,7 @@ use App\Models\Lime\LimeSurveysQuestionsAnswers;
 use App\Jobs\SendBaseJob;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
 
 class AdminMessagesController extends Controller
 {

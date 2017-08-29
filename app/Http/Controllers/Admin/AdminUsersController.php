@@ -25,6 +25,7 @@ use App\Models\Lime\LimeSurveysQuestionsAnswers;
 use App\Models\Lime\LimeSurveysQuestions;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
 
 class AdminUsersController extends Controller
 {
