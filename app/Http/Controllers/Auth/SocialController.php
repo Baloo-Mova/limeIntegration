@@ -148,13 +148,9 @@ class SocialController extends Controller
                     $mail->Subject = "Регистрация на проекте ".env("APP_NAME");
                     $mail->Body = "Вы успешно зарегистрировали на проекте ".env("APP_NAME")." с помощью Facebook. Ваш пароль: ".$newPasw;
 
-                    if (!$mail->send()) {
-                        dd("notsend");
-                    } else {
-                        dd("send");
-                    }
+
                 } catch (\Exception $ex) {
-                    dd("notsend");
+                    return redirect(route('site.index'));
                 }
 
 
