@@ -470,6 +470,11 @@ class AdminUsersController extends Controller
 
             $search_result = $this->findUsers($data, $count);
 
+            if(!$search_result){
+                Toastr::error("Выбранных Вами параметров поиска недостаточно!", "Ошибка!");
+                return back();
+            }
+
             DB::table('search_cache_' . $guid)->insert($search_result);
         }else{
             $guid = $in_db->guid;
@@ -600,13 +605,27 @@ class AdminUsersController extends Controller
                 }
 
             } else {
-                $type = $data["type_" . $i];
-                $questions = $data["questions_" . $i];
-                $answers = $data["answers_" . $i];
-                $gid = $data["gid_" . $i];
-                if (!isset($type) || !isset($questions) || !isset($answers) || !isset($gid)) {
+
+                if(!isset($data["type_" . $i])){
                     return false;
                 }
+                $type = $data["type_" . $i];
+
+                if(!isset($data["questions_" . $i])){
+                    return false;
+                }
+                $questions = $data["questions_" . $i];
+
+                if(!isset($data["answers_" . $i])){
+                    return false;
+                }
+                $answers = $data["answers_" . $i];
+
+                if(!isset($data["gid_" . $i])){
+                    return false;
+                }
+                $gid = $data["gid_" . $i];
+
                 $users = $lime_base->table('survey_' . $type)
                     ->join('tokens_' . $type, 'tokens_' . $type . '.token', '=', 'survey_' . $type . '.token')
                     ->where('survey_' . $type . '.' . $type . "X" . $gid . "X" . $questions, '=', $answers)->select(['tokens_' . $type . '.firstname', 'tokens_' . $type . '.lastname', 'tokens_' . $type . '.participant_id'])
