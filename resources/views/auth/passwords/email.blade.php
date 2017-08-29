@@ -33,7 +33,7 @@
                             </div>
                             <div class="auth-block-footer row space">
                                 <div class="col-md-6">
-                                    <button class="btn btn-success btn-lg btn-block" type="submit">
+                                    <button class="btn btn-success btn-lg" type="submit">
                                         Выслать инструкции на почту
                                     </button>
                                     <div class="small-space"></div>
