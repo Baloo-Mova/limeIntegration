@@ -4,7 +4,7 @@
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link href="{{ asset("css/font-awesome.min.css") }}" rel="stylesheet" type="text/css"/>
+    {{--<link href="{{ asset("css/font-awesome.min.css") }}" rel="stylesheet" type="text/css"/>--}}
     <link href="{{ asset('/css/all.css') }}" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
