@@ -36,6 +36,7 @@
                                         <th>
                                             <select name="role_id" id="" class="form-control role_id">
                                                 <option disabled selected>Выберите права</option>
+                                                <option value="2" {{ isset($search['role_id']) && $search['role_id'] == 2 ? 'selected' : '' }} >Администратор</option>
                                                 <option value="1" {{ isset($search['role_id']) && $search['role_id'] == 1 ? 'selected' : '' }} >Пользователь</option>
                                                 <option value="3" {{ isset($search['role_id']) && $search['role_id'] == 3 ? 'selected' : '' }} >Оператор</option>
                                             </select>

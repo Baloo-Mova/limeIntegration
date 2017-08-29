@@ -39,7 +39,7 @@ class AdminUsersController extends Controller
     public function index(Request $request)
     {
 
-        $users = User::where(['role_id'=>1])->orWhere(['role_id'=>3])->orderBy('id')->paginate(20);
+        $users = User::orderBy('id')->paginate(20);
 
         $countries = Country::all();
 
