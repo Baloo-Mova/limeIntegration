@@ -24,6 +24,7 @@ class SocialController extends Controller
     public function callbackFaceBook()
     {
         $providerUser = Socialite::driver('facebook')->user();
+        dd($providerUser);
         if (isset($providerUser)) {
             $user = User::where('email', '=', $providerUser->email)->first();
             if (isset($user) && $user->facebook == $providerUser->id) {
