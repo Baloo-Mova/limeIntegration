@@ -160,6 +160,11 @@ class AdminManageSurveyParticipantsController extends Controller
         $survey_id = $request->get('survey');
         $guid = $request->get('guid');
 
+        if(!isset($survey_id) || !isset($guid)){
+            Toastr::error("Не указаны обязательные параметры!", "Ошибка");
+            return back();
+        }
+
         $participants = DB::table('search_cache_' .$guid)->get()->toArray();
 
         if (!isset($survey_id)) {
