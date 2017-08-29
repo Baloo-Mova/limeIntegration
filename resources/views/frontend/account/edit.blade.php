@@ -137,7 +137,7 @@
                         <div class="form-group{{ $errors->has('date_birth') ? ' has-danger' : '' }}">
                             <div class="col-xs-12">
                                 <label for="date_birth" class="col-form-label">Дата рождения*</label>
-                                <input class="form-control" type="date" value="{{$user->date_birth}}" id="date_birth"
+                                <input class="form-control date_birth" type="date" value="{{$user->date_birth}}" id="date_birth"
                                        name="date_birth">
                                 @if ($errors->has('date_birth'))
                                     <span class="help-block">
@@ -170,7 +170,11 @@
 
 
     <script>
+        $(document).ready(function () {
 
+        $('.date_birth').datetimepicker({
+            format: 'YYYY-MM-DD'
+        });
         var countryId = null;
         var regionId = null;
         $("#country").change(function () {
@@ -222,5 +226,6 @@
             });
         });
 
+        });
     </script>
 @stop
