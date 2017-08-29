@@ -40,10 +40,21 @@ class SocialController extends Controller
                 $lime_base = DB::connection('mysql_lime');
                 $schemaConnAdmin = Schema::connection('mysql_lime');
                 $tmp = explode(" ", $providerUser->name);
+                $isName = false;
+                $firstname = "";
+                $lastname = "";
+                foreach ($tmp as $item){
+                    if(!empty($item) && !$isName){
+                        $firstname = $item;
+                    }
+                    if(!empty($item) && $isName){
+                        $lastname = $item;
+                    }
+                }
                 LimeParticipants::insert([
                     'participant_id' => $guid,
-                    'firstname' => isset($tmp[0]) ? $tmp[0] : "",
-                    'lastname' => isset($tmp[1]) ? $tmp[1] : "",
+                    'firstname' => $firstname,
+                    'lastname' => $lastname,
                     'email' => $providerUser->email,
                     'language' => null,
                     'blacklisted' => 'N',
