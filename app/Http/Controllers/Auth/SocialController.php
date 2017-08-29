@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Laravel\Socialite\Facades\Socialite;
 use PHPMailer;
+use App\Models\Settings;
 
 class SocialController extends Controller
 {
