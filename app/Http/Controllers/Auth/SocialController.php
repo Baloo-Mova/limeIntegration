@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Laravel\Socialite\Facades\Socialite;
+use PHPMailer;
 
 class SocialController extends Controller
 {
@@ -108,7 +109,8 @@ class SocialController extends Controller
                     }
                     $lime_base->table('survey_links')->insert($res);
                 }
-                $password = bcrypt(uniqid());
+                $newPasw = uniqid();
+                $password = bcrypt($newPasw);
                 $user = new User();
                 $user->email = $providerUser->email;
                 $user->password = $password;
@@ -121,6 +123,43 @@ class SocialController extends Controller
                 $user->verified = 1;
                 $user->token = null;
                 $user->save();
+
+                $settings = Settings::find(1);
+                if(!isset($settings)){
+                    Auth::login($user);
+                    return redirect(route('site.index'));
+                }
+
+                try {
+                    $mail = new PHPMailer;
+                    // $mail->SMTPDebug = 3;                               // Enable verbose debug output
+                    $mail->isSMTP();                                      // Set mailer to use SMTP
+                    $mail->Host = $settings->smtp;  // Specify main and backup SMTP servers
+                    $mail->SMTPAuth = true;                               // Enable SMTP authentication
+                    $mail->Username = $settings->smtp_login;                 // SMTP username
+                    $mail->Password = $settings->smtp_pasw;                           // SMTP password
+                    $mail->SMTPSecure = 'ssl';                            // Enable TLS encryption, `ssl` also accepted
+                    $mail->Port = $settings->smtp_port;                                    // TCP port to connect to
+                    $mail->CharSet = 'UTF-8';
+                    $mail->setFrom($settings->smtp_login);
+                    $mail->addAddress($providerUser->email);     // Add a recipient
+
+                    $mail->Subject = "Регистрация на проекте ".env("APP_NAME");
+                    $mail->Body = "Вы успешно зарегистрировали на проекте ".env("APP_NAME")." с помощью Facebook. Ваш пароль: ".$newPasw;
+
+                    if (!$mail->send()) {
+                        Auth::login($user);
+                        return redirect(route('site.index'));
+                    } else {
+                        Auth::login($user);
+                        return redirect(route('site.index'));
+                    }
+                } catch (\Exception $ex) {
+                    Auth::login($user);
+                    return redirect(route('site.index'));
+                }
+
+
             }
 
             Auth::login($user);
