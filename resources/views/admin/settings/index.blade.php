@@ -36,6 +36,7 @@
                                                 <li><strong>[name]</strong> - будет заменено на имя пользователя, которому отправляется письмо;</li>
                                                 <li><strong>[surname]</strong> - будет заменено на фамилию пользователя, которому отправляется письмо;</li>
                                                 <li><strong>[surveylink]</strong> - будет заменено ссылкой на прохождение опроса;</li>
+                                                <li><strong>[resetlink]</strong> - будет заменено ссылкой для восстановления пароля;</li>
                                             </ul>
                                         </div>
                                     </div>
@@ -69,6 +70,22 @@
                                         </div>
                                         <div class="form-group col-md-12">
                                             <textarea name="remind_message_text" class="form-control" rows="15" id="remind_message_text">{{ isset($settings) ? $settings->remind_message_text : '' }}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="box box-primary">
+                                <div class="box-body">
+                                    <div class="row">
+                                        <div class="form-group col-md-12">
+                                            <label for="min_sum">Текст письма, которое отправляется, при запросе сброса пароля.</label>
+                                        </div>
+                                        <div class="form-group col-md-12">
+                                            <textarea name="reset_password_message_text" class="form-control" rows="15" id="remind_message_text">{{ isset($settings) ? $settings->reset_password_message_text : '' }}</textarea>
                                         </div>
                                     </div>
                                 </div>

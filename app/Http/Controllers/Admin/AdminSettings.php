@@ -24,8 +24,9 @@ class AdminSettings extends Controller
         $sum = $request->get('min_sum');
         $new_message_text = $request->get('new_message_text');
         $remind_message_text = $request->get('remind_message_text');
+        $reset_password_message_text = $request->get('reset_password_message_text');
 
-        if(!isset($sum) && !isset($new_message_text) && !isset($remind_message_text)){
+        if(!isset($sum) && !isset($new_message_text) && !isset($remind_message_text) && !isset($reset_password_message_text)){
             Toastr::error("Не указан обязательный параметр", "Ошибка");
             return back();
         }
@@ -38,6 +39,7 @@ class AdminSettings extends Controller
        $settings->min_sum = $sum;
        $settings->new_message_text = $new_message_text;
        $settings->remind_message_text = $remind_message_text;
+       $settings->reset_password_message_text = $reset_password_message_text;
        $settings->save();
 
        Toastr::success("Настройки сохранены!", "Сохранено");
