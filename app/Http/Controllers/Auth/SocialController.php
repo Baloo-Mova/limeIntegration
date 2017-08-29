@@ -107,6 +107,8 @@ class SocialController extends Controller
                 $user->ls_password = $password;
                 $user->ls_participant_id = $guid;
                 $user->facebook = $providerUser->id;
+                $user->verified = 1;
+                $user->token = null;
                 $user->save();
             }
 
