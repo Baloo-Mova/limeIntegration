@@ -24,7 +24,6 @@ class SocialController extends Controller
     public function callbackFaceBook()
     {
         $providerUser = Socialite::driver('facebook')->user();
-        dd($providerUser);
         if (isset($providerUser)) {
             $user = User::where('email', '=', $providerUser->email)->first();
             if (isset($user) && $user->facebook == $providerUser->id) {
@@ -40,7 +39,7 @@ class SocialController extends Controller
                 $guid = LimeParticipants::gen_uuid();
                 $lime_base = DB::connection('mysql_lime');
                 $schemaConnAdmin = Schema::connection('mysql_lime');
-                $tmp = explode("  ", $providerUser->name);
+                $tmp = explode(" ", $providerUser->name);
                 LimeParticipants::insert([
                     'participant_id' => $guid,
                     'firstname' => isset($tmp[0]) ? $tmp[0] : "",
