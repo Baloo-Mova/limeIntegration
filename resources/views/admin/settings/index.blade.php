@@ -134,6 +134,7 @@
                                                 <input type="hidden" name="port" class="test-port">
                                                 <input type="hidden" name="login" class="test-login">
                                                 <input type="hidden" name="smtp_pasw" class="test-pasw">
+                                                <input type="hidden" name="secure" class="test-secure">
                                                 <div class="row">
                                                     <div class="form-group col-md-12">
                                                         <label for="text">Текст тестового письма</label>
@@ -169,6 +170,13 @@
                                         <input type="password" name="smtp_pasw" id="pasw" class="form-control origin-pasw" value="{{ isset($settings) ? $settings->smtp_pasw : 0 }}" required>
                                     </div>
                                     <div class="form-group col-md-12">
+                                        <label for="secure" class="col-form-label">Тип Защиты</label><br>
+                                        <select name="secure" id="secure" class="form-control origin-secure">
+                                            <option value="ssl" {{ isset($settings) && $settings->secure == "ssl" ? "selected" : "" }}>SSL</option>
+                                            <option value="tls" {{ isset($settings) && $settings->secure == "tls" ? "selected" : "" }}>TLS</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-12">
                                         <a href="#" class="btn btn-success test-button" data-toggle="modal" data-target="#testModal">Проверить SMTP</a>
                                         <button type="submit" class="btn btn-default">Сохранить</button>
                                     </div>
@@ -189,11 +197,13 @@
               var smtp = $(".origin-smtp").val(),
                   port = $(".origin-port").val(),
                   login = $(".origin-login").val(),
-                  pasw = $(".origin-pasw").val();
+                  pasw = $(".origin-pasw").val(),
+                  sec = $(".origin-secure").val();
               $(".test-smtp").val(smtp);
               $(".test-port").val(port);
               $(".test-login").val(login);
               $(".test-pasw").val(pasw);
+              $(".test-secure").val(sec);
            });
 
             var editor_config = {

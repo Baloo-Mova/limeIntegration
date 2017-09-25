@@ -57,6 +57,7 @@ class AdminSettings extends Controller
         $smtp_port = $request->get('smtp_port');
         $smtp_login = $request->get('smtp_login');
         $smtp_pasw = $request->get('smtp_pasw');
+        $secure = $request->get('secure');
 
         if(!isset($smtp) || !isset($smtp_port) || !isset($smtp_login) || !isset($smtp_pasw)){
             Toastr::error("Пропущен обязательный параметр!", "Ошибка!");
@@ -67,6 +68,7 @@ class AdminSettings extends Controller
         $settings->smtp_port = $smtp_port;
         $settings->smtp_login = $smtp_login;
         $settings->smtp_pasw = $smtp_pasw;
+        $settings->secure = $secure;
         $settings->save();
 
         Toastr::success("Настройки SMTP сохранены!", "Сохранено");
@@ -81,8 +83,12 @@ class AdminSettings extends Controller
         $port = $request->get('port');
         $login = $request->get('login');
         $pasw = $request->get('smtp_pasw');
+        $secure = $request->get('secure');
 
         if(!isset($user_email)){
+            return back();
+        }
+        if(!isset($secure)){
             return back();
         }
         if(!isset($text_tmp)){
@@ -111,7 +117,7 @@ class AdminSettings extends Controller
             $mail->SMTPAuth = true;                               // Enable SMTP authentication
             $mail->Username = $login;                 // SMTP username
             $mail->Password = $pasw;                           // SMTP password
-            $mail->SMTPSecure = 'ssl';                            // Enable TLS encryption, `ssl` also accepted
+            $mail->SMTPSecure = $secure;                            // Enable TLS encryption, `ssl` also accepted
             $mail->Port = $port;                                    // TCP port to connect to
             $mail->CharSet = 'UTF-8';
             $mail->setFrom($login);

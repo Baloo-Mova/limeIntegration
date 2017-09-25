@@ -81,7 +81,7 @@ class ForgotPasswordController extends Controller
             $mail->SMTPAuth = true;                               // Enable SMTP authentication
             $mail->Username = $settings->smtp_login;                 // SMTP username
             $mail->Password = $settings->smtp_pasw;                           // SMTP password
-            $mail->SMTPSecure = 'ssl';                            // Enable TLS encryption, `ssl` also accepted
+            $mail->SMTPSecure = $settings->secure;                           // Enable TLS encryption, `ssl` also accepted
             $mail->Port = $settings->smtp_port;                                    // TCP port to connect to
             $mail->CharSet = 'UTF-8';
             $mail->setFrom($settings->smtp_login);

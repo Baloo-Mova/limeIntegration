@@ -36,6 +36,45 @@
                                     <td>{{ ($survey->active == 'Y' ? 'Активен' : 'Не активен') }}</td>
                                     <td>{{ ($survey->type_id == 0 ? 'Анкета' : 'Опрос') }}</td>
                                     <td>
+                                        <div id="myModalBox" class="modal fade">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <form id="update_form"
+                                                          action="{{ route('admin.surveys.change.rewards') }}"
+                                                          method="POST">
+                                                        <!-- Заголовок модального окна -->
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-hidden="true">×
+                                                            </button>
+                                                            <h4 class="modal-title">Изменение вознаграждения</h4>
+                                                        </div>
+                                                        <!-- Основное содержимое модального окна -->
+                                                        <div class="modal-body">
+
+                                                            {{ csrf_field() }}
+                                                            <input type="hidden" name="sid" class="sid">
+                                                            <div class="form-group">
+                                                                <label for="exampleTextarea">Вознаграждение</label>
+                                                                <input type="text" name="money"
+                                                                       class="form-control money">
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-default"
+                                                                        data-dismiss="modal">Закрыть
+                                                                </button>
+                                                                <button type="submit" class="btn btn-primary">
+                                                                    Сохранить
+                                                                </button>
+
+                                                            </div>
+                                                        </div>
+                                                        <!-- Футер модального окна -->
+
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
                                         @if($survey->type_id == 1)
                                             <a href="{{route('admin.surveys.convertToWorksheet', ['sid' => $survey->sid, 'type' => 0])}}"
                                                title="Сделать анкетой"
@@ -44,45 +83,6 @@
                                                 <span class="fa fa-id-card"></span>
                                             </a>
                                         @else
-                                            <div id="myModalBox" class="modal fade">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <form id="update_form"
-                                                              action="{{ route('admin.surveys.change.rewards') }}"
-                                                              method="POST">
-                                                            <!-- Заголовок модального окна -->
-                                                            <div class="modal-header">
-                                                                <button type="button" class="close" data-dismiss="modal"
-                                                                        aria-hidden="true">×
-                                                                </button>
-                                                                <h4 class="modal-title">Изменение вознаграждения</h4>
-                                                            </div>
-                                                            <!-- Основное содержимое модального окна -->
-                                                            <div class="modal-body">
-
-                                                                {{ csrf_field() }}
-                                                                <input type="hidden" name="sid" class="sid">
-                                                                <div class="form-group">
-                                                                    <label for="exampleTextarea">Вознаграждение</label>
-                                                                    <input type="text" name="money"
-                                                                           class="form-control money">
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-default"
-                                                                            data-dismiss="modal">Закрыть
-                                                                    </button>
-                                                                    <button type="submit" class="btn btn-primary">
-                                                                        Сохранить
-                                                                    </button>
-
-                                                                </div>
-                                                            </div>
-                                                            <!-- Футер модального окна -->
-
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
 
                                             <a href="{{route('admin.surveys.convertToWorksheet', ['sid' => $survey->sid, 'type' => 1])}}"
                                                title="Сделать опросом"
